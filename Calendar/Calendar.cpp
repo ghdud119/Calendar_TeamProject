@@ -15,9 +15,9 @@ Calendar::~Calendar()
 void Calendar::PrintCalendar(int year, int month)
 {
 	for (int i = 0; i < (WIDTH + 1) * 7; i++)	printf("_"); printf("\n");
-	printf("                                     %d³â  %d¿ù\n", year, month);
+	printf("                                     %dë…„  %dì›”\n", year, month);
 	for (int i = 0; i < (WIDTH + 1) * 7; i++)	printf("_"); printf("\n");
-	printf("    ÀÏ     ¿ù     È­     ¼ö     ¸ñ     ±Ý     Åä \n");
+	printf("    ì¼    ì›”     í™”     ìˆ˜     ëª©     ê¸ˆ     í† \n");
 	for (int i = 0; i < (WIDTH + 1) * 7; i++)	printf("_"); printf("\n");
 
 	for (int i = 0; i < weekDay(year, month, 1); i++)
@@ -35,9 +35,9 @@ void Calendar::PrintCalendar(int year, int month)
 	}
 	printf("\n");
 	for(int i = 0; i< (WIDTH+1)*7;i++)	printf("_");
+	printf("\n");
 }
 
-//´ÞÀÇ ¸¶Áö¸· ÀÏÀÚ Ãâ·Â
 int Calendar::Lastday(int year, int month)
 {
 	int m[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };	
