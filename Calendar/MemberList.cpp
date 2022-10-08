@@ -93,6 +93,12 @@ bool MemberList::FileInput()
 			if (workingMonthCheck)
 			{
 				WorkingCalender = inputLine;
+				if (WorkingCalender != "-1" || WorkingCalender.length() != 6)
+				{
+					printf("저장 파일을 읽을 수 없습니다.");
+					return false;
+					
+				}
 				workingMonthCheck = true;
 				continue;
 			}
@@ -111,7 +117,7 @@ bool MemberList::FileInput()
 					switch (count)
 					{
 					case 0:
-						if (tempStr.length() > 6 || tempStr.length() < 5)
+						if (tempStr.length() != 6)
 						{
 							printf("저장 파일을 읽을 수 없습니다.");
 							return false;
