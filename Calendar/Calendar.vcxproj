@@ -141,11 +141,11 @@
   <ItemGroup>
     <ClCompile Include="Calendar.cpp" />
     <ClCompile Include="Excute.cpp" />
-    <ClCompile Include="NominalList.cpp" />
+    <ClCompile Include="MemberList.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Calendar.h" />
-    <ClInclude Include="NominalList.h" />
+    <ClInclude Include="MemberList.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
