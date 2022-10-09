@@ -30,7 +30,7 @@ void ChoiceDay(MemberList list)
     }
     else
     {
-        date = // from file read
+        date = 0; // from file read
     }
 
     vector<pair<UserInfomation, int>> validlist = listPickout(list, date); // 유효한 사람만 가져옴
@@ -97,4 +97,7 @@ void ChoiceDay(MemberList list)
         return;
     }
     cout << "등록 완료";
+    validlist[Search(validlist, ID)].second += 1;
+
+    // 확정 갱신
 }

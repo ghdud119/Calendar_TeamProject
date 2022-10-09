@@ -10,6 +10,12 @@ using namespace std;
 
 int dateChanger(string str)
 {
+    char date[DATEMAX];
+    strcpy(date, str.c_str());
+    int retval = 0;
+
+    retval = date[0] * 100000 + date[1] * 10000 + date[2] * 1000 + date[3] * 100 + date[5] * 10 + date[6];
+    return retval;
 }
 
 int Search(vector<pair<UserInfomation, int>> validlist, string id)
@@ -26,10 +32,37 @@ int Search(vector<pair<UserInfomation, int>> validlist, string id)
 
 vector<pair<UserInfomation, int>> listPickout(MemberList list, int date)
 {
+    vector<pair<UserInfomation, int>> validlist;
+    for (int i = 0; i < list.memberList.size(); i++)
+    {
+        if (list.memberList[i].startingmonth > date)
+        {
+            validlist.push_back(list.memberList[i]);
+        }
+    }
+
+    return validlist;
 }
 
 bool isfirst(vector<pair<UserInfomation, int>> validlist, string id)
 {
+    int min = 100;
+    for (int i = 0; i < validlist.size(); i++)
+    {
+        if (validlist[i].second < min)
+        {
+            min = validlist[i].second;
+        }
+    }
+
+    if (validlist[Search(validlist, id)].second == min)
+    {
+        return false;
+    }
+    else if (validlist[Search(validlist, id)].second > min)
+    {
+        return true;
+    }
 }
 
 bool passTest(vector<pair<UserInfomation, int>> validlist, string id)
@@ -38,6 +71,15 @@ bool passTest(vector<pair<UserInfomation, int>> validlist, string id)
 
 bool priorityCompare(vector<pair<UserInfomation, int>> validlist, string pid, string id)
 {
+    if (validlist[Search(validlist, pid)].first.startingMonth >=
+        validlist[Search(validlist, id)].first.startingMonth)
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
 }
 
 bool checkID(string str)
@@ -62,7 +104,7 @@ bool checkDay(int date)
     {
         return true;
     }
-    else if (date < lastday) // from calendar
+    else if (date < Calendar::getLastday()) // from calendar
     {
         return true;
     }
