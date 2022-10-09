@@ -5,6 +5,13 @@
 #include "MemberList.h"
 #include "Valid.cpp"
 
+enum state
+{
+    vacant = 0,
+    occupied,
+    confirmed
+};
+
 void ChoiceDay(MemberList list)
 {
     Calendar *calendar = new Calendar();
@@ -13,8 +20,13 @@ void ChoiceDay(MemberList list)
     string ID = nullptr;
     string input = 0;
     string name[31];
-    string state[31];
+    int state[31];
     int date;
+
+    for (int i = 0; i < 31; i++)
+    {
+        state[i] = vacant;
+    }
 
     // 파일 읽기, isNew = ?
     if (isNew) // condition 1. 작성 중 여부
@@ -24,7 +36,7 @@ void ChoiceDay(MemberList list)
         date = dateChanger(temp); // 형식 변환 string to int
         if (!checkDate(date))
         {
-            cout << "날짜 입력 형식 오류";
+            cout << "날짜 입력 형식 오류" << endl;
             return;
         }
     }
@@ -50,50 +62,51 @@ void ChoiceDay(MemberList list)
     {
         if (!passTest(validlist, ID))
         {
-            cout << "패스 조건 불만족";
+            cout << "패스 조건 불만족" << endl;
             return;
         }
         if (rechoice)
         {
             // Retest all post passer
-            cout << "패스 완료";
+            cout << "패스 완료" << endl;
             validlist[Search(validlist, ID)].second = 999;
             return;
         }
         else
         {
-            cout << "패스 완료";
+            cout << "패스 완료" << endl;
         }
     }
 
     int hopeday = stoi(input);
     if (!checkDay(hopeday)) // condition 5. 입력의 유효성
     {
+        cout << "유효하지 않은 입력입니다." << endl;
         return;
     }
 
-    if (state[hopeday] == "확정") // condition 5. 미확정 날짜
+    if (state[hopeday] == confirmed) // condition 5. 미확정 날짜
     {
         cout << "확정된 날짜입니다." << endl;
         return;
     }
 
-    if (state[hopeday] == "점유") // condition 6. 우선순위 비교
+    if (state[hopeday] == occupied) // condition 6. 우선순위 비교
     {
         string postID = name[hopeday];
         if (!priorityCompare(validlist, postID, ID))
         {
-            cout << "우선 순위 낮음";
+            cout << "우선 순위가 낮아서 강탈할 수 없습니다." << endl;
             return;
         }
     }
 
-    state[hopeday] = "점유";
+    state[hopeday] = occupied;
     name[hopeday] = ID;
     if (rechoice)
     {
         // 이전 선택 삭제
-        cout << "수정 완료";
+        cout << "수정 완료" << endl;
         return;
     }
     cout << "등록 완료";

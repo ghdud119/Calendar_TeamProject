@@ -16,6 +16,7 @@
         "string_view": "cpp",
         "unordered_map": "cpp",
         "iterator": "cpp",
-        "locale": "cpp"
+        "locale": "cpp",
+        "ostream": "cpp"
     }
 }
