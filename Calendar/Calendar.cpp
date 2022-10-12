@@ -1,8 +1,7 @@
-#include<iomanip>
-#include"Calendar.h"
+#include <iomanip>
+#include "Calendar.h"
 
 #define WIDTH 6
-
 
 Calendar::Calendar()
 {
@@ -14,11 +13,17 @@ Calendar::~Calendar()
 
 void Calendar::PrintCalendar(int year, int month)
 {
-	for (int i = 0; i < (WIDTH + 1) * 7; i++)	printf("_"); printf("\n");
+	for (int i = 0; i < (WIDTH + 1) * 7; i++)
+		printf("_");
+	printf("\n");
 	printf("                                     %d년  %d월\n", year, month);
-	for (int i = 0; i < (WIDTH + 1) * 7; i++)	printf("_"); printf("\n");
+	for (int i = 0; i < (WIDTH + 1) * 7; i++)
+		printf("_");
+	printf("\n");
 	printf("    일    월     화     수     목     금     토\n");
-	for (int i = 0; i < (WIDTH + 1) * 7; i++)	printf("_"); printf("\n");
+	for (int i = 0; i < (WIDTH + 1) * 7; i++)
+		printf("_");
+	printf("\n");
 
 	for (int i = 0; i < weekDay(year, month, 1); i++)
 	{
@@ -34,13 +39,14 @@ void Calendar::PrintCalendar(int year, int month)
 		}
 	}
 	printf("\n");
-	for(int i = 0; i< (WIDTH+1)*7;i++)	printf("_");
+	for (int i = 0; i < (WIDTH + 1) * 7; i++)
+		printf("_");
 	printf("\n");
 }
 
 int Calendar::Lastday(int year, int month)
 {
-	int m[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };	
+	int m[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 	m[1] = IsLeapYear(year) ? 29 : 28;
 	return m[month - 1];
 }

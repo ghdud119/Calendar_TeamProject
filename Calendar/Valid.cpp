@@ -78,7 +78,7 @@ bool priorityCompare(vector<pair<UserInfomation, int>> validlist, string pid, st
     }
     else
     {
-        return true;
+        return true; // 뺏을 수 있음
     }
 }
 
@@ -104,7 +104,7 @@ bool checkDay(int date)
     {
         return true;
     }
-    else if (date < Calendar::getLastday()) // from calendar
+    else if (date < Lastday()) // from calendar
     {
         return true;
     }
