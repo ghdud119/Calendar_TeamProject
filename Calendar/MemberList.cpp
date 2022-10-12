@@ -13,12 +13,15 @@ MemberList::~MemberList()
 void MemberList::Insert()
 {
 	UserInfomation NewUser;
-	cout << "이름을 입력해 주세요 : "; cin >> NewUser.name;
-	cout << "시작달을 입력해 주세요 : "; cin >> NewUser.startingMonth;
+	cout << "이름을 입력해 주세요 : ";
+	cin >> NewUser.name;
+	cout << "시작달을 입력해 주세요 : ";
+	cin >> NewUser.startingMonth;
 
 	while (true)
 	{
-		cout << "아이디를 입력해 주세요 : "; cin >> NewUser.ID;
+		cout << "아이디를 입력해 주세요 : ";
+		cin >> NewUser.ID;
 		if (Search(NewUser.ID) == -1)
 			break;
 		else
@@ -28,9 +31,12 @@ void MemberList::Insert()
 	Sort();
 }
 
-void MemberList::Delete(std::string targetID)
+void MemberList::Delete()
 {
-	int index = Search(targetID);
+	std::string id;
+	cout << "이름을 입력해 주세요 : ";
+	cin >> id;
+	int index = Search(id);
 	if (index == -1)
 		cout << "존재하지 않는 아이디입니다.\n";
 	else
@@ -50,7 +56,6 @@ int MemberList::Search(string targetID)
 	}
 	return -1;
 }
-
 
 void MemberList::Sort()
 {
@@ -97,7 +102,6 @@ bool MemberList::FileInput()
 				{
 					printf("저장 파일을 읽을 수 없습니다.");
 					return false;
-					
 				}
 				workingMonthCheck = true;
 				continue;
@@ -161,7 +165,7 @@ void MemberList::FileOutput()
 {
 	ofstream outputFile;
 	outputFile.open("MemberListSaveFile.txt");
-	
+
 	if (outputFile.is_open())
 	{
 		outputFile << WorkingCalender << endl;
@@ -174,7 +178,7 @@ void MemberList::FileOutput()
 	outputFile.close();
 }
 
-void One_Line_Str_Input(vector<string>* inputVec)
+void One_Line_Str_Input(vector<string> *inputVec)
 {
 	string inputStr;
 	string tempStr = "";
@@ -196,7 +200,3 @@ void One_Line_Str_Input(vector<string>* inputVec)
 	}
 	return;
 }
-
-
-
-
