@@ -114,3 +114,17 @@ void ChoiceDay(MemberList list)
 
     // 확정 갱신
 }
+
+void showSchedule()
+{
+    string temp;
+    cout << "연월을 입력하십시오 : " << endl;
+    cin >> temp;
+    int date = dateChanger(temp);
+    if (!checkDate(date))
+    {
+        cout << "날짜 입력 형식 오류" << endl;
+        return;
+    }
+    // file
+}
