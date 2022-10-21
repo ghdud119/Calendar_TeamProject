@@ -32,6 +32,7 @@ int Search(vector<pair<UserInfomation, int>> validlist, string id)
 
 vector<pair<UserInfomation, int>> listPickout(MemberList list, int date)
 {
+    vector<pair<UserInfomation, int>> templist = list.GetMemberList();
     vector<pair<UserInfomation, int>> validlist;
     for (int i = 0; i < list.memberList.size(); i++)
     {

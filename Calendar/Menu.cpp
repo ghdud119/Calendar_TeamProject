@@ -3,9 +3,6 @@
 #include "MemberList.h"
 using namespace std;
 
-Calendar *calendar = new Calendar();
-MemberList *memberList = new MemberList();
-
 void mainMenu()
 {
     bool status = true;
@@ -74,6 +71,8 @@ void calendarMenu()
 
         cout << "\n";
     } while (status);
+
+    return;
 }
 
 void listMenu()
@@ -97,6 +96,10 @@ void listMenu()
             memberList->PrintList();
             break;
         case 50: // 2
+            if (workingSchedule)
+            {
+                cout << "작성 중인 근무표가 완성되기 전까지 명단 등록을 할 수 없습니다." << endl;
+            }
             memberList->Insert();
             break;
         case 51: // 3
