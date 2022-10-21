@@ -5,10 +5,11 @@
 
 using namespace std;
 
+Calendar *calendar = new Calendar();
+MemberList *memberList = new MemberList();
+
 int main()
 {
-	Calendar *calendar = new Calendar();
-	MemberList *memberList = new MemberList();
 	bool status = true;
 
 	do

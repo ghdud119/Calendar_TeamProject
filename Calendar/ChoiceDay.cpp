@@ -5,6 +5,8 @@
 #include "MemberList.h"
 #include "Valid.cpp"
 
+const int DAYMAX = 32;
+
 enum state
 {
     vacant = 0,
@@ -19,8 +21,8 @@ void ChoiceDay(MemberList list)
     string temp = 0;
     string ID = nullptr;
     string input = 0;
-    string name[31];
-    int state[31];
+    string id[DAYMAX];
+    int state[DAYMAX];
     int date;
 
     for (int i = 0; i < 31; i++)
@@ -93,7 +95,7 @@ void ChoiceDay(MemberList list)
 
     if (state[hopeday] == occupied) // condition 6. 우선순위 비교
     {
-        string postID = name[hopeday];
+        string postID = id[hopeday];
         if (!priorityCompare(validlist, postID, ID))
         {
             cout << "우선 순위가 낮아서 강탈할 수 없습니다." << endl;
@@ -101,18 +103,42 @@ void ChoiceDay(MemberList list)
         }
     }
 
-    state[hopeday] = occupied;
-    name[hopeday] = ID;
     if (rechoice)
     {
         // 이전 선택 삭제
+        for (int i = 0; i < DAYMAX; i++)
+        {
+            if (id[i] == ID && state[i] == occupied)
+            {
+                state[i] = vacant;
+            }
+        }
         cout << "수정 완료" << endl;
+        state[hopeday] = occupied;
+        id[hopeday] = ID;
         return;
     }
+    state[hopeday] = occupied;
+    id[hopeday] = ID;
     cout << "등록 완료";
     validlist[Search(validlist, ID)].second += 1;
 
     // 확정 갱신
+    int cmp = validlist[0].second;
+    for (int i = 0; i < validlist.size(); i++)
+    {
+        if (cmp != validlist[i].second)
+        {
+            return;
+        }
+    }
+    for (int i = 0; i < DAYMAX; i++)
+    {
+        if (state[i] == occupied)
+        {
+            state[i] = confirmed;
+        }
+    }
 }
 
 void showSchedule()
