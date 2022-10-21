@@ -25,7 +25,8 @@ void ChoiceDay(MemberList list)
     int state[DAYMAX];
     int date;
 
-    for (int i = 0; i < 31; i++)
+    state[0] = confirmed;
+    for (int i = 1; i < DAYMAX; i++)
     {
         state[i] = vacant;
     }
@@ -60,9 +61,17 @@ void ChoiceDay(MemberList list)
 
     cout << "희망 근무일을 입력하십시오 : ";
     cin >> input;
+    int vcount = 0;
     if (input == "PASS") // condition 4. 패스 테스트
     {
-        if (!passTest(validlist, ID))
+        for (int i = 0; i < DAYMAX; i++)
+        {
+            if (state[i] == vacant)
+            {
+                vcount++;
+            }
+        }
+        if (!passTest(validlist, ID, vcount))
         {
             cout << "패스 조건 불만족" << endl;
             return;
@@ -76,6 +85,7 @@ void ChoiceDay(MemberList list)
         }
         else
         {
+            validlist[Search(validlist, ID)].second = 999;
             cout << "패스 완료" << endl;
         }
     }

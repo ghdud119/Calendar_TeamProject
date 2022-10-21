@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Calendar.h"
 #include "MemberList.h"
+#include "ChoiceDay.cpp"
 using namespace std;
 
 void mainMenu()
@@ -58,7 +59,8 @@ void calendarMenu()
             showSchedule();
             break;
         case 50: // 2
-            ChoiceDay();
+            if (memberList.GetMemberList())
+                ChoiceDay();
             break;
         case 27: // ESC 키
             status = false;

@@ -8,16 +8,6 @@ const int DATEMAX = 7;
 
 using namespace std;
 
-int dateChanger(string str)
-{
-    char date[DATEMAX];
-    strcpy(date, str.c_str());
-    int retval = 0;
-
-    retval = date[0] * 100000 + date[1] * 10000 + date[2] * 1000 + date[3] * 100 + date[5] * 10 + date[6];
-    return retval;
-}
-
 int Search(vector<pair<UserInfomation, int>> validlist, string id)
 {
     validlist[1].first.ID;
@@ -32,7 +22,6 @@ int Search(vector<pair<UserInfomation, int>> validlist, string id)
 
 vector<pair<UserInfomation, int>> listPickout(MemberList list, int date)
 {
-    vector<pair<UserInfomation, int>> templist = list.GetMemberList();
     vector<pair<UserInfomation, int>> validlist;
     for (int i = 0; i < list.memberList.size(); i++)
     {
@@ -66,8 +55,32 @@ bool isfirst(vector<pair<UserInfomation, int>> validlist, string id)
     }
 }
 
-bool passTest(vector<pair<UserInfomation, int>> validlist, string id)
+bool passTest(vector<pair<UserInfomation, int>> validlist, string id, int vcount)
 {
+    pair<UserInfomation, int> target;
+    int tcount = 0;
+    for (int i = 0; i < validlist.size(); i++)
+    {
+        if (validlist[i].first.ID == id)
+        {
+            target = validlist[i];
+        }
+    }
+    for (int i = 0; i < validlist.size(); i++)
+    {
+        if (target.first.startingMonth > validlist[i].first.startingMonth)
+        {
+            tcount++;
+        }
+    }
+    if (tcount >= vcount)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 bool priorityCompare(vector<pair<UserInfomation, int>> validlist, string pid, string id)
@@ -97,6 +110,27 @@ bool checkID(string str)
     }
 
     return true;
+}
+
+int dateChanger(string str)
+{
+    char date[DATEMAX];
+    strcpy(date, str.c_str());
+    int retval = 0;
+    for (int i = 0; i < DATEMAX; i++)
+    {
+        if (date[i] > '0' && date[i] < '9')
+        {
+            date[i] = (int)date[i];
+        }
+        else
+        {
+            return -1;
+        }
+    }
+
+    retval = date[0] * 100000 + date[1] * 10000 + date[2] * 1000 + date[3] * 100 + date[5] * 10 + date[6];
+    return retval;
 }
 
 bool checkDay(int date)
