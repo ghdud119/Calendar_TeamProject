@@ -2,6 +2,7 @@
 #include <string>
 #include "Calendar.h"
 #include "MemberList.h"
+#include "Menu.h"
 
 const int IDMAX = 16;
 const int DATEMAX = 7;
@@ -23,13 +24,13 @@ int Search(vector<pair<UserInfomation, int>> validlist, string id)
 vector<pair<UserInfomation, int>> listPickout(MemberList list, int date)
 {
     vector<pair<UserInfomation, int>> validlist;
-    for (int i = 0; i < list.memberList.size(); i++)
-    {
-        if (list.memberList[i].startingmonth > date)
-        {
-            validlist.push_back(list.memberList[i]);
-        }
-    }
+    // for (int i = 0; i < list.memberList.size(); i++)
+    // {
+    //     if (list.memberList[i].startingmonth > date)
+    //     {
+    //         validlist.push_back(list.memberList[i]);
+    //     }
+    // }
 
     return validlist;
 }
@@ -139,7 +140,7 @@ bool checkDay(int date)
     {
         return true;
     }
-    else if (date < Lastday()) // from calendar
+    else if (date < Lastday) // from calendar
     {
         return true;
     }

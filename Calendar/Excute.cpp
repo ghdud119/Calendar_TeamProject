@@ -5,9 +5,6 @@
 
 using namespace std;
 
-Calendar *calendar = new Calendar();
-MemberList *memberList = new MemberList();
-
 int main()
 {
 	bool status = true;

@@ -2,7 +2,12 @@
 #include "Calendar.h"
 #include "MemberList.h"
 #include "ChoiceDay.cpp"
+
 using namespace std;
+
+Calendar *calendar = new Calendar();
+MemberList *memberList = new MemberList();
+int isWorking = -1;
 
 void mainMenu()
 {
@@ -59,8 +64,8 @@ void calendarMenu()
             showSchedule();
             break;
         case 50: // 2
-            if (memberList.GetMemberList())
-                ChoiceDay();
+            if (memberList->GetMemberList())
+                ChoiceDay(*memberList);
             break;
         case 27: // ESC 키
             status = false;
@@ -97,8 +102,8 @@ void listMenu()
         case 49: // 1
             memberList->PrintList();
             break;
-        case 50: // 2
-            if (workingSchedule)
+        case 50:                 // 2
+            if (isWorking == -1) // 작성 중인 근무표 있는지 변수
             {
                 cout << "작성 중인 근무표가 완성되기 전까지 명단 등록을 할 수 없습니다." << endl;
             }
