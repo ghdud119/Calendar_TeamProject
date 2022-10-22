@@ -8,12 +8,6 @@
 
 using namespace std;
 
-struct UserInfomation
-{
-	string startingMonth = "ERROR";
-	string ID = "ERROR";
-};
-
 class MemberList
 {
 public:
@@ -27,20 +21,20 @@ public:
 
 	void PrintList();
 
-	void SetWorkingCalender(string yearMonth) { this->WorkingCalender = yearMonth; }
-	string GetWorkingCalender() { return this->WorkingCalender; }
+	void SetWorkingCalender(string yearMonth) { this->workingMonth = yearMonth; }
+	string GetWorkingCalender() { return this->workingMonth; }
 
-	//º¤ÅÍ Æ÷ÀÎÅÍ ¸®ÅÏ vector->first = struct(name, startingMonth), vector->second = ID
-	vector<UserInfomation> *GetMemberList() { return &memberList; }
+	//ë²¡í„° í¬ì¸í„° ë¦¬í„´ vector->first = startingMonth, vector->second = ID
+	vector<pair<string, string>> *GetMemberList() { return &memberList; }
 
 	bool FileInput();
 	void FileOutput();
 
 private:
 	void Sort();
-	static bool Compare(UserInfomation member1, UserInfomation member2) { return stoi(member1.startingMonth) < stoi(member2.startingMonth); }
+	static bool Compare(pair<string, string> member1, pair<string, string> member2) { return stoi(member1.first) < stoi(member2.first); }
 
 private:
-	vector<UserInfomation> memberList;
-	string WorkingCalender = "-1";
+	vector<pair<string, string>> memberList;
+	string workingMonth = "-1";
 };
