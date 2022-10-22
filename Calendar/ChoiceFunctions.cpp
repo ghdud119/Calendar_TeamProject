@@ -94,7 +94,7 @@ bool priorityCompare(vector<pair<UserInfomation, int>> validlist, string pid, st
     }
     else
     {
-        return true; // 뺏을 수 있음
+        return true; // ???? ?? ????
     }
 }
 

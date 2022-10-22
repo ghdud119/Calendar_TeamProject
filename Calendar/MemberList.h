@@ -24,7 +24,7 @@ public:
 	void SetWorkingCalender(string yearMonth) { this->workingMonth = yearMonth; }
 	string GetWorkingCalender() { return this->workingMonth; }
 
-	//ë²¡í„° í¬ì¸í„° ë¦¬í„´ vector->first = startingMonth, vector->second = ID
+	//º¤ÅÍ Æ÷ÀÎÅÍ ¸®ÅÏ vector->first = startingMonth, vector->second = ID
 	vector<pair<string, string>> *GetMemberList() { return &memberList; }
 
 	bool FileInput();

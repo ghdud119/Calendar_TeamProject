@@ -20,7 +20,7 @@ void MemberList::Insert()
 
 	while (true)
 	{
-		cout << "ì‹œìž‘ë‹¬ì„ ìž…ë ¥í•´ ì£¼ì„¸ìš” : ";
+		cout << "½ÃÀÛ´ÞÀ» ÀÔ·ÂÇØ ÁÖ¼¼¿ä : ";
 		getline(cin, startingMonth);
 
 		if (startingMonth[0] == 27)
@@ -30,17 +30,16 @@ void MemberList::Insert()
 		{
 			for (int i = 0; i < startingMonth.length(); i++)
 			{
-				cout << startingMonth <<" " << temp << endl;
+				cout << startingMonth << " " << temp << endl;
 
 				if (isdigit(startingMonth[i]) != 0)
 					temp += startingMonth[i];
-				else if(startingMonth.length() == 6)
+				else if (startingMonth.length() == 6)
 					temp += "0";
-			
 			}
 			if (temp.length() != 6 || !temp.compare("000000"))
 			{
-				printf("ìž˜ëª»ëœ í˜•ì‹ì˜ ì‹œìž‘ë‹¬ ìž…ë ¥ìž…ë‹ˆë‹¤.\në„¤ê¸€ìžì˜ ì—°ë„+êµ¬ë¶„ìž+ì›”ì˜ í˜•íƒœë¡œ ìž…ë ¥í•´ì£¼ì„¸ìš”\n");
+				printf("Àß¸øµÈ Çü½ÄÀÇ ½ÃÀÛ´Þ ÀÔ·ÂÀÔ´Ï´Ù.\n³×±ÛÀÚÀÇ ¿¬µµ+±¸ºÐÀÚ+¿ùÀÇ ÇüÅÂ·Î ÀÔ·ÂÇØÁÖ¼¼¿ä\n");
 			}
 			else
 			{
@@ -51,20 +50,20 @@ void MemberList::Insert()
 		}
 		else
 		{
-			printf("ìž˜ëª»ëœ í˜•ì‹ì˜ ì‹œìž‘ë‹¬ ìž…ë ¥ìž…ë‹ˆë‹¤.\në„¤ê¸€ìžì˜ ì—°ë„+êµ¬ë¶„ìž+ì›”ì˜ í˜•íƒœë¡œ ìž…ë ¥í•´ì£¼ì„¸ìš”\n");
+			printf("Àß¸øµÈ Çü½ÄÀÇ ½ÃÀÛ´Þ ÀÔ·ÂÀÔ´Ï´Ù.\n³×±ÛÀÚÀÇ ¿¬µµ+±¸ºÐÀÚ+¿ùÀÇ ÇüÅÂ·Î ÀÔ·ÂÇØÁÖ¼¼¿ä\n");
 		}
 	}
 
 	while (true)
 	{
-		cout << "ì•„ì´ë””ë¥¼ ìž…ë ¥í•´ ì£¼ì„¸ìš” : ";
+		cout << "¾ÆÀÌµð¸¦ ÀÔ·ÂÇØ ÁÖ¼¼¿ä : ";
 		getline(cin, ID);
 		if (ID[0] == 27)
 			return;
 		else if (Search(ID) == -1)
 			break;
 		else
-			cout << "ì´ë¯¸ ì¡´ìž¬í•˜ëŠ” ì•„ì´ë””ìž…ë‹ˆë‹¤.\n";
+			cout << "ÀÌ¹Ì Á¸ÀçÇÏ´Â ¾ÆÀÌµðÀÔ´Ï´Ù.\n";
 	}
 	this->memberList.push_back(make_pair(startingMonth, ID));
 	Sort();
@@ -73,15 +72,15 @@ void MemberList::Insert()
 void MemberList::Delete()
 {
 	std::string ID;
-	cout << "ì•„ì´ë””ì„ ìž…ë ¥í•´ ì£¼ì„¸ìš” : ";
+	cout << "¾ÆÀÌµðÀ» ÀÔ·ÂÇØ ÁÖ¼¼¿ä : ";
 	getline(cin, ID);
 	int index = Search(ID);
 	if (index == -1)
-		cout << "ì¡´ìž¬í•˜ì§€ ì•ŠëŠ” ì•„ì´ë””ìž…ë‹ˆë‹¤.\n";
+		cout << "Á¸ÀçÇÏÁö ¾Ê´Â ¾ÆÀÌµðÀÔ´Ï´Ù.\n";
 	else
 	{
 		memberList.erase(memberList.begin() + index);
-		cout << "í•´ë‹¹ ì•„ì´ë”” ë° ì •ë³´ê°€ ì‚­ì œë˜ì—ˆìŠµë‹ˆë‹¤.\n";
+		cout << "ÇØ´ç ¾ÆÀÌµð ¹× Á¤º¸°¡ »èÁ¦µÇ¾ú½À´Ï´Ù.\n";
 	}
 }
 
@@ -106,13 +105,13 @@ void MemberList::PrintList()
 {
 	if (memberList.empty())
 	{
-		cout << "ì €ìž¥ëœ ì¸ì› ì •ë³´ê°€ ì—†ìŠµë‹ˆë‹¤.\n";
+		cout << "ÀúÀåµÈ ÀÎ¿ø Á¤º¸°¡ ¾ø½À´Ï´Ù.\n";
 	}
 	else
 	{
 		for (auto iter = this->memberList.begin(); iter != this->memberList.end(); iter++)
 		{
-			cout << "ì‹œìž‘ ë‹¬ : " << iter->first <<" ID : " << iter->second << "\n";
+			cout << "½ÃÀÛ ´Þ : " << iter->first << " ID : " << iter->second << "\n";
 		}
 	}
 }
@@ -137,9 +136,9 @@ bool MemberList::FileInput()
 			if (workingMonthCheck)
 			{
 				workingMonth = inputLine;
-				if ( !workingMonth.compare("-1 ") && workingMonth.length() != 6)
+				if (!workingMonth.compare("-1 ") && workingMonth.length() != 6)
 				{
-					printf("íŒŒì¼ ì½ê¸° ì˜¤ë¥˜, ì €ìž¥íŒŒì¼ì˜ ìž‘ì—…ë‚ ì§œ ë¬¸ë²•ì´ ìž˜ëª»ë˜ì—ˆìŠµë‹ˆë‹¤.\n");
+					printf("ÆÄÀÏ ÀÐ±â ¿À·ù, ÀúÀåÆÄÀÏÀÇ ÀÛ¾÷³¯Â¥ ¹®¹ýÀÌ Àß¸øµÇ¾ú½À´Ï´Ù.\n");
 					return false;
 				}
 				workingMonthCheck = false;
@@ -162,7 +161,7 @@ bool MemberList::FileInput()
 					case 0:
 						if (tempStr.length() != 6)
 						{
-							printf("íŒŒì¼ ì½ê¸° ì˜¤ë¥˜, ì €ìž¥íŒŒì¼ì˜ ë‚ ì§œ ë¬¸ë²•ì´ ìž˜ëª»ë˜ì—ˆìŠµë‹ˆë‹¤.\n");
+							printf("ÆÄÀÏ ÀÐ±â ¿À·ù, ÀúÀåÆÄÀÏÀÇ ³¯Â¥ ¹®¹ýÀÌ Àß¸øµÇ¾ú½À´Ï´Ù.\n");
 							return false;
 						}
 						insertStartingMonth = tempStr;
@@ -176,7 +175,7 @@ bool MemberList::FileInput()
 						break;
 
 					default:
-						printf("íŒŒì¼ ì½ê¸° ì˜¤ë¥˜, ì €ìž¥íŒŒì¼ì˜ ë¬¸ë²•ì´ ìž˜ëª»ë˜ì—ˆìŠµë‹ˆë‹¤.\n");
+						printf("ÆÄÀÏ ÀÐ±â ¿À·ù, ÀúÀåÆÄÀÏÀÇ ¹®¹ýÀÌ Àß¸øµÇ¾ú½À´Ï´Ù.\n");
 						return false;
 					}
 					count++;
@@ -189,7 +188,7 @@ bool MemberList::FileInput()
 	else
 	{
 		ofstream NewSaveFile(SAVEFILE);
-		printf("ìƒˆ ì €ìž¥ íŒŒì¼ì„ ìƒì„±í•˜ì˜€ìŠµë‹ˆë‹¤.\n");
+		printf("»õ ÀúÀå ÆÄÀÏÀ» »ý¼ºÇÏ¿´½À´Ï´Ù.\n");
 		NewSaveFile.close();
 	}
 	inputFile.close();
