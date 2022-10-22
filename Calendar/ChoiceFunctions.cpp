@@ -27,7 +27,7 @@ vector<pair<UserInfomation, int>> listPickout(MemberList list, int date)
     vector<UserInfomation> *temp = list.GetMemberList();
     for (auto iter = temp->begin(); iter != temp->end(); iter++)
     {
-        if (stoi(iter->startingMonth) < date)
+        if (iter->startingMonth < date)
         {
             validlist.push_back(make_pair(*iter, 0));
         }
