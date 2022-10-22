@@ -16,11 +16,11 @@ void Calendar::PrintCalendar(int year, int month)
 	for (int i = 0; i < (WIDTH + 1) * 7; i++)
 		printf("_");
 	printf("\n");
-	printf("                                     %dë…„  %dì›”\n", year, month);
+	printf("                                     %d³â  %d¿ù\n", year, month);
 	for (int i = 0; i < (WIDTH + 1) * 7; i++)
 		printf("_");
 	printf("\n");
-	printf("    ì¼    ì›”     í™”     ìˆ˜     ëª©     ê¸ˆ     í† \n");
+	printf("    ÀÏ    ¿ù     È­     ¼ö     ¸ñ     ±Ý     Åä\n");
 	for (int i = 0; i < (WIDTH + 1) * 7; i++)
 		printf("_");
 	printf("\n");

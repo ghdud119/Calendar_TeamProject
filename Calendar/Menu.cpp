@@ -16,10 +16,10 @@ void mainMenu()
     {
         char selectmenu;
 
-        cout << "ë©”ì¸ë©”ë‰´ ë° ì…ë ¥ í”„ë¡¬í”„íŠ¸\n";
-        cout << "1. ê·¼ë¬´í‘œ ê´€ë¦¬\n";
-        cout << "2. ëª…ë‹¨ ê´€ë¦¬\n";
-        cout << "ESC. ì €ì¥ ë° ì¢…ë£Œ\n";
+        cout << "¸ŞÀÎ¸Ş´º ¹× ÀÔ·Â ÇÁ·ÒÇÁÆ®\n";
+        cout << "1. ±Ù¹«Ç¥ °ü¸®\n";
+        cout << "2. ¸í´Ü °ü¸®\n";
+        cout << "ESC. ÀúÀå ¹× Á¾·á\n";
 
         selectmenu = _getch();
 
@@ -31,12 +31,12 @@ void mainMenu()
         case 50: // 2
             listMenu();
             break;
-        case 27: // ESC í‚¤
+        case 27: // ESC Å°
             status = false;
             break;
         default:
-            cout << selectmenu << " ì…ë ¥.\n";
-            cout << "ë©”ë‰´ì— ì¡´ì¬í•˜ëŠ” í•œ ìë¦¬ ìˆ«ìë§Œì„ ì…ë ¥í•˜ì‹­ì‹œì˜¤.\n";
+            cout << selectmenu << " ÀÔ·Â.\n";
+            cout << "¸Ş´º¿¡ Á¸ÀçÇÏ´Â ÇÑ ÀÚ¸® ¼ıÀÚ¸¸À» ÀÔ·ÂÇÏ½Ê½Ã¿À.\n";
             break;
         }
 
@@ -51,10 +51,10 @@ void calendarMenu()
     {
         char selectmenu;
 
-        cout << "ë©”ì¸ë©”ë‰´ ë° ì…ë ¥ í”„ë¡¬í”„íŠ¸\n";
-        cout << "1. ê·¼ë¬´í‘œ ì—´ëŒ\n";
-        cout << "2. ê·¼ë¬´ì¼ ì„ íƒ\n";
-        cout << "ESC. ì €ì¥ ë° ì¢…ë£Œ\n";
+        cout << "¸ŞÀÎ¸Ş´º ¹× ÀÔ·Â ÇÁ·ÒÇÁÆ®\n";
+        cout << "1. ±Ù¹«Ç¥ ¿­¶÷\n";
+        cout << "2. ±Ù¹«ÀÏ ¼±ÅÃ\n";
+        cout << "ESC. ÀúÀå ¹× Á¾·á\n";
 
         selectmenu = _getch();
 
@@ -67,12 +67,12 @@ void calendarMenu()
             if (memberList->GetMemberList())
                 ChoiceDay(*memberList);
             break;
-        case 27: // ESC í‚¤
+        case 27: // ESC Å°
             status = false;
             break;
         default:
-            cout << selectmenu << " ì…ë ¥.\n";
-            cout << "ë©”ë‰´ì— ì¡´ì¬í•˜ëŠ” í•œ ìë¦¬ ìˆ«ìë§Œì„ ì…ë ¥í•˜ì‹­ì‹œì˜¤.\n";
+            cout << selectmenu << " ÀÔ·Â.\n";
+            cout << "¸Ş´º¿¡ Á¸ÀçÇÏ´Â ÇÑ ÀÚ¸® ¼ıÀÚ¸¸À» ÀÔ·ÂÇÏ½Ê½Ã¿À.\n";
             break;
         }
 
@@ -89,11 +89,11 @@ void listMenu()
     {
         char selectmenu;
 
-        cout << "ë©”ì¸ë©”ë‰´ ë° ì…ë ¥ í”„ë¡¬í”„íŠ¸\n";
-        cout << "1. ëª…ë‹¨ ë³´ê¸°\n";
-        cout << "2. ëª…ë‹¨ ë“±ë¡\n";
-        cout << "3. ëª…ë‹¨ ì‚­ì œ\n";
-        cout << "ESC. ì €ì¥ ë° ì¢…ë£Œ\n";
+        cout << "¸ŞÀÎ¸Ş´º ¹× ÀÔ·Â ÇÁ·ÒÇÁÆ®\n";
+        cout << "1. ¸í´Ü º¸±â\n";
+        cout << "2. ¸í´Ü µî·Ï\n";
+        cout << "3. ¸í´Ü »èÁ¦\n";
+        cout << "ESC. ÀúÀå ¹× Á¾·á\n";
 
         selectmenu = _getch();
 
@@ -103,21 +103,21 @@ void listMenu()
             memberList->PrintList();
             break;
         case 50:                 // 2
-            if (isWorking == -1) // ì‘ì„± ì¤‘ì¸ ê·¼ë¬´í‘œ ìˆëŠ”ì§€ ë³€ìˆ˜
+            if (isWorking == -1) // ÀÛ¼º ÁßÀÎ ±Ù¹«Ç¥ ÀÖ´ÂÁö º¯¼ö
             {
-                cout << "ì‘ì„± ì¤‘ì¸ ê·¼ë¬´í‘œê°€ ì™„ì„±ë˜ê¸° ì „ê¹Œì§€ ëª…ë‹¨ ë“±ë¡ì„ í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤." << endl;
+                cout << "ÀÛ¼º ÁßÀÎ ±Ù¹«Ç¥°¡ ¿Ï¼ºµÇ±â Àü±îÁö ¸í´Ü µî·ÏÀ» ÇÒ ¼ö ¾ø½À´Ï´Ù." << endl;
             }
             memberList->Insert();
             break;
         case 51: // 3
             memberList->Delete();
             break;
-        case 27: // ESC í‚¤
+        case 27: // ESC Å°
             status = false;
             break;
         default:
-            cout << selectmenu << " ì…ë ¥.\n";
-            cout << "ë©”ë‰´ì— ì¡´ì¬í•˜ëŠ” í•œ ìë¦¬ ìˆ«ìë§Œì„ ì…ë ¥í•˜ì‹­ì‹œì˜¤.\n";
+            cout << selectmenu << " ÀÔ·Â.\n";
+            cout << "¸Ş´º¿¡ Á¸ÀçÇÏ´Â ÇÑ ÀÚ¸® ¼ıÀÚ¸¸À» ÀÔ·ÂÇÏ½Ê½Ã¿À.\n";
             break;
         }
 

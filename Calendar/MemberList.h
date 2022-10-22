@@ -31,7 +31,7 @@ public:
 	void SetWorkingCalender(string yearMonth) { this->WorkingCalender = yearMonth; }
 	string GetWorkingCalender() { return this->WorkingCalender; }
 
-	//ë²¡í„° í¬ì¸í„° ë¦¬í„´ vector->first = struct(name, startingMonth), vector->second = ID
+	//º¤ÅÍ Æ÷ÀÎÅÍ ¸®ÅÏ vector->first = struct(name, startingMonth), vector->second = ID
 	vector<pair<UserInfomation, string>> *GetMemberList() { return &memberList; }
 
 	bool FileInput();

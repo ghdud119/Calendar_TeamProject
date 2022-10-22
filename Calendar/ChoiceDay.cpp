@@ -31,15 +31,15 @@ void ChoiceDay(MemberList list)
         state[i] = vacant;
     }
 
-    // íŒŒì¼ ì½ê¸°, isNew = ?
-    if (isNew) // condition 1. ì‘ì„± ì¤‘ ì—¬ë¶€
+    // ÆÄÀÏ ÀĞ±â, isNew = ?
+    if (isNew) // condition 1. ÀÛ¼º Áß ¿©ºÎ
     {
-        cout << "ì—°ì›”ì„ ì…ë ¥í•˜ì‹­ì‹œì˜¤ : ";
+        cout << "¿¬¿ùÀ» ÀÔ·ÂÇÏ½Ê½Ã¿À : ";
         cin >> temp;
-        date = dateChanger(temp); // í˜•ì‹ ë³€í™˜ string to int
+        date = dateChanger(temp); // Çü½Ä º¯È¯ string to int
         if (!checkDate(date))
         {
-            cout << "ë‚ ì§œ ì…ë ¥ í˜•ì‹ ì˜¤ë¥˜" << endl;
+            cout << "³¯Â¥ ÀÔ·Â Çü½Ä ¿À·ù" << endl;
             return;
         }
     }
@@ -48,21 +48,21 @@ void ChoiceDay(MemberList list)
         date = 0; // from file read
     }
 
-    vector<pair<UserInfomation, int>> validlist = listPickout(list, date); // ìœ íš¨í•œ ì‚¬ëŒë§Œ ê°€ì ¸ì˜´
-    cout << "ì•„ì´ë””ë¥¼ ì…ë ¥í•˜ì‹­ì‹œì˜¤ : ";
+    vector<pair<UserInfomation, int>> validlist = listPickout(list, date); // À¯È¿ÇÑ »ç¶÷¸¸ °¡Á®¿È
+    cout << "¾ÆÀÌµğ¸¦ ÀÔ·ÂÇÏ½Ê½Ã¿À : ";
     cin >> ID;
-    if (Search(validlist, ID) == -1) // condition 2. ìœ íš¨í•œ ì•„ì´ë””
+    if (Search(validlist, ID) == -1) // condition 2. À¯È¿ÇÑ ¾ÆÀÌµğ
     {
         cout << "invalid ID" << endl;
         return;
     }
 
-    bool rechoice = isfirst(validlist, ID); // condition 3. ìˆ˜ì • ì—¬ë¶€
+    bool rechoice = isfirst(validlist, ID); // condition 3. ¼öÁ¤ ¿©ºÎ
 
-    cout << "í¬ë§ ê·¼ë¬´ì¼ì„ ì…ë ¥í•˜ì‹­ì‹œì˜¤ : ";
+    cout << "Èñ¸Á ±Ù¹«ÀÏÀ» ÀÔ·ÂÇÏ½Ê½Ã¿À : ";
     cin >> input;
     int vcount = 0;
-    if (input == "PASS") // condition 4. íŒ¨ìŠ¤ í…ŒìŠ¤íŠ¸
+    if (input == "PASS") // condition 4. ÆĞ½º Å×½ºÆ®
     {
         for (int i = 0; i < DAYMAX; i++)
         {
@@ -73,49 +73,49 @@ void ChoiceDay(MemberList list)
         }
         if (!passTest(validlist, ID, vcount))
         {
-            cout << "íŒ¨ìŠ¤ ì¡°ê±´ ë¶ˆë§Œì¡±" << endl;
+            cout << "ÆĞ½º Á¶°Ç ºÒ¸¸Á·" << endl;
             return;
         }
         if (rechoice)
         {
             // Retest all post passer
-            cout << "íŒ¨ìŠ¤ ì™„ë£Œ" << endl;
+            cout << "ÆĞ½º ¿Ï·á" << endl;
             validlist[Search(validlist, ID)].second = 999;
             return;
         }
         else
         {
             validlist[Search(validlist, ID)].second = 999;
-            cout << "íŒ¨ìŠ¤ ì™„ë£Œ" << endl;
+            cout << "ÆĞ½º ¿Ï·á" << endl;
         }
     }
 
     int hopeday = stoi(input);
-    if (!checkDay(hopeday)) // condition 5. ì…ë ¥ì˜ ìœ íš¨ì„±
+    if (!checkDay(hopeday)) // condition 5. ÀÔ·ÂÀÇ À¯È¿¼º
     {
-        cout << "ìœ íš¨í•˜ì§€ ì•Šì€ ì…ë ¥ì…ë‹ˆë‹¤." << endl;
+        cout << "À¯È¿ÇÏÁö ¾ÊÀº ÀÔ·ÂÀÔ´Ï´Ù." << endl;
         return;
     }
 
-    if (state[hopeday] == confirmed) // condition 5. ë¯¸í™•ì • ë‚ ì§œ
+    if (state[hopeday] == confirmed) // condition 5. ¹ÌÈ®Á¤ ³¯Â¥
     {
-        cout << "í™•ì •ëœ ë‚ ì§œì…ë‹ˆë‹¤." << endl;
+        cout << "È®Á¤µÈ ³¯Â¥ÀÔ´Ï´Ù." << endl;
         return;
     }
 
-    if (state[hopeday] == occupied) // condition 6. ìš°ì„ ìˆœìœ„ ë¹„êµ
+    if (state[hopeday] == occupied) // condition 6. ¿ì¼±¼øÀ§ ºñ±³
     {
         string postID = id[hopeday];
         if (!priorityCompare(validlist, postID, ID))
         {
-            cout << "ìš°ì„  ìˆœìœ„ê°€ ë‚®ì•„ì„œ ê°•íƒˆí•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤." << endl;
+            cout << "¿ì¼± ¼øÀ§°¡ ³·¾Æ¼­ °­Å»ÇÒ ¼ö ¾ø½À´Ï´Ù." << endl;
             return;
         }
     }
 
     if (rechoice)
     {
-        // ì´ì „ ì„ íƒ ì‚­ì œ
+        // ÀÌÀü ¼±ÅÃ »èÁ¦
         for (int i = 0; i < DAYMAX; i++)
         {
             if (id[i] == ID && state[i] == occupied)
@@ -123,17 +123,17 @@ void ChoiceDay(MemberList list)
                 state[i] = vacant;
             }
         }
-        cout << "ìˆ˜ì • ì™„ë£Œ" << endl;
+        cout << "¼öÁ¤ ¿Ï·á" << endl;
         state[hopeday] = occupied;
         id[hopeday] = ID;
         return;
     }
     state[hopeday] = occupied;
     id[hopeday] = ID;
-    cout << "ë“±ë¡ ì™„ë£Œ";
+    cout << "µî·Ï ¿Ï·á";
     validlist[Search(validlist, ID)].second += 1;
 
-    // í™•ì • ê°±ì‹ 
+    // È®Á¤ °»½Å
     int cmp = validlist[0].second;
     for (int i = 0; i < validlist.size(); i++)
     {
@@ -154,12 +154,12 @@ void ChoiceDay(MemberList list)
 void showSchedule()
 {
     string temp;
-    cout << "ì—°ì›”ì„ ì…ë ¥í•˜ì‹­ì‹œì˜¤ : " << endl;
+    cout << "¿¬¿ùÀ» ÀÔ·ÂÇÏ½Ê½Ã¿À : " << endl;
     cin >> temp;
     int date = dateChanger(temp);
     if (!checkDate(date))
     {
-        cout << "ë‚ ì§œ ì…ë ¥ í˜•ì‹ ì˜¤ë¥˜" << endl;
+        cout << "³¯Â¥ ÀÔ·Â Çü½Ä ¿À·ù" << endl;
         return;
     }
     // file

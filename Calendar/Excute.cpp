@@ -1,4 +1,4 @@
-ï»¿#include <iostream>
+#include <iostream>
 #include <conio.h>
 #include "Calendar.h"
 #include "MemberList.h"
@@ -13,30 +13,30 @@ int main()
 	{
 		char selectmenu;
 
-		cout << "ë©”ì¸ë©”ë‰´ ë° ìž…ë ¥ í”„ë¡¬í”„íŠ¸\n";
-		cout << "1. ê·¼ë¬´í‘œ ê´€ë¦¬\n";
-		cout << "2. ëª…ë‹¨ ê´€ë¦¬\n";
-		cout << "ESC. ì €ìž¥ ë° ì¢…ë£Œ\n";
+		cout << "¸ÞÀÎ¸Þ´º ¹× ÀÔ·Â ÇÁ·ÒÇÁÆ®\n";
+		cout << "1. ±Ù¹«Ç¥ °ü¸®\n";
+		cout << "2. ¸í´Ü °ü¸®\n";
+		cout << "ESC. ÀúÀå ¹× Á¾·á\n";
 
 		selectmenu = _getch();
 
 		switch (selectmenu)
 		{
 		case 49: // 1
-			cout << "ê·¼ë¬´í‘œ\n";
-			//ìº˜ë¦°ë” ë©”ë‰´ í•¨ìˆ˜
+			cout << "±Ù¹«Ç¥\n";
+			//Ä¶¸°´õ ¸Þ´º ÇÔ¼ö
 			break;
 		case 50: // 2
-			cout << "ëª…ë‹¨ê´€ë¦¬\n";
-			//ëª…ë‹¨ ë©”ë‰´ í•¨ìˆ˜
+			cout << "¸í´Ü°ü¸®\n";
+			//¸í´Ü ¸Þ´º ÇÔ¼ö
 			break;
-		case 27: // ESC í‚¤
-			cout << "ì¢…ë£Œ\n";
+		case 27: // ESC Å°
+			cout << "Á¾·á\n";
 			status = false;
 			break;
 		default:
-			cout << selectmenu << " ìž…ë ¥.\n";
-			cout << "ë©”ë‰´ì— ì¡´ìž¬í•˜ëŠ” í•œ ìžë¦¬ ìˆ«ìžë§Œì„ ìž…ë ¥í•˜ì‹­ì‹œì˜¤.\n";
+			cout << selectmenu << " ÀÔ·Â.\n";
+			cout << "¸Þ´º¿¡ Á¸ÀçÇÏ´Â ÇÑ ÀÚ¸® ¼ýÀÚ¸¸À» ÀÔ·ÂÇÏ½Ê½Ã¿À.\n";
 			break;
 		}
 
@@ -46,22 +46,22 @@ int main()
 	/*
 	while (true)
 	{
-		//Test ë¶€ë¶„
+		//Test ºÎºÐ
 		{
 
 			string ID;
 
-			cout << "ê¸°ì¡´ ëª…ë¶€ í™•ì¸\n";
+			cout << "±âÁ¸ ¸íºÎ È®ÀÎ\n";
 			memberList->PrintList();
 
-			cout << "ì‹ ê·œ ì¸ì› ìž…ë ¥\n";
+			cout << "½Å±Ô ÀÎ¿ø ÀÔ·Â\n";
 			memberList->Insert();
 
-			cout << "ì œê±°í•  ì•„ì´ë”” ìž…ë ¥ : \n";
+			cout << "Á¦°ÅÇÒ ¾ÆÀÌµð ÀÔ·Â : \n";
 			cin >> ID;
 			memberList->Delete(ID);
 
-			cout << "ê¸°ì¡´ ëª…ë¶€ í™•ì¸\n";
+			cout << "±âÁ¸ ¸íºÎ È®ÀÎ\n";
 			memberList->PrintList();
 		}
 	}

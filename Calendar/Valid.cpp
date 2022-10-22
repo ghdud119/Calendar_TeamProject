@@ -93,7 +93,7 @@ bool priorityCompare(vector<pair<UserInfomation, int>> validlist, string pid, st
     }
     else
     {
-        return true; // ëºì„ ìˆ˜ ìˆìŒ
+        return true; // »¯À» ¼ö ÀÖÀ½
     }
 }
 

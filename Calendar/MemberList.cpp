@@ -1,4 +1,4 @@
-ï»¿#include "MemberList.h"
+#include "MemberList.h"
 
 MemberList::MemberList()
 {
@@ -13,19 +13,19 @@ MemberList::~MemberList()
 void MemberList::Insert()
 {
 	UserInfomation NewUser;
-	cout << "ì´ë¦„ì„ ìž…ë ¥í•´ ì£¼ì„¸ìš” : ";
+	cout << "ÀÌ¸§À» ÀÔ·ÂÇØ ÁÖ¼¼¿ä : ";
 	cin >> NewUser.name;
-	cout << "ì‹œìž‘ë‹¬ì„ ìž…ë ¥í•´ ì£¼ì„¸ìš” : ";
+	cout << "½ÃÀÛ´ÞÀ» ÀÔ·ÂÇØ ÁÖ¼¼¿ä : ";
 	cin >> NewUser.startingMonth;
 
 	while (true)
 	{
-		cout << "ì•„ì´ë””ë¥¼ ìž…ë ¥í•´ ì£¼ì„¸ìš” : ";
+		cout << "¾ÆÀÌµð¸¦ ÀÔ·ÂÇØ ÁÖ¼¼¿ä : ";
 		cin >> NewUser.ID;
 		if (Search(NewUser.ID) == -1)
 			break;
 		else
-			cout << "ì´ë¯¸ ì¡´ìž¬í•˜ëŠ” ì•„ì´ë””ìž…ë‹ˆë‹¤.\n";
+			cout << "ÀÌ¹Ì Á¸ÀçÇÏ´Â ¾ÆÀÌµðÀÔ´Ï´Ù.\n";
 	}
 	this->memberList.push_back(make_pair(NewUser, NewUser.ID));
 	Sort();
@@ -34,15 +34,15 @@ void MemberList::Insert()
 void MemberList::Delete()
 {
 	std::string id;
-	cout << "ì´ë¦„ì„ ìž…ë ¥í•´ ì£¼ì„¸ìš” : ";
+	cout << "ÀÌ¸§À» ÀÔ·ÂÇØ ÁÖ¼¼¿ä : ";
 	cin >> id;
 	int index = Search(id);
 	if (index == -1)
-		cout << "ì¡´ìž¬í•˜ì§€ ì•ŠëŠ” ì•„ì´ë””ìž…ë‹ˆë‹¤.\n";
+		cout << "Á¸ÀçÇÏÁö ¾Ê´Â ¾ÆÀÌµðÀÔ´Ï´Ù.\n";
 	else
 	{
 		memberList.erase(memberList.begin() + index);
-		cout << "í•´ë‹¹ ì•„ì´ë”” ë° ì •ë³´ê°€ ì‚­ì œë˜ì—ˆìŠµë‹ˆë‹¤.\n";
+		cout << "ÇØ´ç ¾ÆÀÌµð ¹× Á¤º¸°¡ »èÁ¦µÇ¾ú½À´Ï´Ù.\n";
 	}
 }
 
@@ -67,13 +67,13 @@ void MemberList::PrintList()
 {
 	if (memberList.empty())
 	{
-		cout << "ì €ìž¥ëœ ì¸ì› ì •ë³´ê°€ ì—†ìŠµë‹ˆë‹¤.\n";
+		cout << "ÀúÀåµÈ ÀÎ¿ø Á¤º¸°¡ ¾ø½À´Ï´Ù.\n";
 	}
 	else
 	{
 		for (auto iter = this->memberList.begin(); iter != this->memberList.end(); iter++)
 		{
-			cout << "ì‹œìž‘ ë‹¬ : " << iter->first.startingMonth << " ì´ë¦„ : " << iter->first.name << " ID : " << iter->second << "\n";
+			cout << "½ÃÀÛ ´Þ : " << iter->first.startingMonth << " ÀÌ¸§ : " << iter->first.name << " ID : " << iter->second << "\n";
 		}
 	}
 }
@@ -100,7 +100,7 @@ bool MemberList::FileInput()
 				WorkingCalender = inputLine;
 				if (WorkingCalender != "-1" || WorkingCalender.length() != 6)
 				{
-					printf("ì €ìž¥ íŒŒì¼ì„ ì½ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
+					printf("ÀúÀå ÆÄÀÏÀ» ÀÐÀ» ¼ö ¾ø½À´Ï´Ù.");
 					return false;
 				}
 				workingMonthCheck = true;
@@ -123,7 +123,7 @@ bool MemberList::FileInput()
 					case 0:
 						if (tempStr.length() != 6)
 						{
-							printf("ì €ìž¥ íŒŒì¼ì„ ì½ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
+							printf("ÀúÀå ÆÄÀÏÀ» ÀÐÀ» ¼ö ¾ø½À´Ï´Ù.");
 							return false;
 						}
 						InsertInfo.startingMonth = tempStr;
@@ -142,7 +142,7 @@ bool MemberList::FileInput()
 						break;
 
 					default:
-						printf("ì €ìž¥ íŒŒì¼ì„ ì½ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
+						printf("ÀúÀå ÆÄÀÏÀ» ÀÐÀ» ¼ö ¾ø½À´Ï´Ù.");
 						return false;
 					}
 					count++;
