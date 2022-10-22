@@ -34,11 +34,7 @@ int dateChanger(string str);
 bool checkDay(int date);
 bool checkDate(string str);
 
-vector<pair<UserInformation, int>>* listPickout(int date);
 int Search(vector<pair<UserInformation, int>>* validlist, string id);
-bool isfirst(vector<pair<UserInformation, int>>* validlist, string id);
-bool passTest(vector<pair<UserInformation, int>>* validlist, string id, int vcount);
-bool priorityCompare(vector<pair<UserInformation, int>>* validlist, string pid, string id);
 
 
 int main()
@@ -165,7 +161,7 @@ void listMenu()
 
 void ChoiceDay()
 {
-    bool isNew = false;
+    bool isNew = true;
     string temp;
     string ID;
     string input;
@@ -199,30 +195,64 @@ void ChoiceDay()
         date = 0; // date 변수 수정은 여기서!!
     }
 
-    vector<pair<UserInformation, int>>* validlist = listPickout(date); // 기획서 수정!!!!!
+    // 근무 투입이 가능한 인원만 추려냄.
+    vector<pair<UserInformation, int>> validlist;
+    vector<UserInformation>* tmpv = memberList->GetMemberList();
 
-    if (validlist->size() <= 1)
+    int index = 0;
+    for (auto iter = tmpv->begin(); iter != tmpv->end(); iter++, index++)
     {
-        cout << "근무표를 작성하기에 인원이 충분하지 않습니다." << endl;
+        if (iter->startingMonth < date)
+            validlist.push_back(make_pair(*iter, 0));
     }
 
-    
+    if (validlist.size() <= 1) // 기획서 수정!!!!!
+    {
+        cout << "근무표를 작성하기에 인원이 충분하지 않습니다." << endl;
+        return;
+    }
 
     cout << "아이디를 입력하십시오 : ";
     cin >> ID;
-    if (Search(validlist, ID) == -1) // condition 2. 유효한 아이디
+    if (Search(&validlist, ID) == -1) // condition 2. 유효한 아이디
     {
         cout << "아이디가 유효하지 않습니다." << endl;
         return;
     }
 
-    bool rechoice = isfirst(validlist, ID); // condition 3. 수정 여부
+    bool rechoice; // condition 3. 수정 여부
+    int min = 100;
+    int max = 0;
+    for (auto iter = validlist.begin(); iter != validlist.end(); iter++)
+    {
+        if (iter->second < min)
+        {
+            min = iter->second;
+        }
+        if (iter->second > max)
+        {
+            max = iter->second;
+        }
+    }
+    if (min == max)
+    {
+        rechoice = true;
+    }
+    else if (validlist[Search(&validlist, ID)].second == min)
+    {
+        rechoice = false;
+    }
+    else if (validlist[Search(&validlist, ID)].second > min)
+    {
+        rechoice = true;
+    }
 
     cout << "희망 근무일을 입력하십시오 : ";
     cin >> input;
     if (input == "PASS") // condition 4. 패스 테스트
     {
         int vcount = 0;
+        int tcount = 0;
         for (int i = 0; i < DAYMAX; i++)
         {
             if (state[i] == vacant)
@@ -230,7 +260,23 @@ void ChoiceDay()
                 vcount++;
             }
         }
-        if (!passTest(validlist, ID, vcount))
+        pair<UserInformation, int> target;
+        for (int i = 0; i < validlist.size(); i++)
+        {
+            if (validlist[i].first.ID.compare(ID) == 0)
+            {
+                target = validlist[i];
+                break;
+            }
+        }
+        for (int i = 0; i < validlist.size(); i++)
+        {
+            if (target.first.startingMonth > validlist[i].first.startingMonth)
+            {
+                tcount++;
+            }
+        }
+        if (tcount < vcount)
         {
             cout << "패스 조건을 만족하지 않습니다." << endl;
             return;
@@ -239,17 +285,33 @@ void ChoiceDay()
         if (rechoice)
         {
             cout << "패스가 완료되었습니다." << endl;
-            int temp = validlist[Search(validlist, ID)].second;
-            validlist[Search(validlist, ID)].second = PASS;
+            int temp = validlist[Search(&validlist, ID)].second;
+            validlist[Search(&validlist, ID)].second = PASS;
 
             for (int i = 0; i < validlist.size(); i++)
             {
                 if (validlist[i].second == PASS)
                 {
-                    if (!passTest(validlist, validlist[i].first.ID, vcount))
+                    tcount = 0;
+                    for (int i = 0; i < validlist.size(); i++) // 중복 코드
+                    {
+                        if (validlist[i].first.ID.compare(ID) == 0)
+                        {
+                            target = validlist[i];
+                            break;
+                        }
+                    }
+                    for (int i = 0; i < validlist.size(); i++)
+                    {
+                        if (target.first.startingMonth > validlist[i].first.startingMonth)
+                        {
+                            tcount++;
+                        }
+                    }
+                    if (tcount < vcount)
                     {
                         cout << validlist[i].first.ID << "님이 근무일을 재선택해야합니다. (패스 조건 불만족)" << endl;
-                        validlist[Search(validlist, ID)].second = temp;
+                        validlist[Search(&validlist, ID)].second = temp;
                     }
                 }
             }
@@ -257,7 +319,7 @@ void ChoiceDay()
         }
         else
         {
-            validlist[Search(validlist, ID)].second = PASS;
+            validlist[Search(&validlist, ID)].second = PASS;
             cout << "패스가 완료되었습니다." << endl;
         }
     }
@@ -278,14 +340,14 @@ void ChoiceDay()
     if (state[hopeday] == occupied) // condition 6. 우선순위 비교
     {
         string postID = id[hopeday];
-        if (!priorityCompare(validlist, postID, ID))
+        if (validlist[Search(&validlist, postID)].first.startingMonth >= validlist[Search(&validlist, ID)].first.startingMonth)
         {
             cout << "우선 순위가 낮아서 강탈할 수 없습니다." << endl;
             return;
         }
         else
         {
-            validlist[Search(validlist, postID)].second -= 1; // 점유자 근무횟수 감소
+            validlist[Search(&validlist, postID)].second -= 1; // 강탈, 점유자 근무횟수 감소
         }
     }
 
@@ -308,7 +370,7 @@ void ChoiceDay()
     state[hopeday] = occupied;
     id[hopeday] = ID;
     cout << "등록 완료";
-    validlist[Search(validlist, ID)].second += 1; // 사용자 근무횟수 추가
+    validlist[Search(&validlist, ID)].second += 1; // 사용자 근무횟수 추가
 
     // 확정 갱신
     int cmp = validlist[0].second;
@@ -430,21 +492,6 @@ bool checkDate(string str)
     //return false;
 }
 
-vector<pair<UserInformation, int>>* listPickout(int date) // 근무 투입이 가능한 인원만 추려냄.
-{
-    vector<pair<UserInformation, int>> validlist;
-    vector<UserInformation>* temp = memberList->GetMemberList();
-    for (auto iter = temp->begin(); iter != temp->end(); iter++)
-    {
-        if (iter->startingMonth < date)
-        {
-            validlist.push_back(make_pair(*iter, 0));
-        }
-    }
-
-    return &validlist;
-}
-
 int Search(vector<pair<UserInformation, int>>* validlist, string id) // 탐색 대상 아이디의 인덱스를 반환함.
 {
     int index = 0;
@@ -454,76 +501,4 @@ int Search(vector<pair<UserInformation, int>>* validlist, string id) // 탐색 대�
             return index;
     }
     return -1;
-}
-
-bool isfirst(vector<pair<UserInformation, int>>* validlist, string id) // 근무자가 근무를 수정하는 것인지, 처음 입력하는 것인지 확인함.
-{
-    int min = 100;
-    int max = 0;
-
-    for (auto iter = validlist->begin(); iter != validlist->end(); iter++)
-    {
-        if (iter->second < min)
-        {
-            min = iter->second;
-        }
-        if (iter->second > max)
-        {
-            max = iter->second;
-        }
-    }
-
-   /* if (min == max)
-    {
-        return true;
-    }
-    else if (validlist[Search(validlist, id)].second == min)
-    {
-        return false;
-    }
-    else if (validlist[Search(validlist, id)].second > min)
-    {
-        return true;
-    }*/
-}
-
-bool passTest(vector<pair<UserInformation, int>>* validlist, string id, int vcount) // 근무자가 패스 조건을 만족하는지 확인함.
-{
-    pair<UserInformation, int> target;
-    int tcount = 0;
-    for (int i = 0; i < validlist->size(); i++)
-    {
-        if (validlist[i]->first.ID == id)
-        {
-            target = validlist[i];
-        }
-    }
-    for (int i = 0; i < validlist->size(); i++)
-    {
-        if (target.first.startingMonth > validlist[i].first.startingMonth)
-        {
-            tcount++;
-        }
-    }
-    if (tcount >= vcount)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
-
-bool priorityCompare(vector<pair<UserInformation, int>>* validlist, string pid, string id) // 강탈이 가능한지 확인함.
-{
-    if (validlist[Search(validlist, pid)].first.startingMonth >=
-        validlist[Search(validlist, id)].first.startingMonth)
-    {
-        return false;
-    }
-    else
-    {
-        return true; // 뺏을 수 있음
-    }
 }
