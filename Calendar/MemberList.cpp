@@ -44,7 +44,7 @@ void MemberList::Insert()
 			}
 			if (temp.length() != 6 || !temp.compare("000000"))
 			{
-				printf("잘못된 형식의 시작달 입력입니다.\n네글자의 연도+구분자+월의 형태로 입력해주세요\n");
+				printf("날짜를 형식에 맞게 입력해주십시오.\n");
 				temp = "";
 			}
 			else
@@ -52,7 +52,7 @@ void MemberList::Insert()
 				tempInt = stoi(temp);
 				if (tempInt % 100 > 12 || tempInt % 100 <= 0 || tempInt == 0)
 				{
-					printf("잘못된 형식의 시작달 입력입니다.\n");
+					printf("날짜를 형식에 맞게 입력해주십시오.\n");
 					temp = "";
 				}
 				else
@@ -66,16 +66,34 @@ void MemberList::Insert()
 		}
 		else
 		{
-			printf("잘못된 형식의 시작달 입력입니다.\n네글자의 연도+구분자+월의 형태로 입력해주세요\n");
+			printf("날짜를 형식에 맞게 입력해주십시오.\n");
 		}
 	}
 
+	bool IDCheck;
 	while (true)
 	{
 		cout << "아이디를 입력해 주세요 : ";
 		getline(cin, input.ID);
+		IDCheck = false;
+
 		if (input.ID[0] == 27)
 			return;
+		else if(input.ID.length() < 3 || input.ID.length() > 15)
+			IDCheck = true;
+
+		for (int i = 0; i < input.ID.length(); i++)
+		{
+			if (!(58 > input.ID[i] && input.ID[i] > 46) && !(123 > input.ID[i] && input.ID[i] > 64))
+			{	
+				IDCheck = true;
+			}
+		}
+		if (IDCheck)
+		{
+			cout << "아이디는 로마자와 숫자만으로 구성되어야 하며, 3자 이상 15자 이하여야 합니다.\n";
+			continue;
+		}
 		else if (Search(input.ID) == -1)
 			break;
 		else
@@ -241,3 +259,4 @@ void MemberList::FileOutput()
 
 	outputFile.close();
 }
+
