@@ -123,7 +123,6 @@ bool MemberList::FileInput()
 
 	string inputLine = "";
 	string tempStr = "";
-	int tempint = -1;
 
 	int count = 0;
 	bool workingMonthCheck = true;
@@ -165,8 +164,30 @@ bool MemberList::FileInput()
 							printf("파일 읽기 오류, 저장파일의 날짜 문법이 잘못되었습니다.\n");
 							return false;
 						}
-						insert.startingMonth = tempint;
-						tempint = -1;
+
+						if (tempStr[5] == '0') {
+							if (tempStr[6] == '0') {
+								return false;
+							}
+							else {
+								return true;
+
+							}
+						}
+						else if (tempStr[5] == '1') {
+							if (tempStr[6] == '1' || tempStr[6] == '2') {
+								return true;
+							}
+							else {
+								return false;
+							}
+						}
+						else {
+							return false;
+						}
+						
+						insert.startingMonth = stoi(tempStr);
+						tempStr = "";
 						break;
 
 					case 1:
