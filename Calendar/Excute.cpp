@@ -14,6 +14,7 @@ int isWorking = -1;
 const int DAYMAX = 32;
 const int IDMAX = 16;
 const int DATEMAX = 7;
+const int PASS = 999;
 
 enum state
 {
@@ -25,17 +26,19 @@ enum state
 void mainMenu();
 void calendarMenu();
 void listMenu();
+void ChoiceDay(MemberList list);
+void showSchedule();
+
+bool checkID(string str);
+int dateChanger(string str);
+bool checkDay(int date);
+bool checkDate(string str);
+
 int Search(vector<pair<UserInformation, int>> validlist, string id);
 vector<pair<UserInformation, int>> listPickout(MemberList list, int date);
 bool isfirst(vector<pair<UserInformation, int>> validlist, string id);
 bool passTest(vector<pair<UserInformation, int>> validlist, string id, int vcount);
 bool priorityCompare(vector<pair<UserInformation, int>> validlist, string pid, string id);
-bool checkID(string str);
-int dateChanger(string str);
-bool checkDay(int date);
-bool checkDate(string str);
-void ChoiceDay(MemberList list);
-void showSchedule();
 
 
 int main()
@@ -164,6 +167,88 @@ void listMenu()
     } while (status);
 }
 
+bool checkID(string str)
+{
+    char id[IDMAX];
+    strcpy_s(id, str.c_str());
+    for (int i = 0; i < IDMAX; i++)
+    {
+        if (!(id[i] > 'a' && id[i] < 'z') || !(id[i] > 'A' && id[i] < 'Z') || !(id[i] > '0' && id[i] < '9'))
+        {
+            // invalid id
+            return false;
+        }
+    }
+
+    return true;
+}
+
+int dateChanger(string str)
+{
+    string temp = str.erase(4, 1);
+
+    return stoi(temp);
+}
+
+bool checkDay(int date)
+{
+    if (date < 10 && date > 0)
+    {
+        return true;
+    }
+    else if (date <= 31) // from calendar
+    {
+        return true;
+    }
+
+    return false;
+}
+
+bool checkDate(string str)
+{
+    if (str.length() != 7) { //전체 문자열 길이 체크
+        return false;
+    }
+
+    for (int i = 0; i < str.length(); i++) { //숫자(0~9)와 구분자 체크
+        if (isdigit(str[i]) == 0) { //숫자가 아님
+            if (i != 4) { //구분자 자리가 아닌 곳에 숫자가 아닌 게 있을 경우
+                return false;
+            }
+        }
+        else {
+            if (i == 4) { //구분자 자리에 숫자가 있는 경우
+                return false;
+            }
+        }
+    }
+
+    //의미 규칙 - 달만 체크하면 됨. 5 -> 0이면 뒤에 0만 아니면 됨 / 5->1이면 뒤에가 1아니면 2여야만.
+    int returndate = stoi(str);
+    if (str[5] == '0') {
+        if (str[6] == '0') {
+            return false;
+        }
+        else {
+            return true;
+
+        }
+    }
+    else if (str[5] == '1') {
+        if (str[6] == '1' || str[6] == '2') {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    else {
+        return false;
+    }
+
+    //return false;
+}
+
 int Search(vector<pair<UserInformation, int>> validlist, string id)
 {
     validlist[1].first.ID;
@@ -253,88 +338,6 @@ bool priorityCompare(vector<pair<UserInformation, int>> validlist, string pid, s
     }
 }
 
-bool checkID(string str)
-{
-    char id[IDMAX];
-    strcpy_s(id, str.c_str());
-    for (int i = 0; i < IDMAX; i++)
-    {
-        if (!(id[i] > 'a' && id[i] < 'z') || !(id[i] > 'A' && id[i] < 'Z') || !(id[i] > '0' && id[i] < '9'))
-        {
-            // invalid id
-            return false;
-        }
-    }
-
-    return true;
-}
-
-int dateChanger(string str)
-{
-    string temp = str.erase(4, 1);
-
-    return stoi(temp);
-}
-
-bool checkDay(int date)
-{
-    if (date < 10 && date > 0)
-    {
-        return true;
-    }
-    else if (date <= 31) // from calendar
-    {
-        return true;
-    }
-
-    return false;
-}
-
-bool checkDate(string str)
-{
-    if (str.length() != 7) { //전체 문자열 길이 체크
-        return false;
-    }
-
-    for (int i = 0; i < str.length(); i++) { //숫자(0~9)와 구분자 체크
-        if (isdigit(str[i]) == 0) { //숫자가 아님
-            if (i != 4) { //구분자 자리가 아닌 곳에 숫자가 아닌 게 있을 경우
-                return false;
-            }
-        }
-        else {
-            if (i == 4) { //구분자 자리에 숫자가 있는 경우
-                return false;
-            }
-        }
-    }
-
-    //의미 규칙 - 달만 체크하면 됨. 5 -> 0이면 뒤에 0만 아니면 됨 / 5->1이면 뒤에가 1아니면 2여야만.
-    int returndate = stoi(str);
-    if (str[5] == '0') {
-        if (str[6] == '0') {
-            return false;
-        }
-        else {
-            return true;
-
-        }
-    }
-    else if (str[5] == '1') {
-        if (str[6] == '1' || str[6] == '2') {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-    else {
-        return false;
-    }
-
-    //return false;
-}
-
 void ChoiceDay(MemberList list)
 {
     bool isNew = false;
@@ -383,9 +386,9 @@ void ChoiceDay(MemberList list)
 
     cout << "희망 근무일을 입력하십시오 : ";
     cin >> input;
-    int vcount = 0;
     if (input == "PASS") // condition 4. 패스 테스트
     {
+        int vcount = 0;
         for (int i = 0; i < DAYMAX; i++)
         {
             if (state[i] == vacant)
@@ -398,16 +401,29 @@ void ChoiceDay(MemberList list)
             cout << "패스 조건 불만족" << endl;
             return;
         }
+
         if (rechoice)
         {
-            // Retest all post passer
             cout << "패스 완료" << endl;
-            validlist[Search(validlist, ID)].second = 999;
+            int temp = validlist[Search(validlist, ID)].second;
+            validlist[Search(validlist, ID)].second = PASS;
+
+            for (int i = 0; i < validlist.size(); i++)
+            {
+                if (validlist[i].second == PASS)
+                {
+                    if (!passTest(validlist, validlist[i].first.ID, vcount))
+                    {
+                        cout << validlist[i].first.ID << "님이 근무일을 재선택해야합니다. (패스 조건 불만족)" << endl;
+                        validlist[Search(validlist, ID)].second = temp;
+                    }
+                }
+            }
             return;
         }
         else
         {
-            validlist[Search(validlist, ID)].second = 999;
+            validlist[Search(validlist, ID)].second = PASS;
             cout << "패스 완료" << endl;
         }
     }
