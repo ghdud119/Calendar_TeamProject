@@ -28,7 +28,6 @@ void MemberList::Insert()
 	while (true)
 	{
 		cout << "시작달을 입력해 주세요 : ";
-		cin.ignore();
 		getline(cin, mtemp);
 
 		if (mtemp[0] == 27)
@@ -74,7 +73,6 @@ void MemberList::Insert()
 	while (true)
 	{
 		cout << "아이디를 입력해 주세요 : ";
-		cin.ignore();
 		getline(cin, input.ID);
 		if (input.ID[0] == 27)
 			return;
@@ -242,6 +240,4 @@ void MemberList::FileOutput()
 	}
 
 	outputFile.close();
-}
-
 }
