@@ -11,7 +11,7 @@ using namespace std;
 struct UserInformation
 {
 	string ID = "ERROR";
-	string startingMonth = "ERROR";
+	int startingMonth = -1;
 };
 
 class MemberList
@@ -31,29 +31,16 @@ public:
 	string GetWorkingCalender() { return this->workingMonth; }
 
 	//벡터 포인터 리턴 vector->first = startingMonth, vector->second = ID
-	// vector<UserInformation> *GetMemberList() { return &memberList; }
-	vector<UserInformation>* GetMemberList()
-	{
-		UserInformation temp;
-		for (auto iter = memberList.begin(); iter < memberList.end(); iter++)
-		{
-			UserInformation temp;
-			temp.startingMonth = stoi(iter->startingMonth);
-			temp.ID = iter->ID;
-			mList.push_back(temp);
-		}
-		return &mList;
-	}
+	vector<UserInformation> *GetMemberList() { return &memberList; }
 
 	bool FileInput();
 	void FileOutput();
 
 private:
 	void Sort();
-	static bool Compare(UserInformation member1, UserInformation member2) { return stoi(member1.ID) < stoi(member2.ID); }
+	static bool Compare(UserInformation member1, UserInformation member2) { return member1.ID < member2.ID; }
 
 private:
 	vector<UserInformation> memberList;
-	vector<UserInformation> mList;
 	string workingMonth = "-1";
 };

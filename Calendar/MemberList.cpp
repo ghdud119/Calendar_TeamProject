@@ -16,24 +16,25 @@ void MemberList::Insert()
 {
 	UserInformation input;
 	string temp = "";
+	string mtemp = "";
 
 	while (true)
 	{
 		cout << "시작달을 입력해 주세요 : ";
-		getline(cin, input.startingMonth);
+		getline(cin, mtemp);
 
-		if (input.startingMonth[0] == 27)
+		if (mtemp[0] == 27)
 			return;
 
-		if (input.startingMonth.length() == 6 || input.startingMonth.length() == 7)
+		if (mtemp.length() == 6 || mtemp.length() == 7)
 		{
-			for (int i = 0; i < input.startingMonth.length(); i++)
+			for (int i = 0; i < mtemp.length(); i++)
 			{
 				cout << input.startingMonth << " " << temp << endl;
 
-				if (isdigit(input.startingMonth[i]) != 0)
-					temp += input.startingMonth[i];
-				else if (input.startingMonth.length() == 6)
+				if (isdigit(mtemp[i]) != 0)
+					temp += mtemp[i];
+				else if (mtemp.length() == 6)
 					temp += "0";
 			}
 			if (temp.length() != 6 || !temp.compare("000000"))
@@ -42,7 +43,7 @@ void MemberList::Insert()
 			}
 			else
 			{
-				input.startingMonth = temp;
+				input.startingMonth = stoi(temp);
 				temp = "";
 				break;
 			}
@@ -122,6 +123,7 @@ bool MemberList::FileInput()
 
 	string inputLine = "";
 	string tempStr = "";
+	int tempint = -1;
 
 	int count = 0;
 	bool workingMonthCheck = true;
@@ -163,8 +165,8 @@ bool MemberList::FileInput()
 							printf("파일 읽기 오류, 저장파일의 날짜 문법이 잘못되었습니다.\n");
 							return false;
 						}
-						insert.startingMonth = tempStr;
-						tempStr = "";
+						insert.startingMonth = tempint;
+						tempint = -1;
 						break;
 
 					case 1:
