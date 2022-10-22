@@ -17,6 +17,7 @@ enum state
 
 void ChoiceDay(MemberList list)
 {
+    Calendar* calendar = new Calendar();
     bool isNew = false;
     string temp = 0;
     string ID = nullptr;
@@ -35,20 +36,22 @@ void ChoiceDay(MemberList list)
     if (isNew) // condition 1. 작성 중 여부
     {
         cout << "연월을 입력하십시오 : ";
-        cin >> temp;
-        date = dateChanger(temp); // 형식 변환 string to int
-        if (!checkDate(date))
+        getline(cin, temp); //공백 입력 가능해야함.
+
+
+        if (checkDate(temp))
         {
-            cout << "날짜 입력 형식 오류" << endl;
+            cout << "날짜를 형식에 맞게 입력하십시오." << endl;
             return;
         }
+        date = dateChanger(temp); // 형식 변환 string to int
     }
     else
     {
         date = 0; // from file read
     }
 
-    vector<pair<UserInfomation, int>> validlist = listPickout(list, date); // 유효한 사람만 가져옴
+    vector<pair<UserInformation, int>> validlist = listPickout(list, date); // 유효한 사람만 가져옴
     cout << "아이디를 입력하십시오 : ";
     cin >> ID;
     if (Search(validlist, ID) == -1) // condition 2. 유효한 아이디
@@ -154,13 +157,16 @@ void ChoiceDay(MemberList list)
 void showSchedule()
 {
     string temp;
+    int date;
     cout << "연월을 입력하십시오 : " << endl;
-    cin >> temp;
-    int date = dateChanger(temp);
-    if (!checkDate(date))
+    getline(cin, temp);
+
+
+    if (checkDate(temp))
     {
-        cout << "날짜 입력 형식 오류" << endl;
+        cout << "날짜를 형식에 맞게 입력하십시오." << endl;
         return;
     }
+    date = dateChanger(temp); // 형식 변환 string to int
     // file
 }

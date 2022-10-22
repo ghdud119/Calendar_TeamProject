@@ -1,15 +1,18 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <vector>
+
 #include "Calendar.h"
 #include "MemberList.h"
+
 
 const int IDMAX = 16;
 const int DATEMAX = 7;
 
 using namespace std;
 
-int Search(vector<pair<UserInfomation, int>> validlist, string id)
+int Search(vector<pair<UserInformation, int>> validlist, string id)
 {
     validlist[1].first.ID;
     int index = 0;
@@ -21,13 +24,13 @@ int Search(vector<pair<UserInfomation, int>> validlist, string id)
     return -1;
 }
 
-vector<pair<UserInfomation, int>> listPickout(MemberList list, int date)
+vector<pair<UserInformation, int>> listPickout(MemberList list, int date)
 {
-    vector<pair<UserInfomation, int>> validlist;
-    vector<UserInfomation> *temp = list.GetMemberList();
+    vector<pair<UserInformation, int>> validlist;
+    vector<UserInformation>* temp = list.GetMemberList();
     for (auto iter = temp->begin(); iter != temp->end(); iter++)
     {
-        if (iter->startingMonth < date)
+        if (stoi(iter->startingMonth) < date)
         {
             validlist.push_back(make_pair(*iter, 0));
         }
@@ -36,7 +39,7 @@ vector<pair<UserInfomation, int>> listPickout(MemberList list, int date)
     return validlist;
 }
 
-bool isfirst(vector<pair<UserInfomation, int>> validlist, string id)
+bool isfirst(vector<pair<UserInformation, int>> validlist, string id)
 {
     int min = 100;
     for (int i = 0; i < validlist.size(); i++)
@@ -57,9 +60,9 @@ bool isfirst(vector<pair<UserInfomation, int>> validlist, string id)
     }
 }
 
-bool passTest(vector<pair<UserInfomation, int>> validlist, string id, int vcount)
+bool passTest(vector<pair<UserInformation, int>> validlist, string id, int vcount)
 {
-    pair<UserInfomation, int> target;
+    pair<UserInformation, int> target;
     int tcount = 0;
     for (int i = 0; i < validlist.size(); i++)
     {
@@ -85,7 +88,7 @@ bool passTest(vector<pair<UserInfomation, int>> validlist, string id, int vcount
     }
 }
 
-bool priorityCompare(vector<pair<UserInfomation, int>> validlist, string pid, string id)
+bool priorityCompare(vector<pair<UserInformation, int>> validlist, string pid, string id)
 {
     if (validlist[Search(validlist, pid)].first.startingMonth >=
         validlist[Search(validlist, id)].first.startingMonth)
@@ -94,14 +97,14 @@ bool priorityCompare(vector<pair<UserInfomation, int>> validlist, string pid, st
     }
     else
     {
-        return true; // ???? ?? ????
+        return true; // 뺏을 수 있음
     }
 }
 
 bool checkID(string str)
 {
     char id[IDMAX];
-    strcpy(id, str.c_str());
+    strcpy_s(id, str.c_str());
     for (int i = 0; i < IDMAX; i++)
     {
         if (!(id[i] > 'a' && id[i] < 'z') || !(id[i] > 'A' && id[i] < 'Z') || !(id[i] > '0' && id[i] < '9'))
@@ -116,23 +119,9 @@ bool checkID(string str)
 
 int dateChanger(string str)
 {
-    char date[DATEMAX];
-    strcpy(date, str.c_str());
-    int retval = 0;
-    for (int i = 0; i < DATEMAX; i++)
-    {
-        if (date[i] > '0' && date[i] < '9')
-        {
-            date[i] = (int)date[i];
-        }
-        else
-        {
-            return -1;
-        }
-    }
+    string temp = str.erase(4, 1);
 
-    retval = date[0] * 100000 + date[1] * 10000 + date[2] * 1000 + date[3] * 100 + date[5] * 10 + date[6];
-    return retval;
+    return stoi(temp);
 }
 
 bool checkDay(int date)
@@ -149,16 +138,47 @@ bool checkDay(int date)
     return false;
 }
 
-bool checkDate(int num)
+bool checkDate(string str)
 {
-    int m1 = num / 10000;
-    int m2 = num / 100000;
-    if (m1 > 1)
+    if (str.length() != 7) { //전체 문자열 길이 체크
         return false;
-    else if (m1 == 0 && m2 == 0)
-        return false;
-    else if (m1 == 1 && m2 > 2)
-        return false;
+    }
 
-    return true;
+    for (int i = 0; i < str.length(); i++) { //숫자(0~9)와 구분자 체크
+        if (isdigit(str[i]) == 0) { //숫자가 아님
+            if (i != 4) { //구분자 자리가 아닌 곳에 숫자가 아닌 게 있을 경우
+                return false;
+            }
+        }
+        else {
+            if (i == 4) { //구분자 자리에 숫자가 있는 경우
+                return false;
+            }
+        }
+    }
+
+    //의미 규칙 - 달만 체크하면 됨. 5 -> 0이면 뒤에 0만 아니면 됨 / 5->1이면 뒤에가 1아니면 2여야만.
+    int returndate = stoi(str);
+    if (str[5] == '0') {
+        if (str[6] == '0') {
+            return false;
+        }
+        else {
+            return true;
+
+        }
+    }
+    else if (str[5] == '1') {
+        if (str[6] == '1' || str[6] == '2') {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    else {
+        return false;
+    }
+
+    //return false;
 }

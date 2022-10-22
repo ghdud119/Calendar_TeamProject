@@ -1,7 +1,5 @@
 #include <iostream>
 #include <conio.h>
-#include "Calendar.h"
-#include "MemberList.h"
 #include "ChoiceDay.cpp"
 
 using namespace std;
