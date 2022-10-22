@@ -17,7 +17,6 @@ enum state
 
 void ChoiceDay(MemberList list)
 {
-    Calendar *calendar = new Calendar();
     bool isNew = false;
     string temp = 0;
     string ID = nullptr;
