@@ -14,27 +14,26 @@ MemberList::~MemberList()
 
 void MemberList::Insert()
 {
-	string startingMonth = "ERROR";
+	UserInformation input;
 	string temp = "";
-	string ID = "ERROR";
 
 	while (true)
 	{
 		cout << "시작달을 입력해 주세요 : ";
-		getline(cin, startingMonth);
+		getline(cin, input.startingMonth);
 
-		if (startingMonth[0] == 27)
+		if (input.startingMonth[0] == 27)
 			return;
 
-		if (startingMonth.length() == 6 || startingMonth.length() == 7)
+		if (input.startingMonth.length() == 6 || input.startingMonth.length() == 7)
 		{
-			for (int i = 0; i < startingMonth.length(); i++)
+			for (int i = 0; i < input.startingMonth.length(); i++)
 			{
-				cout << startingMonth << " " << temp << endl;
+				cout << input.startingMonth << " " << temp << endl;
 
-				if (isdigit(startingMonth[i]) != 0)
-					temp += startingMonth[i];
-				else if (startingMonth.length() == 6)
+				if (isdigit(input.startingMonth[i]) != 0)
+					temp += input.startingMonth[i];
+				else if (input.startingMonth.length() == 6)
 					temp += "0";
 			}
 			if (temp.length() != 6 || !temp.compare("000000"))
@@ -43,7 +42,7 @@ void MemberList::Insert()
 			}
 			else
 			{
-				startingMonth = temp;
+				input.startingMonth = temp;
 				temp = "";
 				break;
 			}
@@ -57,15 +56,15 @@ void MemberList::Insert()
 	while (true)
 	{
 		cout << "아이디를 입력해 주세요 : ";
-		getline(cin, ID);
-		if (ID[0] == 27)
+		getline(cin, input.ID);
+		if (input.ID[0] == 27)
 			return;
-		else if (Search(ID) == -1)
+		else if (Search(input.ID) == -1)
 			break;
 		else
 			cout << "이미 존재하는 아이디입니다.\n";
 	}
-	this->memberList.push_back(make_pair(startingMonth, ID));
+	this->memberList.push_back(input);
 	Sort();
 }
 
@@ -89,7 +88,7 @@ int MemberList::Search(string targetID)
 	int index = 0;
 	for (auto iter = this->memberList.begin(); iter != this->memberList.end(); iter++, index++)
 	{
-		if (iter->second.compare(targetID) == 0)
+		if (iter->ID.compare(targetID) == 0)
 			return index;
 	}
 	return -1;
@@ -111,7 +110,7 @@ void MemberList::PrintList()
 	{
 		for (auto iter = this->memberList.begin(); iter != this->memberList.end(); iter++)
 		{
-			cout << "시작 달 : " << iter->first << " ID : " << iter->second << "\n";
+			cout << "시작 달 : " << iter->startingMonth << " ID : " << iter->ID << "\n";
 		}
 	}
 }
@@ -127,7 +126,7 @@ bool MemberList::FileInput()
 	int count = 0;
 	bool workingMonthCheck = true;
 
-	string insertID = "ERROR", insertStartingMonth = "ERROR";
+	UserInformation insert;
 
 	if (inputFile.is_open())
 	{
@@ -164,13 +163,13 @@ bool MemberList::FileInput()
 							printf("파일 읽기 오류, 저장파일의 날짜 문법이 잘못되었습니다.\n");
 							return false;
 						}
-						insertStartingMonth = tempStr;
+						insert.startingMonth = tempStr;
 						tempStr = "";
 						break;
 
 					case 1:
-						insertID = tempStr;
-						memberList.push_back(make_pair(insertStartingMonth, insertID));
+						insert.ID = tempStr;
+						memberList.push_back(insert);
 						tempStr = "";
 						break;
 
@@ -207,7 +206,7 @@ void MemberList::FileOutput()
 		outputFile << workingMonth << endl;
 		for (auto iter = memberList.begin(); iter != memberList.end(); iter++)
 		{
-			outputFile << iter->first << " " << iter->second << endl;
+			outputFile << iter->startingMonth << " " << iter->ID << endl;
 		}
 	}
 

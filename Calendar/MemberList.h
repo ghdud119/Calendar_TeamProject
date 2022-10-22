@@ -8,6 +8,12 @@
 
 using namespace std;
 
+struct UserInformation
+{
+	string ID = "ERROR";
+	string startingMonth = "ERROR";
+};
+
 class MemberList
 {
 public:
@@ -25,16 +31,16 @@ public:
 	string GetWorkingCalender() { return this->workingMonth; }
 
 	//벡터 포인터 리턴 vector->first = startingMonth, vector->second = ID
-	vector<pair<string, string>> *GetMemberList() { return &memberList; }
+	vector<UserInformation> *GetMemberList() { return &memberList; }
 
 	bool FileInput();
 	void FileOutput();
 
 private:
 	void Sort();
-	static bool Compare(pair<string, string> member1, pair<string, string> member2) { return stoi(member1.first) < stoi(member2.first); }
+	static bool Compare(UserInformation member1, UserInformation member2) { return stoi(member1.ID) < stoi(member2.ID); }
 
 private:
-	vector<pair<string, string>> memberList;
+	vector<UserInformation> memberList;
 	string workingMonth = "-1";
 };
