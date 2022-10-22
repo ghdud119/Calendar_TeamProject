@@ -203,12 +203,18 @@ void ChoiceDay(MemberList list)
         date = 0; // date 변수 수정은 여기서!!
     }
 
-    vector<pair<UserInformation, int>> validlist = listPickout(list, date);
+    vector<pair<UserInformation, int>> validlist = listPickout(list, date); // 기획서 수정!!!!!
+
+    if (validlist.size() <= 1)
+    {
+        cout << "근무표를 작성하기에 인원이 충분하지 않습니다." << endl;
+    }
+
     cout << "아이디를 입력하십시오 : ";
     cin >> ID;
     if (Search(validlist, ID) == -1) // condition 2. 유효한 아이디
     {
-        cout << "invalid ID" << endl;
+        cout << "아이디가 유효하지 않습니다." << endl;
         return;
     }
 
@@ -228,13 +234,13 @@ void ChoiceDay(MemberList list)
         }
         if (!passTest(validlist, ID, vcount))
         {
-            cout << "패스 조건 불만족" << endl;
+            cout << "패스 조건을 만족하지 않습니다." << endl;
             return;
         }
 
         if (rechoice)
         {
-            cout << "패스 완료" << endl;
+            cout << "패스가 완료되었습니다." << endl;
             int temp = validlist[Search(validlist, ID)].second;
             validlist[Search(validlist, ID)].second = PASS;
 
@@ -254,7 +260,7 @@ void ChoiceDay(MemberList list)
         else
         {
             validlist[Search(validlist, ID)].second = PASS;
-            cout << "패스 완료" << endl;
+            cout << "패스가 완료되었습니다." << endl;
         }
     }
 
@@ -279,6 +285,10 @@ void ChoiceDay(MemberList list)
             cout << "우선 순위가 낮아서 강탈할 수 없습니다." << endl;
             return;
         }
+        else
+        {
+            validlist[Search(validlist, postID)].second -= 1; // 점유자 근무횟수 감소
+        }
     }
 
     if (rechoice)
@@ -296,10 +306,11 @@ void ChoiceDay(MemberList list)
         id[hopeday] = ID;
         return;
     }
+
     state[hopeday] = occupied;
     id[hopeday] = ID;
     cout << "등록 완료";
-    validlist[Search(validlist, ID)].second += 1;
+    validlist[Search(validlist, ID)].second += 1; // 사용자 근무횟수 추가
 
     // 확정 갱신
     int cmp = validlist[0].second;
@@ -310,7 +321,7 @@ void ChoiceDay(MemberList list)
             return;
         }
     }
-    for (int i = 0; i < DAYMAX; i++)
+    for (int i = 0; i < DAYMAX; i++) // 모든 근무자의 근무횟수가 같으면 확정으로 변경
     {
         if (state[i] == occupied)
         {
@@ -450,15 +461,24 @@ int Search(vector<pair<UserInformation, int>> validlist, string id) // 탐색 대상
 bool isfirst(vector<pair<UserInformation, int>> validlist, string id) // 근무자가 근무를 수정하는 것인지, 처음 입력하는 것인지 확인함.
 {
     int min = 100;
+    int max = 0;
     for (int i = 0; i < validlist.size(); i++)
     {
         if (validlist[i].second < min)
         {
             min = validlist[i].second;
         }
+        if (validlist[i].second > max)
+        {
+            max = validlist[i].second;
+        }
     }
 
-    if (validlist[Search(validlist, id)].second == min)
+    if (min == max)
+    {
+        return true;
+    }
+    else if (validlist[Search(validlist, id)].second == min)
     {
         return false;
     }
