@@ -1,8 +1,8 @@
+#pragma once
 #include <iostream>
 #include <string>
 #include "Calendar.h"
 #include "MemberList.h"
-#include "Menu.h"
 
 const int IDMAX = 16;
 const int DATEMAX = 7;
@@ -140,7 +140,7 @@ bool checkDay(int date)
     {
         return true;
     }
-    else if (date < Lastday) // from calendar
+    else if (date <= 31) // from calendar
     {
         return true;
     }

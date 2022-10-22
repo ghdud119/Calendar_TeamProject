@@ -1,9 +1,10 @@
+#pragma once
 #include <iostream>
 #include <string>
 #include <vector>
 #include "Calendar.h"
 #include "MemberList.h"
-#include "Valid.cpp"
+#include "CDFunctions.cpp"
 
 const int DAYMAX = 32;
 
