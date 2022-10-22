@@ -20,10 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Calendar.cpp" />
-    <ClCompile Include="ChoiceDay.cpp" />
     <ClCompile Include="Excute.cpp" />
     <ClCompile Include="MemberList.cpp" />
-    <ClCompile Include="ChoiceFunctions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Calendar.h" />
