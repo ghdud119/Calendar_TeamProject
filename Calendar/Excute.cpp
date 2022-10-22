@@ -23,6 +23,9 @@ enum state
     confirmed
 };
 
+string ID[DAYMAX];
+int STATE[DAYMAX];
+
 void mainMenu();
 void calendarMenu();
 void listMenu();
@@ -163,22 +166,26 @@ void ChoiceDay()
 {
     bool isNew = true;
     string temp;
-    string ID;
+    string id;
     string input;
-    string id[DAYMAX];
-    int state[DAYMAX];
     int date = 0;
 
-    state[0] = confirmed;
+    STATE[0] = confirmed;
     for (int i = 1; i < DAYMAX; i++)
     {
-        state[i] = vacant;
+        STATE[i] = vacant;
     }
 
     // 파일 읽기, isNew 변수 수정하기, date 변수 수정하기
 
     if (isNew) // condition 1. 작성 중 여부
     {
+        for (int i = 0; i < DAYMAX; i++)
+        {
+            ID[i] = "";
+            STATE[i] = vacant;
+        }
+        
         cout << "연월을 입력하십시오 : ";
         getline(cin, temp); //공백 입력 가능해야함.
 
@@ -192,6 +199,7 @@ void ChoiceDay()
     }
     else
     {
+        // ID, STATE 읽어 오기!!!
         date = 0; // date 변수 수정은 여기서!!
     }
 
@@ -213,8 +221,8 @@ void ChoiceDay()
     }
 
     cout << "아이디를 입력하십시오 : ";
-    cin >> ID;
-    if (Search(&validlist, ID) == -1) // condition 2. 유효한 아이디
+    cin >> id;
+    if (Search(&validlist, id) == -1) // condition 2. 유효한 아이디
     {
         cout << "아이디가 유효하지 않습니다." << endl;
         return;
@@ -238,11 +246,11 @@ void ChoiceDay()
     {
         rechoice = true;
     }
-    else if (validlist[Search(&validlist, ID)].second == min)
+    else if (validlist[Search(&validlist, id)].second == min)
     {
         rechoice = false;
     }
-    else if (validlist[Search(&validlist, ID)].second > min)
+    else if (validlist[Search(&validlist, id)].second > min)
     {
         rechoice = true;
     }
@@ -255,7 +263,7 @@ void ChoiceDay()
         int tcount = 0;
         for (int i = 0; i < DAYMAX; i++)
         {
-            if (state[i] == vacant)
+            if (STATE[i] == vacant)
             {
                 vcount++;
             }
@@ -263,7 +271,7 @@ void ChoiceDay()
         pair<UserInformation, int> target;
         for (int i = 0; i < validlist.size(); i++)
         {
-            if (validlist[i].first.ID.compare(ID) == 0)
+            if (validlist[i].first.ID.compare(id) == 0)
             {
                 target = validlist[i];
                 break;
@@ -285,8 +293,8 @@ void ChoiceDay()
         if (rechoice)
         {
             cout << "패스가 완료되었습니다." << endl;
-            int temp = validlist[Search(&validlist, ID)].second;
-            validlist[Search(&validlist, ID)].second = PASS;
+            int temp = validlist[Search(&validlist, id)].second;
+            validlist[Search(&validlist, id)].second = PASS;
 
             for (int i = 0; i < validlist.size(); i++)
             {
@@ -295,7 +303,7 @@ void ChoiceDay()
                     tcount = 0;
                     for (int i = 0; i < validlist.size(); i++) // 중복 코드
                     {
-                        if (validlist[i].first.ID.compare(ID) == 0)
+                        if (validlist[i].first.ID.compare(id) == 0)
                         {
                             target = validlist[i];
                             break;
@@ -311,7 +319,7 @@ void ChoiceDay()
                     if (tcount < vcount)
                     {
                         cout << validlist[i].first.ID << "님이 근무일을 재선택해야합니다. (패스 조건 불만족)" << endl;
-                        validlist[Search(&validlist, ID)].second = temp;
+                        validlist[Search(&validlist, id)].second = temp;
                     }
                 }
             }
@@ -319,7 +327,7 @@ void ChoiceDay()
         }
         else
         {
-            validlist[Search(&validlist, ID)].second = PASS;
+            validlist[Search(&validlist, id)].second = PASS;
             cout << "패스가 완료되었습니다." << endl;
         }
     }
@@ -331,16 +339,16 @@ void ChoiceDay()
         return;
     }
 
-    if (state[hopeday] == confirmed) // condition 5. 미확정 날짜
+    if (STATE[hopeday] == confirmed) // condition 5. 미확정 날짜
     {
         cout << "확정된 날짜입니다." << endl;
         return;
     }
 
-    if (state[hopeday] == occupied) // condition 6. 우선순위 비교
+    if (STATE[hopeday] == occupied) // condition 6. 우선순위 비교
     {
-        string postID = id[hopeday];
-        if (validlist[Search(&validlist, postID)].first.startingMonth >= validlist[Search(&validlist, ID)].first.startingMonth)
+        string postID = ID[hopeday];
+        if (validlist[Search(&validlist, postID)].first.startingMonth >= validlist[Search(&validlist, id)].first.startingMonth)
         {
             cout << "우선 순위가 낮아서 강탈할 수 없습니다." << endl;
             return;
@@ -356,21 +364,21 @@ void ChoiceDay()
         // 이전 선택 삭제
         for (int i = 0; i < DAYMAX; i++)
         {
-            if (id[i] == ID && state[i] == occupied)
+            if (ID[i] == id && STATE[i] == occupied)
             {
-                state[i] = vacant;
+                STATE[i] = vacant;
             }
         }
         cout << "수정 완료" << endl;
-        state[hopeday] = occupied;
-        id[hopeday] = ID;
+        STATE[hopeday] = occupied;
+        ID[hopeday] = id;
         return;
     }
 
-    state[hopeday] = occupied;
-    id[hopeday] = ID;
+    STATE[hopeday] = occupied;
+    ID[hopeday] = id;
     cout << "등록 완료";
-    validlist[Search(&validlist, ID)].second += 1; // 사용자 근무횟수 추가
+    validlist[Search(&validlist, id)].second += 1; // 사용자 근무횟수 추가
 
     // 확정 갱신
     int cmp = validlist[0].second;
@@ -383,13 +391,13 @@ void ChoiceDay()
     }
     for (int i = 0; i < DAYMAX; i++) // 모든 근무자의 근무횟수가 같으면 확정으로 변경
     {
-        if (state[i] == occupied)
+        if (STATE[i] == occupied)
         {
-            state[i] = confirmed;
+            STATE[i] = confirmed;
         }
     }
 
-    // 파일 쓰기
+    // 파일 쓰기 ID, STATE 저장
 }
 
 void showSchedule()
