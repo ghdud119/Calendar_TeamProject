@@ -13,10 +13,6 @@ MemberList::~MemberList()
 void MemberList::Insert()
 {
 	UserInfomation NewUser;
-	cout << "이름을 입력해 주세요 : ";
-	cin >> NewUser.name;
-	cout << "시작달을 입력해 주세요 : ";
-	cin >> NewUser.startingMonth;
 
 	while (true)
 	{
@@ -25,9 +21,16 @@ void MemberList::Insert()
 		if (Search(NewUser.ID) == -1)
 			break;
 		else
+		{
 			cout << "이미 존재하는 아이디입니다.\n";
+			return;
+		}
 	}
-	this->memberList.push_back(make_pair(NewUser, NewUser.ID));
+
+	cout << "시작달을 입력해 주세요 : ";
+	cin >> NewUser.startingMonth;
+
+	this->memberList.push_back(NewUser);
 	Sort();
 }
 
@@ -51,7 +54,7 @@ int MemberList::Search(string targetID)
 	int index = 0;
 	for (auto iter = this->memberList.begin(); iter != this->memberList.end(); iter++, index++)
 	{
-		if (iter->second.compare(targetID) == 0)
+		if (iter->ID.compare(targetID) == 0)
 			return index;
 	}
 	return -1;
@@ -73,7 +76,7 @@ void MemberList::PrintList()
 	{
 		for (auto iter = this->memberList.begin(); iter != this->memberList.end(); iter++)
 		{
-			cout << "시작 달 : " << iter->first.startingMonth << " 이름 : " << iter->first.name << " ID : " << iter->second << "\n";
+			cout << "시작 달 : " << iter->startingMonth << " ID : " << iter->ID << "\n";
 		}
 	}
 }

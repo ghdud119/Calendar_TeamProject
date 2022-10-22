@@ -4,7 +4,7 @@
 #include <vector>
 #include "Calendar.h"
 #include "MemberList.h"
-#include "CDFunctions.cpp"
+#include "ChoiceFunctions.cpp"
 
 const int DAYMAX = 32;
 

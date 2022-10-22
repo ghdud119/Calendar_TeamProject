@@ -24,13 +24,14 @@ int Search(vector<pair<UserInfomation, int>> validlist, string id)
 vector<pair<UserInfomation, int>> listPickout(MemberList list, int date)
 {
     vector<pair<UserInfomation, int>> validlist;
-    // for (int i = 0; i < list.memberList.size(); i++)
-    // {
-    //     if (list.memberList[i].startingmonth > date)
-    //     {
-    //         validlist.push_back(list.memberList[i]);
-    //     }
-    // }
+    vector<UserInfomation> *temp = list.GetMemberList();
+    for (auto iter = temp->begin(); iter != temp->end(); iter++)
+    {
+        if (stoi(iter->startingMonth) < date)
+        {
+            validlist.push_back(make_pair(*iter, 0));
+        }
+    }
 
     return validlist;
 }

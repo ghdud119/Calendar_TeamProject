@@ -10,7 +10,6 @@ using namespace std;
 
 struct UserInfomation
 {
-	string name = "ERROR";
 	string startingMonth = "ERROR";
 	string ID = "ERROR";
 };
@@ -32,16 +31,16 @@ public:
 	string GetWorkingCalender() { return this->WorkingCalender; }
 
 	//벡터 포인터 리턴 vector->first = struct(name, startingMonth), vector->second = ID
-	vector<pair<UserInfomation, string>> *GetMemberList() { return &memberList; }
+	vector<UserInfomation> *GetMemberList() { return &memberList; }
 
 	bool FileInput();
 	void FileOutput();
 
 private:
 	void Sort();
-	static bool Compare(pair<UserInfomation, string> member1, pair<UserInfomation, string> member2) { return stoi(member1.first.startingMonth) < stoi(member2.first.startingMonth); }
+	static bool Compare(UserInfomation member1, UserInfomation member2) { return stoi(member1.startingMonth) < stoi(member2.startingMonth); }
 
 private:
-	vector<pair<UserInfomation, string>> memberList;
+	vector<UserInfomation> memberList;
 	string WorkingCalender = "-1";
 };
