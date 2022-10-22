@@ -1,5 +1,7 @@
 #include "MemberList.h"
 
+#define SAVEFILE "MemberListSaveFile.txt"
+
 MemberList::MemberList()
 {
 	FileInput();
@@ -12,40 +14,74 @@ MemberList::~MemberList()
 
 void MemberList::Insert()
 {
-	UserInfomation NewUser;
+	string startingMonth = "ERROR";
+	string temp = "";
+	string ID = "ERROR";
 
 	while (true)
 	{
-		cout << "¾ÆÀÌµğ¸¦ ÀÔ·ÂÇØ ÁÖ¼¼¿ä : ";
-		cin >> NewUser.ID;
-		if (Search(NewUser.ID) == -1)
-			break;
+		cout << "ì‹œì‘ë‹¬ì„ ì…ë ¥í•´ ì£¼ì„¸ìš” : ";
+		getline(cin, startingMonth);
+
+		if (startingMonth[0] == 27)
+			return;
+
+		if (startingMonth.length() == 6 || startingMonth.length() == 7)
+		{
+			for (int i = 0; i < startingMonth.length(); i++)
+			{
+				cout << startingMonth <<" " << temp << endl;
+
+				if (isdigit(startingMonth[i]) != 0)
+					temp += startingMonth[i];
+				else if(startingMonth.length() == 6)
+					temp += "0";
+			
+			}
+			if (temp.length() != 6 || !temp.compare("000000"))
+			{
+				printf("ì˜ëª»ëœ í˜•ì‹ì˜ ì‹œì‘ë‹¬ ì…ë ¥ì…ë‹ˆë‹¤.\në„¤ê¸€ìì˜ ì—°ë„+êµ¬ë¶„ì+ì›”ì˜ í˜•íƒœë¡œ ì…ë ¥í•´ì£¼ì„¸ìš”\n");
+			}
+			else
+			{
+				startingMonth = temp;
+				temp = "";
+				break;
+			}
+		}
 		else
 		{
-			cout << "ÀÌ¹Ì Á¸ÀçÇÏ´Â ¾ÆÀÌµğÀÔ´Ï´Ù.\n";
-			return;
+			printf("ì˜ëª»ëœ í˜•ì‹ì˜ ì‹œì‘ë‹¬ ì…ë ¥ì…ë‹ˆë‹¤.\në„¤ê¸€ìì˜ ì—°ë„+êµ¬ë¶„ì+ì›”ì˜ í˜•íƒœë¡œ ì…ë ¥í•´ì£¼ì„¸ìš”\n");
 		}
 	}
 
-	cout << "½ÃÀÛ´ŞÀ» ÀÔ·ÂÇØ ÁÖ¼¼¿ä : ";
-	cin >> NewUser.startingMonth;
-
-	this->memberList.push_back(NewUser);
+	while (true)
+	{
+		cout << "ì•„ì´ë””ë¥¼ ì…ë ¥í•´ ì£¼ì„¸ìš” : ";
+		getline(cin, ID);
+		if (ID[0] == 27)
+			return;
+		else if (Search(ID) == -1)
+			break;
+		else
+			cout << "ì´ë¯¸ ì¡´ì¬í•˜ëŠ” ì•„ì´ë””ì…ë‹ˆë‹¤.\n";
+	}
+	this->memberList.push_back(make_pair(startingMonth, ID));
 	Sort();
 }
 
 void MemberList::Delete()
 {
-	std::string id;
-	cout << "ÀÌ¸§À» ÀÔ·ÂÇØ ÁÖ¼¼¿ä : ";
-	cin >> id;
-	int index = Search(id);
+	std::string ID;
+	cout << "ì•„ì´ë””ì„ ì…ë ¥í•´ ì£¼ì„¸ìš” : ";
+	getline(cin, ID);
+	int index = Search(ID);
 	if (index == -1)
-		cout << "Á¸ÀçÇÏÁö ¾Ê´Â ¾ÆÀÌµğÀÔ´Ï´Ù.\n";
+		cout << "ì¡´ì¬í•˜ì§€ ì•ŠëŠ” ì•„ì´ë””ì…ë‹ˆë‹¤.\n";
 	else
 	{
 		memberList.erase(memberList.begin() + index);
-		cout << "ÇØ´ç ¾ÆÀÌµğ ¹× Á¤º¸°¡ »èÁ¦µÇ¾ú½À´Ï´Ù.\n";
+		cout << "í•´ë‹¹ ì•„ì´ë”” ë° ì •ë³´ê°€ ì‚­ì œë˜ì—ˆìŠµë‹ˆë‹¤.\n";
 	}
 }
 
@@ -54,7 +90,7 @@ int MemberList::Search(string targetID)
 	int index = 0;
 	for (auto iter = this->memberList.begin(); iter != this->memberList.end(); iter++, index++)
 	{
-		if (iter->ID.compare(targetID) == 0)
+		if (iter->second.compare(targetID) == 0)
 			return index;
 	}
 	return -1;
@@ -70,13 +106,13 @@ void MemberList::PrintList()
 {
 	if (memberList.empty())
 	{
-		cout << "ÀúÀåµÈ ÀÎ¿ø Á¤º¸°¡ ¾ø½À´Ï´Ù.\n";
+		cout << "ì €ì¥ëœ ì¸ì› ì •ë³´ê°€ ì—†ìŠµë‹ˆë‹¤.\n";
 	}
 	else
 	{
 		for (auto iter = this->memberList.begin(); iter != this->memberList.end(); iter++)
 		{
-			cout << "½ÃÀÛ ´Ş : " << iter->startingMonth << " ID : " << iter->ID << "\n";
+			cout << "ì‹œì‘ ë‹¬ : " << iter->first <<" ID : " << iter->second << "\n";
 		}
 	}
 }
@@ -84,15 +120,15 @@ void MemberList::PrintList()
 bool MemberList::FileInput()
 {
 	ifstream inputFile;
-	inputFile.open("MemberListSaveFile.txt");
+	inputFile.open(SAVEFILE);
 
 	string inputLine = "";
 	string tempStr = "";
 
 	int count = 0;
-	bool workingMonthCheck = false;
+	bool workingMonthCheck = true;
 
-	UserInfomation InsertInfo;
+	string insertID = "ERROR", insertStartingMonth = "ERROR";
 
 	if (inputFile.is_open())
 	{
@@ -100,13 +136,13 @@ bool MemberList::FileInput()
 		{
 			if (workingMonthCheck)
 			{
-				WorkingCalender = inputLine;
-				if (WorkingCalender != "-1" || WorkingCalender.length() != 6)
+				workingMonth = inputLine;
+				if ( !workingMonth.compare("-1 ") && workingMonth.length() != 6)
 				{
-					printf("ÀúÀå ÆÄÀÏÀ» ÀĞÀ» ¼ö ¾ø½À´Ï´Ù.");
+					printf("íŒŒì¼ ì½ê¸° ì˜¤ë¥˜, ì €ì¥íŒŒì¼ì˜ ì‘ì—…ë‚ ì§œ ë¬¸ë²•ì´ ì˜ëª»ë˜ì—ˆìŠµë‹ˆë‹¤.\n");
 					return false;
 				}
-				workingMonthCheck = true;
+				workingMonthCheck = false;
 				continue;
 			}
 
@@ -126,36 +162,34 @@ bool MemberList::FileInput()
 					case 0:
 						if (tempStr.length() != 6)
 						{
-							printf("ÀúÀå ÆÄÀÏÀ» ÀĞÀ» ¼ö ¾ø½À´Ï´Ù.");
+							printf("íŒŒì¼ ì½ê¸° ì˜¤ë¥˜, ì €ì¥íŒŒì¼ì˜ ë‚ ì§œ ë¬¸ë²•ì´ ì˜ëª»ë˜ì—ˆìŠµë‹ˆë‹¤.\n");
 							return false;
 						}
-						InsertInfo.startingMonth = tempStr;
+						insertStartingMonth = tempStr;
 						tempStr = "";
 						break;
 
 					case 1:
-						InsertInfo.name = tempStr;
-						tempStr = "";
-						break;
-
-					case 2:
-						InsertInfo.ID = tempStr;
-						memberList.push_back(make_pair(InsertInfo, InsertInfo.ID));
+						insertID = tempStr;
+						memberList.push_back(make_pair(insertStartingMonth, insertID));
 						tempStr = "";
 						break;
 
 					default:
-						printf("ÀúÀå ÆÄÀÏÀ» ÀĞÀ» ¼ö ¾ø½À´Ï´Ù.");
+						printf("íŒŒì¼ ì½ê¸° ì˜¤ë¥˜, ì €ì¥íŒŒì¼ì˜ ë¬¸ë²•ì´ ì˜ëª»ë˜ì—ˆìŠµë‹ˆë‹¤.\n");
 						return false;
 					}
 					count++;
+					if (count > 1)
+						break;
 				}
 			}
 		}
 	}
 	else
 	{
-		ofstream NewSaveFile("MemberListSaveFile.txt");
+		ofstream NewSaveFile(SAVEFILE);
+		printf("ìƒˆ ì €ì¥ íŒŒì¼ì„ ìƒì„±í•˜ì˜€ìŠµë‹ˆë‹¤.\n");
 		NewSaveFile.close();
 	}
 	inputFile.close();
@@ -167,39 +201,16 @@ bool MemberList::FileInput()
 void MemberList::FileOutput()
 {
 	ofstream outputFile;
-	outputFile.open("MemberListSaveFile.txt");
+	outputFile.open(SAVEFILE);
 
 	if (outputFile.is_open())
 	{
-		outputFile << WorkingCalender << endl;
+		outputFile << workingMonth << endl;
 		for (auto iter = memberList.begin(); iter != memberList.end(); iter++)
 		{
-			outputFile << iter->first.startingMonth << " " << iter->first.name << " " << iter->first.ID << endl;
+			outputFile << iter->first << " " << iter->second << endl;
 		}
 	}
 
 	outputFile.close();
-}
-
-void One_Line_Str_Input(vector<string> *inputVec)
-{
-	string inputStr;
-	string tempStr = "";
-	getline(cin, inputStr);
-
-	inputStr += " ";
-
-	for (int i = 0; i < inputStr.length(); i++)
-	{
-		if (inputStr[i] != ' ')
-		{
-			tempStr += inputStr[i];
-		}
-		else
-		{
-			inputVec->push_back(tempStr);
-			tempStr = "";
-		}
-	}
-	return;
 }
