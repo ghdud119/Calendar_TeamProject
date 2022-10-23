@@ -318,7 +318,7 @@ void ChoiceDay()
 	}
 	else if (min == max)
 	{
-		rechoice = true;
+		rechoice = false;
 	}
 	else if (validlist[Search(&validlist, id)].second == min)
 	{
