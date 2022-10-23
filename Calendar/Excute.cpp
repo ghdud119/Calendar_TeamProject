@@ -194,16 +194,15 @@ void ChoiceDay()
 	int date = isWorking;
 	int Month;
 
-	for (int i = 0; i < DAYMAX; i++)
-	{
-		ID[i] = "";
-		STATE[i] = vacant;
-	}
-
-
 	/***** 작성 중인 근무표가 있는지 확인 *****/
 	if (date == -1)
 	{
+		for (int i = 0; i < DAYMAX; i++)
+		{
+			ID[i] = "";
+			STATE[i] = vacant;
+		}
+
 		cout << "근무표 작성을 시작합니다. 근무표를 작성할 연월을 입력하십시오. 입력 : ";
 
 		char escapeDetect = _getch();
