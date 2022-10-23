@@ -138,7 +138,7 @@ string MemberList::Delete()
 	}
 	int index = Search(ID);
 	if (index == -1)
-		cout << "존재하지 않는 아이디입니다.\n";
+		cout << "아이디가 유효하지 않습니다.\n";
 	else
 	{
 		memberList.erase(memberList.begin() + index);
