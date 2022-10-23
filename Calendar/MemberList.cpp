@@ -103,7 +103,7 @@ void MemberList::Insert()
 	Sort();
 }
 
-void MemberList::Delete()
+string MemberList::Delete()
 {
 	std::string ID;
 	cout << "삭제할 근무자의 아이디를 입력하십시오. 입력 : ";
@@ -116,6 +116,7 @@ void MemberList::Delete()
 		memberList.erase(memberList.begin() + index);
 		cout << "해당 아이디 및 정보가 삭제되었습니다.\n";
 	}
+	return ID;
 }
 
 int MemberList::Search(string targetID)

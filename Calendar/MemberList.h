@@ -23,7 +23,7 @@ public:
 
 public:
 	void Insert();
-	void Delete();
+	string Delete();
 	int Search(string targetID);
 
 	void PrintList();
