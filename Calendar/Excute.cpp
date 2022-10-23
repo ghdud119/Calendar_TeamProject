@@ -200,6 +200,7 @@ void ChoiceDay()
 		STATE[i] = vacant;
 	}
 
+
 	/***** 작성 중인 근무표가 있는지 확인 *****/
 	if (date == -1)
 	{
@@ -216,6 +217,7 @@ void ChoiceDay()
 			cout << escapeDetect;
 			getline(cin, temp);
 			temp.insert(0, 1, escapeDetect);
+			
 		}
 
 		/***** 규칙 - 오류(p.19) 근무일 선택이 불가능한 경우 *****/
@@ -226,6 +228,7 @@ void ChoiceDay()
 		}
 		date = dateChanger(temp); // 형식 변환 string to int
 		Month = date;
+		ChalenderFileInput(date, ID, STATE);
 		// 파일 중에 동년 동월의 근무표가 있는지 확인하기
 	}
 	else
@@ -785,13 +788,11 @@ bool ChalenderFileInput(int month, string* ID, int* STATE)
 							return false;
 						}
 						tempStr = "";
-						count++;
 					}
 					case 1:
 					{
 						tempID[dayCount] = tempStr;
 						tempStr = "";
-						count++;
 						break;
 					}
 					case 2:
@@ -803,7 +804,7 @@ bool ChalenderFileInput(int month, string* ID, int* STATE)
 						}
 						tempState[dayCount] = stoi(tempStr);
 						tempStr = "";
-						count++;
+						break;
 					}
 					default:
 						printf("파일 읽기 오류, 저장파일의 문법이 잘못되었습니다.\n");
