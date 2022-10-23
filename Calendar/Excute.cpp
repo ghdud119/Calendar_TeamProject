@@ -291,6 +291,7 @@ void ChoiceDay()
 		cout << "아이디가 유효하지 않습니다." << endl;
 		return;
 	}
+	// 이하 Search는 반드시 성공함.
 
 	bool rechoice; // condition 3. 수정 여부
 	int min = 100;
@@ -306,7 +307,11 @@ void ChoiceDay()
 			max = iter->second;
 		}
 	}
-	if (min == max)
+	if (min == 0 && max == 0)
+	{
+		rechoice = false;
+	}
+	else if (min == max)
 	{
 		rechoice = true;
 	}
