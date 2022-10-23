@@ -380,7 +380,7 @@ void ChoiceDay()
 	{
 		int vcount = 0;
 		int tcount = 0;
-		for (int i = 0; i < DAYMAX; i++)
+		for (int i = 1; i < DAYMAX; i++)
 		{
 			if (STATE[i] == vacant)
 			{
@@ -398,7 +398,7 @@ void ChoiceDay()
 		}
 		for (int i = 0; i < validlist.size(); i++)
 		{
-			if (target.first.startingMonth > validlist[i].first.startingMonth && target.second <= validlist[i].second)
+			if (target.first.startingMonth < validlist[i].first.startingMonth && target.second <= validlist[i].second)
 			{
 				tcount++;
 			}
