@@ -11,6 +11,7 @@ using namespace std;
 Calendar *calendar = new Calendar();
 MemberList *memberList = new MemberList();
 int isWorking = -1;
+string deletedID = "-1";
 
 const int DAYMAX = 32;
 const int IDMAX = 16;
@@ -149,7 +150,22 @@ void listMenu()
 			memberList->Insert();
 			break;
 		case 51: // 3
-			memberList->Delete();
+			deletedID = memberList->Delete();
+
+			if (deletedID == "-1")
+				cout << "delete failed"; // 삭제실패
+			else
+			{
+				for (int i = 1; i < DAYMAX; i++) // 명단에서 삭제된 ID 근무표에서도 삭제
+				{
+					if (ID[i] == deletedID)
+					{
+						ID[i] = "";
+						STATE[i] = vacant;
+					}
+				}
+			}
+			break;
 			break;
 		case 27: // ESC 키
 			status = false;
@@ -429,6 +445,8 @@ void ChoiceDay()
 		cout << "수정 완료" << endl;
 		STATE[hopeday] = occupied;
 		ID[hopeday] = id;
+		calendar->InsertInfo(hopeday, id);
+		return;
 	}
 	else
 	{
