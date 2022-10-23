@@ -43,6 +43,9 @@ bool checkDayint(string str);
 bool checkDay(int date, int day);
 bool checkDate(string str);
 
+bool ChalenderFileInput(int month, string* ID, int* STATE);
+void ChalenderFileOutput(int month, string* ID, int* STATE);
+
 int Search(vector<pair<UserInformation, int>> *validlist, string id);
 
 int main()
@@ -189,17 +192,6 @@ void ChoiceDay()
 	int date = -1;
 	int Month;
 
-	// 파일 읽기, date 변수 수정하기
-	ifstream inputFile;
-	inputFile.open("MemberListSaveFile.txt");
-
-	string inputLine = "";
-	string tempStr = "";
-
-	char check;
-	inputFile.get(check);
-	date = (int)check;
-
 	/***** 작성 중인 근무표가 있는지 확인 *****/
 	if (date != -1)
 	{
@@ -236,38 +228,8 @@ void ChoiceDay()
 	}
 	else
 	{
-		// ID, STATE 읽어 오기!!!
-		while (!inputFile.eof()) {	//모든 줄 읽는 작업
-			getline(inputFile, inputLine, ' ');
-			vector<string> result;
-			result.push_back(inputLine);
-			string lineid = result[1];	//해당 줄의 ID 저장
-
-
-			for (int i = 2; i < inputLine.length(); i++) {	//근무 선택일 tempStr에 저장
-				tempStr += inputLine[i] + " ";
-			}
-			//파일에 들어있던 멤버들 미리 저장
-			fileStatingMonth.push_back((int)inputLine[0]);
-			fileID.push_back(lineid);
-			//이미 있던 날짜 데이터 미리 저장
-			fileChoiceDate.push_back(tempStr);
-
-			vector<string> dates;	//선택한 날짜를 넣는 vector
-			stringstream sstream(tempStr);	//tempStr을 쪼개기 위한 vector
-			string choice_date;	//sstream을 공백을 기준으로 choice_date에 쪼개서 저장
-			while (getline(sstream, choice_date, ' ')) {
-				dates.push_back(choice_date);
-			}
-
-			for (int i = 0; i < dates.size(); i++) {	//dates에는 선택한 날짜들이 들어가있음
-				int index = stoi(dates[i]);	//선택한 날짜를 int인 index로 변환
-				ID[index] = lineid;	//선택한 날짜에 id 표시
-				STATE[index] = confirmed;	//선택한 날짜에 confirmed로 바꾸기
-			}
-		}
-		inputFile.close();
-		date = 0; // date 변수 수정은 여기서!!
+		date = stoi(memberList->GetWorkingCalender());
+		ChalenderFileInput(date, ID, STATE);
 	}
 
 
@@ -587,27 +549,7 @@ void ChoiceDay()
 	}
 
 	// 파일 쓰기 ID, STATE 저장
-	ofstream outputFile;
-	outputFile.open("MemberListSaveFile.txt");
-	int idx = 0;	//줄 수
-	if (outputFile.is_open()) {
-		outputFile << Month << endl;	//맨 첫줄(월)
-		while (idx < fileID.size()) {
-			int outMonth = fileStatingMonth[idx];
-			string outID = fileID[idx];
-			vector<int> choday;
-			for (int i = 0; i < DAYMAX; i++) {
-				if (ID[i] == outID)
-					choday.push_back(i);
-			}
-
-			outputFile << outMonth << " " << outID << " ";
-			int count = 0;
-			while (!choday.empty())
-				outputFile << choday[count++] << " ";
-			outputFile << endl;
-		}
-	}
+	ChalenderFileOutput(date, ID, STATE);
 }
 
 void showSchedule()
@@ -786,4 +728,113 @@ int Search(vector<pair<UserInformation, int>> *validlist, string id) // 탐색 대�
 			return index;
 	}
 	return -1;
+}
+
+bool ChalenderFileInput(int month, string* ID, int* STATE)
+{
+	string inputFileName = to_string(month);
+	inputFileName.insert(4, "-");
+	inputFileName += ".txt";
+	ifstream inputFile;
+	inputFile.open(inputFileName);
+
+	string tempID[DAYMAX] = { "" };
+	int tempState[DAYMAX] = { 0 };
+
+
+	string inputLine = "";
+	string tempStr = "";
+
+	int dayCount = 0;
+	int count = 0;
+
+	if (inputFile.is_open())
+	{
+		while (getline(inputFile, inputLine))
+		{	
+			count = 0;
+			inputLine += " ";
+
+			for (int i = 0; i < inputLine.length(); i++)
+			{
+				if (inputLine[i] != ' ')
+				{
+					tempStr += inputLine[i];
+				}
+				else
+				{
+					switch (count)
+					{
+					case 0:
+					{
+						dayCount = stoi(tempStr);
+						if (dayCount > 32)
+						{
+							printf("파일 읽기 오류, 저장파일의 문법이 잘못되었습니다.\n");
+							return false;
+						}
+						tempStr = "";
+						count++;
+					}
+					case 1:
+					{
+						tempID[dayCount] = tempStr;
+						tempStr = "";
+						count++;
+						break;
+					}
+					case 2:
+					{
+						if (stoi(tempStr) > 2 || stoi(tempStr) < 0)
+						{
+							printf("파일 읽기 오류, 저장파일의 문법이 잘못되었습니다.\n");
+							return false;
+						}
+						tempState[dayCount] = stoi(tempStr);
+						tempStr = "";
+						count++;
+					}
+					default:
+						printf("파일 읽기 오류, 저장파일의 문법이 잘못되었습니다.\n");
+						return false;
+					}
+					count++;
+					if (count > 2)
+						break;
+				}
+			}
+		}
+		for (int i = 0; i < DATEMAX; i++)
+		{
+			ID[i] = tempID[i];
+			STATE[i] = tempState[i];
+		}
+	}
+	else
+	{
+		ofstream NewSaveFile(inputFileName);
+		printf("새 저장 파일을 생성하였습니다.\n");
+		NewSaveFile.close();
+	}
+	inputFile.close();
+
+	return month;
+}
+
+void ChalenderFileOutput(int month, string* ID, int* STATE)
+{
+	string outPutFileName = to_string(month);
+	outPutFileName.insert(4, "-");
+	outPutFileName += ".txt";
+	ofstream outputFile;
+	outputFile.open(outPutFileName);
+
+	if (outputFile.is_open())
+	{
+		for (int i = 1; i < DAYMAX; i++)
+		{
+			outputFile << i << " " << ID[i] << " " << STATE[i] << endl;
+		}
+	}
+	outputFile.close();
 }
