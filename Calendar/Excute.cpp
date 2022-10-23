@@ -232,6 +232,8 @@ void ChoiceDay()
 		date = 0; // date 변수 수정은 여기서!!
 	}
 
+	calendar->PrintCalendar(date / 100, date % 100);
+
 	// 근무 투입이 가능한 인원만 추려냄.
 	vector<pair<UserInformation, int>> validlist;
 	vector<UserInformation> *tmpv = memberList->GetMemberList();
