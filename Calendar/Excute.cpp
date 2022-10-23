@@ -520,7 +520,6 @@ void ChoiceDay()
 		cout << "수정 완료" << endl;
 		STATE[hopeday] = occupied;
 		ID[hopeday] = id;
-		calendar->InsertInfo(hopeday, id);
 	}
 	/***** 수정이 아닌 경우 선택한 날짜를 바로 반영함 *****/
 	else
@@ -528,6 +527,7 @@ void ChoiceDay()
 		STATE[hopeday] = occupied;
 		ID[hopeday] = id;
 		cout << "등록 완료";
+		calendar->InsertInfo(hopeday, id);
 		validlist[Search(&validlist, id)].second += 1; // 사용자 근무횟수 추가
 		ChalenderFileOutput(date, ID, STATE);
 	}
@@ -596,18 +596,13 @@ void showSchedule()
 
 
 	// 파일 읽어서 출력하기
-	string str;
-	ifstream file("temp.txt"); // 연 월 날짜 이름 순으로 저장된 파일
+	string IDarr[DAYMAX];
+	int junk[DAYMAX];
+	ChalenderFileInput(date, IDarr, junk);
 
-	while (getline(file, str)) // 한줄씩 읽기
+	for (int i = 1; i < DAYMAX; i++)
 	{
-		string dateInfo, idInfo;
-		stringstream ss(str);
-		ss >> dateInfo >> idInfo;
-
-		string ssDate = dateInfo.substr(6);
-		int newDate = stoi(ssDate);
-		calendar->InsertInfo(newDate, idInfo);
+		calendar->InsertInfo(i, IDarr[i]);
 	}
 
 	calendar->PrintCalendar(date / 100, date % 100);
