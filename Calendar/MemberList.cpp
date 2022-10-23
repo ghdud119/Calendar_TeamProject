@@ -27,7 +27,7 @@ void MemberList::Insert()
 
 	while (true)
 	{
-		cout << "시작달을 입력해 주세요 : ";
+		cout << "시작달 입력 : ";
 		getline(cin, mtemp);
 
 		if (mtemp[0] == 27)
@@ -72,7 +72,7 @@ void MemberList::Insert()
 	bool IDCheck;
 	while (true)
 	{
-		cout << "아이디를 입력해 주세요 : ";
+		cout << "아이디 입력 : ";
 		getline(cin, input.ID);
 		IDCheck = false;
 
@@ -98,6 +98,7 @@ void MemberList::Insert()
 		else
 			cout << "이미 존재하는 아이디입니다.\n";
 	}
+	cout << "명단 등록이 완료되었습니다." << endl;
 	this->memberList.push_back(input);
 	Sort();
 }

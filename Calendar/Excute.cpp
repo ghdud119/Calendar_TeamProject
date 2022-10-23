@@ -55,7 +55,6 @@ void mainMenu()
 	{
 		char selectmenu;
 
-		cout << "메인메뉴 및 입력 프롬프트\n";
 		cout << "1. 근무표 관리\n";
 		cout << "2. 명단 관리\n";
 		cout << "ESC. 저장 및 종료\n";
@@ -90,8 +89,7 @@ void calendarMenu()
 	{
 		char selectmenu;
 
-		cout << "메인메뉴 및 입력 프롬프트\n";
-		cout << "1. 근무표 열람\n";
+		cout << "1. 근무표 확인\n";
 		cout << "2. 근무일 선택\n";
 		cout << "ESC. 저장 및 종료\n";
 
@@ -142,6 +140,7 @@ void listMenu()
 			if (isWorking == -1) // 작성 중인 근무표 있는지 변수
 			{
 				cout << "작성 중인 근무표가 완성되기 전까지 명단 등록을 할 수 없습니다." << endl;
+				// return;
 			}
 			memberList->Insert();
 			break;
@@ -163,11 +162,10 @@ void listMenu()
 
 void ChoiceDay()
 {
-	bool isNew = true;
 	string temp;
 	string id;
 	string input;
-	int date = 0;
+	int date = -1;
 
 	STATE[0] = confirmed;
 	for (int i = 1; i < DAYMAX; i++)
@@ -175,9 +173,9 @@ void ChoiceDay()
 		STATE[i] = vacant;
 	}
 
-	// 파일 읽기, isNew 변수 수정하기, date 변수 수정하기
+	// 파일 읽기, date 변수 수정하기
 
-	if (isNew) // condition 1. 작성 중 여부
+	if (date != -1) // condition 1. 작성 중 여부
 	{
 		for (int i = 0; i < DAYMAX; i++)
 		{
@@ -185,7 +183,7 @@ void ChoiceDay()
 			STATE[i] = vacant;
 		}
 
-		cout << "연월을 입력하십시오 : ";
+		cout << "근무표 작성을 시작합니다. 근무표를 작성할 연월을 입력하십시오. 입력 : ";
 		getline(cin, temp); //공백 입력 가능해야함.
 
 		if (!checkDate(temp))
@@ -194,6 +192,8 @@ void ChoiceDay()
 			return;
 		}
 		date = dateChanger(temp); // 형식 변환 string to int
+
+		// 파일 중에 동년 동월의 근무표가 있는지 확인하기
 	}
 	else
 	{
@@ -218,7 +218,7 @@ void ChoiceDay()
 		return;
 	}
 
-	cout << "아이디를 입력하십시오 : ";
+	cout << "아이디를 입력하십시오. 입력 : ";
 	cin >> id;
 	if (Search(&validlist, id) == -1) // condition 2. 유효한 아이디
 	{
@@ -253,7 +253,13 @@ void ChoiceDay()
 		rechoice = true;
 	}
 
-	cout << "희망 근무일을 입력하십시오 : ";
+	if (rechoice)
+	{
+		cout << "아직 다른 인원들이 근무일을 선택하지 않았습니다. 근무일을 수정하시겠습니까?";
+		// y or no 입력받기
+	}
+
+	cout << "희망 근무일을 입력하십시오. 입력 : ";
 	cin >> input;
 	if (input == "PASS") // condition 4. 패스 테스트
 	{
@@ -316,7 +322,7 @@ void ChoiceDay()
 					}
 					if (tcount < vcount)
 					{
-						cout << validlist[i].first.ID << "님이 근무일을 재선택해야합니다. (패스 조건 불만족)" << endl;
+						cout << validlist[i].first.ID << "%s 근무자는 근무일을 다시 선택해야 합니다. - 패스 조건 불만족" << endl;
 						validlist[Search(&validlist, id)].second = temp;
 					}
 				}
@@ -339,7 +345,7 @@ void ChoiceDay()
 
 	if (STATE[hopeday] == confirmed) // condition 5. 미확정 날짜
 	{
-		cout << "확정된 날짜입니다." << endl;
+		cout << "해당 근무일은 이미 확정되었습니다." << endl;
 		return;
 	}
 
@@ -353,7 +359,10 @@ void ChoiceDay()
 		}
 		else
 		{
+			cout << "해당 근무일은 %s 근무자가 점유 중입니다. 해당 근무일을 선택하시겠습니까?";
+			// y or no 입력받기
 			validlist[Search(&validlist, postID)].second -= 1; // 강탈, 점유자 근무횟수 감소
+			cout << "%s 근무자는 근무일을 다시 선택해야 합니다. - 근무일 강탈";
 		}
 	}
 
@@ -402,7 +411,7 @@ void showSchedule()
 {
 	string temp;
 	int date;
-	cout << "연월을 입력하십시오 : " << endl;
+	cout << "열람할 근무표의 연월을 입력하십시오 : " << endl;
 	getline(cin, temp);
 
 	if (checkDate(temp))
