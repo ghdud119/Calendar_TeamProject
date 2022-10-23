@@ -24,14 +24,22 @@ void MemberList::Insert()
 	string mtemp = "";
 
 	int tempInt = 0;
+	char escapeDetect = -1;
 
 	while (true)
 	{
 		cout << "시작달 입력 : ";
-		getline(cin, mtemp);
-
-		if (mtemp[0] == 27)
+		escapeDetect = _getch();
+		if (escapeDetect == 27)
+		{
 			return;
+		}
+		else
+		{
+			getline(cin, mtemp);
+			mtemp.insert(mtemp.length(), 0, escapeDetect);
+			escapeDetect = 0;
+		}
 
 		if (mtemp.length() == 7)
 		{
@@ -73,7 +81,17 @@ void MemberList::Insert()
 	while (true)
 	{
 		cout << "아이디 입력 : ";
-		getline(cin, input.ID);
+		escapeDetect = _getch();
+		if (escapeDetect == 27)
+		{
+			return;
+		}
+		else
+		{
+			getline(cin, input.ID);
+			input.ID.insert(input.ID.length(), 0, escapeDetect);
+			escapeDetect = 0;
+		}
 		IDCheck = false;
 
 		if (input.ID[0] == 27)
@@ -105,9 +123,19 @@ void MemberList::Insert()
 
 string MemberList::Delete()
 {
+	char escapeDetect = 0;
 	std::string ID;
 	cout << "삭제할 근무자의 아이디를 입력하십시오. 입력 : ";
-	getline(cin, ID);
+	if (escapeDetect == 27)
+	{
+		return;
+	}
+	else
+	{
+		getline(cin, ID);
+		ID.insert(ID.length(), 0, escapeDetect);
+		escapeDetect = 0;
+	}
 	int index = Search(ID);
 	if (index == -1)
 		cout << "존재하지 않는 아이디입니다.\n";
