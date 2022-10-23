@@ -26,6 +26,9 @@ enum state
 
 string ID[DAYMAX];
 int STATE[DAYMAX];
+vector<int> fileStatingMonth;
+vector<string> fileID;
+vector<string> fileChoiceDate;
 
 void mainMenu();
 void calendarMenu();
@@ -209,11 +212,20 @@ void ChoiceDay()
 	{
 		// ID, STATE 읽어 오기!!!
 		while (!inputFile.eof()) {	//모든 줄 읽는 작업
-			getline(inputFile, inputLine);
-			char lineid = inputLine[1];	//해당 줄의 ID 저장
+			getline(inputFile, inputLine, ' ');
+			vector<string> result;
+			result.push_back(inputLine);
+			string lineid = result[1];	//해당 줄의 ID 저장
+
+
 			for (int i = 2; i < inputLine.length(); i++) {	//근무 선택일 tempStr에 저장
 				tempStr += inputLine[i] + " ";
 			}
+			//파일에 들어있던 멤버들 미리 저장
+			fileStatingMonth.push_back((int)inputLine[0]);
+			fileID.push_back(lineid);
+			//이미 있던 날짜 데이터 미리 저장
+			fileChoiceDate.push_back(tempStr);
 
 			vector<string> dates;	//선택한 날짜를 넣는 vector
 			stringstream sstream(tempStr);	//tempStr을 쪼개기 위한 vector
@@ -445,6 +457,27 @@ void ChoiceDay()
 	}
 
 	// 파일 쓰기 ID, STATE 저장
+	ofstream outputFile;
+	outputFile.open("MemberListSaveFile.txt");
+	int idx = 0;	//줄 수
+	if (outputFile.is_open()) {
+		outputFile << Month << endl;	//맨 첫줄(월)
+		while (idx < fileID.size()) {
+			int outMonth = fileStatingMonth[idx];
+			string outID = fileID[idx];
+			vector<int> choday;
+			for (int i = 0; i < DAYMAX; i++) {
+				if (ID[i] == outID)
+					choday.push_back(i);
+			}
+
+			outputFile << outMonth << " " << outID << " ";
+			int count = 0;
+			while (!choday.empty())
+				outputFile << choday[count++] << " ";
+			outputFile << endl;
+		}
+	}
 }
 
 void showSchedule()
