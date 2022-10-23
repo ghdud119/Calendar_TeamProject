@@ -239,6 +239,13 @@ void ChoiceDay()
 
 
 	/***** 근무표 출력 *****/
+
+	for (int i = 1; i < DAYMAX; i++)
+	{
+		if (STATE[i])
+			calendar->InsertInfo(i, ID[i]);
+	}
+
 	calendar->PrintCalendar(date / 100, date % 100);
 
 	/***** 명단에서 근무 투입이 가능한 인원만 새로운 배열에 저장 *****/
@@ -528,7 +535,6 @@ void ChoiceDay()
 		STATE[hopeday] = occupied;
 		ID[hopeday] = id;
 		cout << "등록 완료";
-		calendar->InsertInfo(hopeday, id);
 		validlist[Search(&validlist, id)].second += 1; // 사용자 근무횟수 추가
 		ChalenderFileOutput(date, ID, STATE);
 	}
@@ -608,7 +614,8 @@ void showSchedule()
 
 	for (int i = 1; i < DAYMAX; i++)
 	{
-		calendar->InsertInfo(i, IDarr[i]);
+		if(junk[i])
+			calendar->InsertInfo(i, IDarr[i]);
 	}
 
 	calendar->PrintCalendar(date / 100, date % 100);
