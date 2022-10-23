@@ -293,7 +293,7 @@ void ChoiceDay()
 		cout << "아이디가 유효하지 않습니다." << endl;
 		return;
 	}
-	// 이하 Search는 반드시 성공함.
+	// 이하 Search는 반드시 성공한다.
 
 
 	/***** 입력받은 근무자가 수정하는 것인지 확인 *****/
@@ -384,7 +384,7 @@ void ChoiceDay()
 				if (validlist[i].second == PASS)
 				{
 					tcount = 0;
-					for (int i = 0; i < validlist.size(); i++) // 중복 코드
+					for (int i = 0; i < validlist.size(); i++)
 					{
 						if (validlist[i].first.ID.compare(id) == 0)
 						{
@@ -418,19 +418,19 @@ void ChoiceDay()
 
 	/***** 날짜를 입력하는 경우 *****/
 	int hopeday = stoi(input);
-	if (!checkDay(hopeday)) // condition 5. 입력의 유효성
+	if (!checkDay(hopeday))
 	{
 		cout << "날짜를 형식에 맞게 입력하십시오." << endl;
 		return;
 	}
 	/***** 규칙 - 오류(p.20) 확정된 날짜인 경우 *****/
-	if (STATE[hopeday] == confirmed) // condition 5. 미확정 날짜
+	if (STATE[hopeday] == confirmed)
 	{
 		cout << "해당 근무일은 이미 확정되었습니다." << endl;
 		return;
 	}
 	/***** 강탈을 시도하는 경우 우선순위를 비교 *****/
-	if (STATE[hopeday] == occupied) // condition 6. 우선순위 비교
+	if (STATE[hopeday] == occupied)
 	{
 		string postID = ID[hopeday];
 		if (validlist[Search(&validlist, postID)].first.startingMonth >= validlist[Search(&validlist, id)].first.startingMonth)
