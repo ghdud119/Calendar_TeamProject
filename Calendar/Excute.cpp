@@ -2,6 +2,7 @@
 #include <conio.h>
 #include <string>
 #include <vector>
+#include <sstream>
 #include "Calendar.h"
 #include "MemberList.h"
 
@@ -166,7 +167,7 @@ void ChoiceDay()
 	string id;
 	string input;
 	int date = -1;
-
+	int Month;
 	STATE[0] = confirmed;
 	for (int i = 1; i < DAYMAX; i++)
 	{
@@ -174,6 +175,15 @@ void ChoiceDay()
 	}
 
 	// 파일 읽기, date 변수 수정하기
+	ifstream inputFile;
+	inputFile.open("MemberListSaveFile.txt");
+
+	string inputLine = "";
+	string tempStr = "";
+
+	char check;
+	inputFile.get(check);
+	date = (int)check;
 
 	if (date != -1) // condition 1. 작성 중 여부
 	{
@@ -192,12 +202,33 @@ void ChoiceDay()
 			return;
 		}
 		date = dateChanger(temp); // 형식 변환 string to int
-
+		Month = date;
 		// 파일 중에 동년 동월의 근무표가 있는지 확인하기
 	}
 	else
 	{
 		// ID, STATE 읽어 오기!!!
+		while (!inputFile.eof()) {	//모든 줄 읽는 작업
+			getline(inputFile, inputLine);
+			char lineid = inputLine[1];	//해당 줄의 ID 저장
+			for (int i = 2; i < inputLine.length(); i++) {	//근무 선택일 tempStr에 저장
+				tempStr += inputLine[i] + " ";
+			}
+
+			vector<string> dates;	//선택한 날짜를 넣는 vector
+			stringstream sstream(tempStr);	//tempStr을 쪼개기 위한 vector
+			string choice_date;	//sstream을 공백을 기준으로 choice_date에 쪼개서 저장
+			while (getline(sstream, choice_date, ' ')) {
+				dates.push_back(choice_date);
+			}
+
+			for (int i = 0; i < dates.size(); i++) {	//dates에는 선택한 날짜들이 들어가있음
+				int index = stoi(dates[i]);	//선택한 날짜를 int인 index로 변환
+				ID[index] = lineid;	//선택한 날짜에 id 표시
+				STATE[index] = confirmed;	//선택한 날짜에 confirmed로 바꾸기
+			}
+		}
+		inputFile.close();
 		date = 0; // date 변수 수정은 여기서!!
 	}
 
