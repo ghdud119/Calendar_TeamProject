@@ -187,11 +187,6 @@ void ChoiceDay()
 	string input;
 	int date = -1;
 	int Month;
-	STATE[0] = confirmed;
-	for (int i = 1; i < DAYMAX; i++)
-	{
-		STATE[i] = vacant;
-	}
 
 	// 파일 읽기, date 변수 수정하기
 	ifstream inputFile;
@@ -204,7 +199,8 @@ void ChoiceDay()
 	inputFile.get(check);
 	date = (int)check;
 
-	if (date != -1) // condition 1. 작성 중 여부
+	/***** 작성 중인 근무표가 있는지 확인 *****/
+	if (date != -1)
 	{
 		for (int i = 0; i < DAYMAX; i++)
 		{
@@ -215,6 +211,7 @@ void ChoiceDay()
 		cout << "근무표 작성을 시작합니다. 근무표를 작성할 연월을 입력하십시오. 입력 : ";
 		getline(cin, temp); //공백 입력 가능해야함.
 
+		/***** 규칙 - 오류(p.19) 근무일 선택이 불가능한 경우 *****/
 		if (!checkDate(temp))
 		{
 			cout << "날짜를 형식에 맞게 입력하십시오." << endl;
@@ -260,12 +257,13 @@ void ChoiceDay()
 		date = 0; // date 변수 수정은 여기서!!
 	}
 
+
+	/***** 근무표 출력 *****/
 	calendar->PrintCalendar(date / 100, date % 100);
 
-	// 근무 투입이 가능한 인원만 추려냄.
+	/***** 명단에서 근무 투입이 가능한 인원만 새로운 배열에 저장 *****/
 	vector<pair<UserInformation, int>> validlist;
 	vector<UserInformation> *tmpv = memberList->GetMemberList();
-
 	int index = 0;
 	for (auto iter = tmpv->begin(); iter != tmpv->end(); iter++, index++)
 	{
@@ -273,27 +271,33 @@ void ChoiceDay()
 			validlist.push_back(make_pair(*iter, 0));
 	}
 
+	/***** 규칙 - 오류(p.19) 근무 투입이 가능한 사람이 1명 이하인 경우 *****/
 	if (validlist.size() <= 1) // 기획서 수정!!!!!
 	{
-		cout << "근무표를 작성하기에 인원이 충분하지 않습니다." << endl;
+		cout << "해당 연월에 투입될 수 있는 근무자가 1명 이하이므로 근무표 작성이 불가합니다." << endl;
 		return;
 	}
 
+	/***** 아이디 입력 받기 *****/
 	cout << "아이디를 입력하십시오. 입력 : ";
 	cin >> id;
+	/***** 규칙 - 오류(p.19) 근무일 선택이 불가능한 경우 *****/
 	if (memberList->Search(id) != -1 && Search(&validlist, id) == -1)
 	{
 		cout << id << "근무자는 근무자 요건을 만족하지 않습니다." << endl;
 		return;
 	}
-	else if (Search(&validlist, id) == -1) // condition 2. 유효한 아이디
+	/***** 입력 - 오류(p.18) 명단에 없는 아이디를 입력한 경우 *****/
+	else if (Search(&validlist, id) == -1)
 	{
 		cout << "아이디가 유효하지 않습니다." << endl;
 		return;
 	}
 	// 이하 Search는 반드시 성공함.
 
-	bool rechoice; // condition 3. 수정 여부
+
+	/***** 입력받은 근무자가 수정하는 것인지 확인 *****/
+	bool rechoice;
 	int min = 100;
 	int max = 0;
 	for (auto iter = validlist.begin(); iter != validlist.end(); iter++)
@@ -323,16 +327,18 @@ void ChoiceDay()
 	{
 		rechoice = true;
 	}
-
+	/***** 규칙 - 경고(p.20) 수정인 경우 확인 메시지 *****/
 	if (rechoice)
 	{
 		cout << "아직 다른 인원들이 근무일을 선택하지 않았습니다. 근무일을 수정하시겠습니까?";
 		// Y or N 입력받기, 유효성 검사하기, N이면 return하기
 	}
 
+	/***** 날짜 입력받기(PASS 가능) *****/
 	cout << "희망 근무일을 입력하십시오. 입력 : ";
 	cin >> input;
-	if (input == "PASS") // condition 4. 패스 테스트
+	/***** PASS를 입력한 경우 패스 테스트 *****/
+	if (input == "PASS")
 	{
 		int vcount = 0;
 		int tcount = 0;
@@ -359,18 +365,20 @@ void ChoiceDay()
 				tcount++;
 			}
 		}
+		/***** 패스 조건을 불만족한 경우 *****/
 		if (tcount < vcount)
 		{
 			cout << "패스 조건을 만족하지 않습니다." << endl;
 			return;
 		}
-
+		/***** 패스 조건을 만족했으며 수정하는 경우 *****/
 		if (rechoice)
 		{
 			cout << "패스가 완료되었습니다." << endl;
 			int temp = validlist[Search(&validlist, id)].second;
 			validlist[Search(&validlist, id)].second = PASS;
 
+			/***** 이전에 패스한 근무자들의 조건을 다시 검사함 *****/
 			for (int i = 0; i < validlist.size(); i++)
 			{
 				if (validlist[i].second == PASS)
@@ -394,12 +402,13 @@ void ChoiceDay()
 					if (tcount < vcount)
 					{
 						cout << validlist[i].first.ID << "근무자는 근무일을 다시 선택해야 합니다. - 패스 조건 불만족" << endl;
-						validlist[Search(&validlist, id)].second = temp;
+						validlist[Search(&validlist, id)].second = temp; // 근무투입횟수를 줄인다.
 					}
 				}
 			}
 			return;
 		}
+		/***** 패스 조건을 만족한 경우 *****/
 		else
 		{
 			validlist[Search(&validlist, id)].second = PASS;
@@ -407,19 +416,20 @@ void ChoiceDay()
 		}
 	}
 
+	/***** 날짜를 입력하는 경우 *****/
 	int hopeday = stoi(input);
 	if (!checkDay(hopeday)) // condition 5. 입력의 유효성
 	{
-		cout << "유효하지 않은 입력입니다." << endl;
+		cout << "날짜를 형식에 맞게 입력하십시오." << endl;
 		return;
 	}
-
+	/***** 규칙 - 오류(p.20) 확정된 날짜인 경우 *****/
 	if (STATE[hopeday] == confirmed) // condition 5. 미확정 날짜
 	{
 		cout << "해당 근무일은 이미 확정되었습니다." << endl;
 		return;
 	}
-
+	/***** 강탈을 시도하는 경우 우선순위를 비교 *****/
 	if (STATE[hopeday] == occupied) // condition 6. 우선순위 비교
 	{
 		string postID = ID[hopeday];
@@ -437,9 +447,11 @@ void ChoiceDay()
 		}
 	}
 
+	/***** 이하 모든 조건을 통과했으며 선택한 근무일이 반영됨 *****/
+
+	/***** 수정인 경우 이전에 점유 중이던 날짜를 비움 *****/
 	if (rechoice)
 	{
-		// 이전 선택 삭제
 		for (int i = 0; i < DAYMAX; i++)
 		{
 			if (ID[i] == id && STATE[i] == occupied)
@@ -447,12 +459,14 @@ void ChoiceDay()
 				STATE[i] = vacant;
 			}
 		}
+		/***** 선택한 날짜 반영 *****/
 		cout << "수정 완료" << endl;
 		STATE[hopeday] = occupied;
 		ID[hopeday] = id;
 		calendar->InsertInfo(hopeday, id);
 		return;
 	}
+	/***** 수정이 아닌 경우 선택한 날짜를 바로 반영함 *****/
 	else
 	{
 		STATE[hopeday] = occupied;
@@ -462,7 +476,7 @@ void ChoiceDay()
 
 	}
 
-	// 확정 갱신
+	/***** 근무자들의 선택횟수를 비교하여 확정함 *****/
 	int cmp = validlist[0].second;
 	for (int i = 0; i < validlist.size(); i++)
 	{
