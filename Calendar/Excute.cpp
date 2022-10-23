@@ -160,17 +160,31 @@ void listMenu()
 			deletedID = memberList->Delete();
 
 			if (deletedID == "-1")
-				cout << "delete failed"; // 삭제실패
+				cout << "아이디가 유효하지 않습니다.\n"; // 삭제실패
 			else
 			{
-				for (int i = 1; i < DAYMAX; i++) // 명단에서 삭제된 ID 근무표에서도 삭제
+				cout << "현재 근무표에 등록되어 있는 근무자입니다. 삭제하시겠습니까?";
+				char answer;
+				answer = _getch();
+				switch (answer)
 				{
-					if (ID[i] == deletedID)
+				case 'Y':
+					for (int i = 1; i < DAYMAX; i++) // 명단에서 삭제된 ID 근무표에서도 삭제
 					{
-						ID[i] = "";
-						STATE[i] = vacant;
+						if (ID[i] == deletedID)
+						{
+							ID[i] = "";
+							STATE[i] = vacant;
+						}
 					}
+					break;
+				case 'N':
+					return;
+
+				default:
+					break;
 				}
+
 			}
 			break;
 			break;
@@ -230,6 +244,17 @@ void ChoiceDay()
 		Month = date;
 		ChalenderFileInput(date, ID, STATE);
 		// 파일 중에 동년 동월의 근무표가 있는지 확인하기
+		int con_check = 0;
+		Calendar cal;
+		for (int i = 0; i < cal.Lastday(date / 100, date % 100); i++) {
+			if (STATE[i] == 2)
+				con_check++;
+		}
+		if (con_check == cal.Lastday(date / 100, date % 100)) {
+			cout << "동년 동월의 근무표가 존재합니다." << endl;
+			return;
+		}
+
 	}
 	else
 	{
