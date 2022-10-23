@@ -39,7 +39,8 @@ void showSchedule();
 
 bool checkID(string str);
 int dateChanger(string str);
-bool checkDay(int date);
+bool checkDayint(string str);
+bool checkDay(int date, int day);
 bool checkDate(string str);
 
 int Search(vector<pair<UserInformation, int>> *validlist, string id);
@@ -209,7 +210,19 @@ void ChoiceDay()
 		}
 
 		cout << "근무표 작성을 시작합니다. 근무표를 작성할 연월을 입력하십시오. 입력 : ";
-		getline(cin, temp); //공백 입력 가능해야함.
+
+		char escapeDetect = _getch();
+		if (escapeDetect == 27)
+		{
+			cout << endl;
+			return;
+		}
+		else
+		{
+			cout << escapeDetect;
+			getline(cin, temp);
+			temp.insert(0, 1, escapeDetect);
+		}
 
 		/***** 규칙 - 오류(p.19) 근무일 선택이 불가능한 경우 *****/
 		if (!checkDate(temp))
@@ -280,7 +293,20 @@ void ChoiceDay()
 
 	/***** 아이디 입력 받기 *****/
 	cout << "아이디를 입력하십시오. 입력 : ";
-	cin >> id;
+	// getline(cin, id);
+	char escapeDetect = _getch();
+	if (escapeDetect == 27)
+	{
+		cout << endl;
+		return;
+	}
+	else
+	{
+		cout << escapeDetect;
+		getline(cin, id);
+		id.insert(0, 1, escapeDetect);
+	}
+
 	/***** 규칙 - 오류(p.19) 근무일 선택이 불가능한 경우 *****/
 	if (memberList->Search(id) != -1 && Search(&validlist, id) == -1)
 	{
@@ -330,13 +356,63 @@ void ChoiceDay()
 	/***** 규칙 - 경고(p.20) 수정인 경우 확인 메시지 *****/
 	if (rechoice)
 	{
-		cout << "아직 다른 인원들이 근무일을 선택하지 않았습니다. 근무일을 수정하시겠습니까?";
+		cout << "아직 다른 인원들이 근무일을 선택하지 않았습니다. 근무일을 수정하시겠습니까?"; //6-2-2
+		char ans = _getch();
+
+		if (ans == 'Y') {
+			cout << "아이디를 입력하십시오. 입력 : ";
+			//getline(cin, id);
+			escapeDetect = _getch();
+			if (escapeDetect == 27)
+			{
+				cout << endl;
+				return;
+			}
+			else
+			{
+				cout << escapeDetect;
+				getline(cin, id);
+				id.insert(0, 1, escapeDetect);
+			}
+			/***** 규칙 - 오류(p.19) 근무일 선택이 불가능한 경우 *****/
+			if (memberList->Search(id) != -1 && Search(&validlist, id) == -1)
+			{
+				cout << id << "근무자는 근무자 요건을 만족하지 않습니다." << endl;
+				return;
+			}
+			/***** 입력 - 오류(p.18) 명단에 없는 아이디를 입력한 경우 *****/
+			else if (Search(&validlist, id) == -1)
+			{
+				cout << "아이디가 유효하지 않습니다." << endl;
+				return;
+			}
+		}
+		else if (ans == 'N') {
+			return;
+		}
+		else {
+			cout << "Y 또는 N만을 입력하십시오." << endl;
+			return;
+		}
 		// Y or N 입력받기, 유효성 검사하기, N이면 return하기
 	}
 
 	/***** 날짜 입력받기(PASS 가능) *****/
 	cout << "희망 근무일을 입력하십시오. 입력 : ";
-	cin >> input;
+	//getline(cin, input);
+
+	escapeDetect = _getch();
+	if (escapeDetect == 27)
+	{
+		cout << endl;
+		return;
+	}
+	else
+	{
+		cout << escapeDetect;
+		getline(cin, input);
+		input.insert(0, 1, escapeDetect);
+	}
 	/***** PASS를 입력한 경우 패스 테스트 *****/
 	if (input == "PASS")
 	{
@@ -417,8 +493,14 @@ void ChoiceDay()
 	}
 
 	/***** 날짜를 입력하는 경우 *****/
+	if (!checkDayint(input)) //숫자가 아닌 애들 거르기
+	{
+		cout << "날짜를 형식에 맞게 입력하십시오." << endl;
+		return;
+	}
 	int hopeday = stoi(input);
-	if (!checkDay(hopeday))
+
+	if (!checkDay(date, hopeday))
 	{
 		cout << "날짜를 형식에 맞게 입력하십시오." << endl;
 		return;
@@ -533,7 +615,22 @@ void showSchedule()
 	string temp;
 	int date;
 	cout << "열람할 근무표의 연월을 입력하십시오 : " << endl;
-	getline(cin, temp);
+
+	//getline(cin, temp);
+
+	char escapeDetect = _getch();
+	if (escapeDetect == 27)
+	{
+		cout << endl;
+		return;
+	}
+	else
+	{
+		cout << escapeDetect;
+		getline(cin, temp);
+		temp.insert(0, 1, escapeDetect);
+		cout << temp;
+	}
 
 	if (!checkDate(temp))
 	{
@@ -541,6 +638,7 @@ void showSchedule()
 		return;
 	}
 	date = dateChanger(temp); // 형식 변환 string to int
+
 
 	// 파일 읽어서 출력하기
 	string str;
@@ -583,18 +681,43 @@ int dateChanger(string str)
 	return stoi(temp);
 }
 
-bool checkDay(int date)
-{
-	if (date < 10 && date > 0)
-	{
-		return true;
-	}
-	else if (date <= 31) // 수정 필요
-	{
-		return true;
+bool checkDayint(string str) {
+	//이게 불렸다는 건 PASS가 아닌 숫자여야만 함.
+	if (str.length() != 1 && str.length() != 2)
+	{ //전체 문자열 길이 체크
+		return false;
 	}
 
-	return false;
+	for (int i = 0; i < str.length(); i++)
+	{
+		if (isdigit(str[i]) == 0)
+		{ //숫자가 아님
+			return false;
+		}
+	}
+	return true;
+}
+
+bool checkDay(int date, int day)
+{
+	int checkyear = date / 100;
+	int checkmon = date % 100;
+
+	int m[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+	if (checkyear % 4 == 0 && checkyear % 100 != checkyear % 400 == 0) {
+		m[1] = 29;
+	}
+	else {
+		m[1] = 28;
+	}
+
+	if (day > 0 && day <= m[checkmon - 1]) {
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
 bool checkDate(string str)
