@@ -548,18 +548,23 @@ void ChoiceDay()
 			STATE[i] = confirmed;
 		}
 	}
+	
+	bool complete = true;
 	for (int i = 1; i < DAYMAX; i++)
 	{
 		if (STATE[i] == vacant)
 		{
-			break;
+			complete = false;
 		}
 	}
-	for (int i = 0; i < DAYMAX; i++) // 근무표가 완성되면 확정으로 변경
+	if (complete)
 	{
-		STATE[i] = confirmed;
+		for (int i = 0; i < DAYMAX; i++) // 근무표가 완성되면 확정으로 변경
+		{
+			STATE[i] = confirmed;
+		}
+		isWorking = -1;
 	}
-	isWorking = -1;
 
 	// 파일 쓰기 ID, STATE 저장
 	ChalenderFileOutput(date, ID, STATE);
