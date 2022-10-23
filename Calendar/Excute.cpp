@@ -59,6 +59,7 @@ int main()
 
 void mainMenu()
 {
+	isWorking = stoi(memberList->GetWorkingCalender());
 	bool status = true;
 	do
 	{
@@ -93,6 +94,7 @@ void mainMenu()
 
 void calendarMenu()
 {
+
 	bool status = true;
 	do
 	{
@@ -517,7 +519,7 @@ void ChoiceDay()
 		ID[hopeday] = id;
 		cout << "등록 완료";
 		validlist[Search(&validlist, id)].second += 1; // 사용자 근무횟수 추가
-
+		ChalenderFileOutput(date, ID, STATE);
 	}
 
 	/***** 근무자들의 선택횟수를 비교하여 확정함 *****/
