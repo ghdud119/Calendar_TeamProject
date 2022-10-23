@@ -253,7 +253,7 @@ void ChoiceDay()
 	cin >> id;
 	if (memberList->Search(id) != -1 && Search(&validlist, id) == -1)
 	{
-		cout << "%s 근무자는 근무자 요건을 만족하지 않습니다." << endl;
+		cout << id << "근무자는 근무자 요건을 만족하지 않습니다." << endl;
 		return;
 	}
 	else if (Search(&validlist, id) == -1) // condition 2. 유효한 아이디
@@ -358,7 +358,7 @@ void ChoiceDay()
 					}
 					if (tcount < vcount)
 					{
-						cout << validlist[i].first.ID << "%s 근무자는 근무일을 다시 선택해야 합니다. - 패스 조건 불만족" << endl;
+						cout << validlist[i].first.ID << "근무자는 근무일을 다시 선택해야 합니다. - 패스 조건 불만족" << endl;
 						validlist[Search(&validlist, id)].second = temp;
 					}
 				}
@@ -395,10 +395,10 @@ void ChoiceDay()
 		}
 		else
 		{
-			cout << "해당 근무일은 %s 근무자가 점유 중입니다. 해당 근무일을 선택하시겠습니까?";
+			cout << "해당 근무일은" << postID << "근무자가 점유 중입니다.해당 근무일을 선택하시겠습니까 ? ";
 			// Y or N 입력받기, 유효성 검사하기, N이면 return하기
 			validlist[Search(&validlist, postID)].second -= 1; // 강탈, 점유자 근무횟수 감소
-			cout << "%s 근무자는 근무일을 다시 선택해야 합니다. - 근무일 강탈";
+			cout << postID << "근무자는 근무일을 다시 선택해야 합니다. - 근무일 강탈";
 		}
 	}
 
