@@ -283,7 +283,7 @@ void ChoiceDay()
 		}
 		for (int i = 0; i < validlist.size(); i++)
 		{
-			if (target.first.startingMonth > validlist[i].first.startingMonth)
+			if (target.first.startingMonth > validlist[i].first.startingMonth && target.second <= validlist[i].second)
 			{
 				tcount++;
 			}
@@ -379,13 +379,15 @@ void ChoiceDay()
 		cout << "수정 완료" << endl;
 		STATE[hopeday] = occupied;
 		ID[hopeday] = id;
-		return;
 	}
+	else
+	{
+		STATE[hopeday] = occupied;
+		ID[hopeday] = id;
+		cout << "등록 완료";
+		validlist[Search(&validlist, id)].second += 1; // 사용자 근무횟수 추가
 
-	STATE[hopeday] = occupied;
-	ID[hopeday] = id;
-	cout << "등록 완료";
-	validlist[Search(&validlist, id)].second += 1; // 사용자 근무횟수 추가
+	}
 
 	// 확정 갱신
 	int cmp = validlist[0].second;
