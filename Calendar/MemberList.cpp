@@ -206,6 +206,7 @@ bool MemberList::FileInput()
 				}
 				workingMonthCheck = false;
 				continue;
+				
 			}
 
 			count = 0;

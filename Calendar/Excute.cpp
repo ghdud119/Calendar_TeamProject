@@ -13,6 +13,8 @@ MemberList *memberList = new MemberList();
 int isWorking = -1;
 string deletedID = "-1";
 
+
+
 const int DAYMAX = 32;
 const int IDMAX = 16;
 const int DATEMAX = 7;
@@ -51,7 +53,6 @@ int Search(vector<pair<UserInformation, int>> *validlist, string id);
 int main()
 {
 	mainMenu();
-
 	memberList->~MemberList();
 	calendar->~Calendar();
 	return 0;
@@ -743,7 +744,7 @@ int Search(vector<pair<UserInformation, int>> *validlist, string id) // Å½»ö ´ë»
 	return -1;
 }
 
-bool ChalenderFileInput(int month, string* ID, int* STATE)
+bool ChalenderFileInput(int month, string* _ID, int* _STATE)
 {
 	string inputFileName = to_string(month);
 	inputFileName.insert(4, "-");
@@ -815,10 +816,10 @@ bool ChalenderFileInput(int month, string* ID, int* STATE)
 				}
 			}
 		}
-		for (int i = 0; i < DATEMAX; i++)
+		for (int i = 1; i < DATEMAX; i++)
 		{
-			ID[i] = tempID[i];
-			STATE[i] = tempState[i];
+			_ID[i] = tempID[i];
+			_STATE[i] = tempState[i];
 		}
 	}
 	else
