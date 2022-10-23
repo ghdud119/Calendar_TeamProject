@@ -45,7 +45,7 @@ void Calendar::PrintCalendar(int year, int month)
 	{
 
 		cout << setw(WIDTH) << i << " ";
-		if (weekDay(year, month, i) == 6 && Lastday(year, month) != i)
+		if (weekDay(year, month, i) == 6 || Lastday(year, month) == i)
 		{
 			printf("\n");
 			if (cnt == 0)
@@ -61,8 +61,8 @@ void Calendar::PrintCalendar(int year, int month)
 				{
 					if (j + cnt == ChoicedInfo[t].first) // 5 ~ 12
 					{
-						if (ChoicedInfo[t].second.size() > 6)
-							ChoicedInfo[t].second = ChoicedInfo[t].second.substr(0, 6);
+						if (ChoicedInfo[t].second.size() > WIDTH)
+							ChoicedInfo[t].second = ChoicedInfo[t].second.substr(0, WIDTH);
 						cout << setw(WIDTH) << ChoicedInfo[t].second << " ";
 						isFull = 1;
 					}
@@ -72,12 +72,15 @@ void Calendar::PrintCalendar(int year, int month)
 
 			cnt = i;
 
-			printf("\n\n");
+			if (Lastday(year, month) != i)printf("\n\n");
 		}
 	}
 	printf("\n");
 	for (int i = 0; i < (WIDTH + 1) * 7; i++)	printf("_"); // --------
 	printf("\n");
+	
+	while(!ChoicedInfo.empty())
+		ChoicedInfo.erase(ChoicedInfo.begin());
 }
 
 void Calendar::InsertInfo(int date, string name)
