@@ -194,15 +194,15 @@ void ChoiceDay()
 	int date = -1;
 	int Month;
 
-	/***** 작성 중인 근무표가 있는지 확인 *****/
-	if (date != -1)
+	for (int i = 0; i < DAYMAX; i++)
 	{
-		for (int i = 0; i < DAYMAX; i++)
-		{
-			ID[i] = "";
-			STATE[i] = vacant;
-		}
+		ID[i] = "";
+		STATE[i] = vacant;
+	}
 
+	/***** 작성 중인 근무표가 있는지 확인 *****/
+	if (date == -1)
+	{
 		cout << "근무표 작성을 시작합니다. 근무표를 작성할 연월을 입력하십시오. 입력 : ";
 
 		char escapeDetect = _getch();
@@ -240,7 +240,7 @@ void ChoiceDay()
 
 	/***** 명단에서 근무 투입이 가능한 인원만 새로운 배열에 저장 *****/
 	vector<pair<UserInformation, int>> validlist;
-	vector<UserInformation> *tmpv = memberList->GetMemberList();
+	vector<UserInformation>* tmpv = memberList->GetMemberList();
 	int index = 0;
 	for (auto iter = tmpv->begin(); iter != tmpv->end(); iter++, index++)
 	{
@@ -253,6 +253,15 @@ void ChoiceDay()
 	{
 		cout << "해당 연월에 투입될 수 있는 근무자가 1명 이하이므로 근무표 작성이 불가합니다." << endl;
 		return;
+	}
+
+	// 파일을 불러온 경우 근무 횟수 변경함
+	for (int i = 1; i < DAYMAX; i++)
+	{
+		if (STATE[i] != vacant)
+		{
+			validlist[Search(&validlist, ID[i])].second += 1;
+		}
 	}
 
 	/***** 아이디 입력 받기 *****/
@@ -382,7 +391,7 @@ void ChoiceDay()
 	{
 		int vcount = 0;
 		int tcount = 0;
-		for (int i = 0; i < DAYMAX; i++)
+		for (int i = 1; i < DAYMAX; i++)
 		{
 			if (STATE[i] == vacant)
 			{
@@ -400,7 +409,7 @@ void ChoiceDay()
 		}
 		for (int i = 0; i < validlist.size(); i++)
 		{
-			if (target.first.startingMonth > validlist[i].first.startingMonth && target.second <= validlist[i].second)
+			if (target.first.startingMonth < validlist[i].first.startingMonth && target.second <= validlist[i].second)
 			{
 				tcount++;
 			}
