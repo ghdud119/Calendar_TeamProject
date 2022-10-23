@@ -505,8 +505,18 @@ void ChoiceDay()
 		}
 		else
 		{
-			cout << "해당 근무일은" << postID << "근무자가 점유 중입니다.해당 근무일을 선택하시겠습니까 ? ";
-			// Y or N 입력받기, 유효성 검사하기, N이면 return하기
+			cout << "해당 근무일은" << postID << "근무자가 점유 중입니다.해당 근무일을 선택하시겠습니까?\n";
+			char ans = _getch();
+
+			if (ans == 'Y') {
+			}
+			else if (ans == 'N') {
+				return;
+			}
+			else {
+				cout << "Y 또는 N만을 입력하십시오." << endl;
+				return;
+			}
 			validlist[Search(&validlist, postID)].second -= 1; // 강탈, 점유자 근무횟수 감소
 			cout << postID << "근무자는 근무일을 다시 선택해야 합니다. - 근무일 강탈";
 		}
