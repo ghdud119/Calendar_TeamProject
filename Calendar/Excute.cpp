@@ -191,7 +191,7 @@ void ChoiceDay()
 	string temp;
 	string id;
 	string input;
-	int date = -1;
+	int date = isWorking;
 	int Month;
 
 	for (int i = 0; i < DAYMAX; i++)
@@ -519,7 +519,6 @@ void ChoiceDay()
 		STATE[hopeday] = occupied;
 		ID[hopeday] = id;
 		calendar->InsertInfo(hopeday, id);
-		return;
 	}
 	/***** 수정이 아닌 경우 선택한 날짜를 바로 반영함 *****/
 	else
@@ -558,6 +557,7 @@ void ChoiceDay()
 	{
 		STATE[i] = confirmed;
 	}
+	isWorking = -1;
 
 	// 파일 쓰기 ID, STATE 저장
 	ChalenderFileOutput(date, ID, STATE);
