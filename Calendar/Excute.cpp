@@ -220,6 +220,10 @@ void ChoiceDay()
 
 	cout << "아이디를 입력하십시오. 입력 : ";
 	cin >> id;
+	if (memberList->Search(id) != -1 && Search(&validlist, id) == -1)
+	{
+		cout << "%s 근무자는 근무자 요건을 만족하지 않습니다." << endl;
+	}
 	if (Search(&validlist, id) == -1) // condition 2. 유효한 아이디
 	{
 		cout << "아이디가 유효하지 않습니다." << endl;
