@@ -128,7 +128,7 @@ string MemberList::Delete()
 	cout << "삭제할 근무자의 아이디를 입력하십시오. 입력 : ";
 	if (escapeDetect == 27)
 	{
-		return;
+		return "-1";
 	}
 	else
 	{
