@@ -219,17 +219,6 @@ void ChoiceDay()
 		}
 		date = dateChanger(temp); // 형식 변환 string to int
 		Month = date;
-
-		/***** 명단에서 근무 투입이 가능한 인원만 새로운 배열에 저장 *****/
-		vector<pair<UserInformation, int>> validlist;
-		vector<UserInformation>* tmpv = memberList->GetMemberList();
-		int index = 0;
-		for (auto iter = tmpv->begin(); iter != tmpv->end(); iter++, index++)
-		{
-			if (iter->startingMonth < date)
-				validlist.push_back(make_pair(*iter, 0));
-		}
-
 		// 파일 중에 동년 동월의 근무표가 있는지 확인하기
 	}
 	else
@@ -271,6 +260,16 @@ void ChoiceDay()
 
 	/***** 근무표 출력 *****/
 	calendar->PrintCalendar(date / 100, date % 100);
+
+	/***** 명단에서 근무 투입이 가능한 인원만 새로운 배열에 저장 *****/
+	vector<pair<UserInformation, int>> validlist;
+	vector<UserInformation> *tmpv = memberList->GetMemberList();
+	int index = 0;
+	for (auto iter = tmpv->begin(); iter != tmpv->end(); iter++, index++)
+	{
+		if (iter->startingMonth < date)
+			validlist.push_back(make_pair(*iter, 0));
+	}
 
 	/***** 규칙 - 오류(p.19) 근무 투입이 가능한 사람이 1명 이하인 경우 *****/
 	if (validlist.size() <= 1) // 기획서 수정!!!!!
@@ -492,6 +491,17 @@ void ChoiceDay()
 		{
 			STATE[i] = confirmed;
 		}
+	}
+	for (int i = 1; i < DAYMAX; i++)
+	{
+		if (STATE[i] == vacant)
+		{
+			break;
+		}
+	}
+	for (int i = 0; i < DAYMAX; i++) // 근무표가 완성되면 확정으로 변경
+	{
+		STATE[i] = confirmed;
 	}
 
 	// 파일 쓰기 ID, STATE 저장
