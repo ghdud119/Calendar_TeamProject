@@ -188,7 +188,7 @@ void ChoiceDay()
 		cout << "연월을 입력하십시오 : ";
 		getline(cin, temp); //공백 입력 가능해야함.
 
-		if (checkDate(temp))
+		if (!checkDate(temp))
 		{
 			cout << "날짜를 형식에 맞게 입력하십시오." << endl;
 			return;
