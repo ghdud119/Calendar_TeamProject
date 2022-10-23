@@ -254,8 +254,9 @@ void ChoiceDay()
 	if (memberList->Search(id) != -1 && Search(&validlist, id) == -1)
 	{
 		cout << "%s 근무자는 근무자 요건을 만족하지 않습니다." << endl;
+		return;
 	}
-	if (Search(&validlist, id) == -1) // condition 2. 유효한 아이디
+	else if (Search(&validlist, id) == -1) // condition 2. 유효한 아이디
 	{
 		cout << "아이디가 유효하지 않습니다." << endl;
 		return;

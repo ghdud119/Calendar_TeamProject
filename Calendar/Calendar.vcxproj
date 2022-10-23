@@ -28,7 +28,6 @@
     <ClInclude Include="MemberList.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ListSave.txt" />
     <Text Include="MemberListSaveFile.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

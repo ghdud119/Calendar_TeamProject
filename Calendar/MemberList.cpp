@@ -106,7 +106,7 @@ void MemberList::Insert()
 void MemberList::Delete()
 {
 	std::string ID;
-	cout << "아이디을 입력해 주세요 : ";
+	cout << "삭제할 근무자의 아이디를 입력하십시오. 입력 : ";
 	getline(cin, ID);
 	int index = Search(ID);
 	if (index == -1)
