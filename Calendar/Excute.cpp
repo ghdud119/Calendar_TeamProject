@@ -524,7 +524,7 @@ void showSchedule()
 	cout << "열람할 근무표의 연월을 입력하십시오 : " << endl;
 	getline(cin, temp);
 
-	if (checkDate(temp))
+	if (!checkDate(temp))
 	{
 		cout << "날짜를 형식에 맞게 입력하십시오." << endl;
 		return;
@@ -532,6 +532,21 @@ void showSchedule()
 	date = dateChanger(temp); // 형식 변환 string to int
 
 	// 파일 읽어서 출력하기
+	string str;
+	ifstream file("temp.txt"); // 연 월 날짜 이름 순으로 저장된 파일
+
+	while (getline(file, str)) // 한줄씩 읽기
+	{
+		string dateInfo, idInfo;
+		stringstream ss(str);
+		ss >> dateInfo >> idInfo;
+
+		string ssDate = dateInfo.substr(6);
+		int newDate = stoi(ssDate);
+		calendar->InsertInfo(newDate, idInfo);
+	}
+
+	calendar->PrintCalendar(date / 100, date % 100);
 }
 
 bool checkID(string str)
