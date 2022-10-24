@@ -53,6 +53,7 @@ int Search(vector<pair<UserInformation, int>> *validlist, string id);
 int main()
 {
 	mainMenu();
+	memberList->FileOutput(isWorking);
 	memberList->~MemberList();
 	calendar->~Calendar();
 	return 0;
@@ -256,11 +257,12 @@ void ChoiceDay()
 			return;
 		}
 		lastday = cal.Lastday(date / 100, date % 100);
-
+		isWorking = date;
 	}
 	else
 	{
 		date = stoi(memberList->GetWorkingCalender());
+		isWorking = date;
 		ChalenderFileInput(date, ID, STATE);
 		Calendar cal;
 		lastday = cal.Lastday(date / 100, date % 100);
@@ -618,6 +620,7 @@ void ChoiceDay()
 	}
 	
 	// 파일 쓰기 ID, STATE 저장
+	memberList->FileOutput(isWorking);
 	ChalenderFileOutput(date, ID, STATE);
 }
 

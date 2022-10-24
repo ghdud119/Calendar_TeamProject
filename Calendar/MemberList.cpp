@@ -14,7 +14,7 @@ MemberList::MemberList()
 
 MemberList::~MemberList()
 {
-	FileOutput();
+	// FileOutput();
 }
 
 void MemberList::Insert()
@@ -273,14 +273,14 @@ bool MemberList::FileInput()
 	return true;
 }
 
-void MemberList::FileOutput()
+void MemberList::FileOutput(int isw)
 {
 	ofstream outputFile;
 	outputFile.open(SAVEFILE);
 
 	if (outputFile.is_open())
 	{
-		outputFile << workingMonth << endl;
+		outputFile << isw << endl;
 		for (auto iter = memberList.begin(); iter != memberList.end(); iter++)
 		{
 			if (iter->startingMonth / 100000 < 1)

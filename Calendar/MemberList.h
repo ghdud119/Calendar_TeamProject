@@ -36,7 +36,7 @@ public:
 	vector<UserInformation> *GetMemberList() { return &memberList; }
 
 	bool FileInput();
-	void FileOutput();
+	void FileOutput(int isw);
 
 private:
 	void Sort();
