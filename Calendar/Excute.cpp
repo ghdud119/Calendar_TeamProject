@@ -475,7 +475,7 @@ void ChoiceDay()
 			}
 
 			cout << "패스가 완료되었습니다." << endl;
-			int temp = validlist[Search(&validlist, id)].second;
+			int postnum = validlist[Search(&validlist, id)].second;
 			validlist[Search(&validlist, id)].second = PASS;
 
 			/***** 이전에 패스한 근무자들의 조건을 다시 검사함 *****/
@@ -486,29 +486,26 @@ void ChoiceDay()
 					tcount = 0;
 					vcount = 0;
 					target = validlist[i];
-				}
-				else
-				{
-					continue;
-				}
-				for (int k = 1; k <= lastday; k++)
-				{
-					if (STATE[k] == vacant)
+
+					for (int k = 1; k <= lastday; k++)
 					{
-						vcount++;
+						if (STATE[k] == vacant)
+						{
+							vcount++;
+						}
 					}
-				}
-				for (int j = 0; j < validlist.size(); j++)
-				{
-					if (target.first.startingMonth < validlist[j].first.startingMonth && target.second >= validlist[j].second)
+					for (int j = 0; j < validlist.size(); j++)
 					{
-						tcount++;
+						if (target.first.startingMonth < validlist[j].first.startingMonth && target.second >= validlist[j].second)
+						{
+							tcount++;
+						}
 					}
-				}
-				if (tcount < vcount)
-				{
-					cout << validlist[i].first.ID << "근무자는 근무일을 다시 선택해야 합니다. - 패스 조건 불만족" << endl;
-					validlist[Search(&validlist, id)].second = temp; // 근무투입횟수를 줄인다.
+					if (tcount < vcount)
+					{
+						cout << validlist[i].first.ID << "근무자는 근무일을 다시 선택해야 합니다. - 패스 조건 불만족" << endl;
+						validlist[Search(&validlist, id)].second = postnum; // 근무투입횟수를 줄인다.
+					}
 				}
 			}
 			memberList->FileOutput(isWorking);
