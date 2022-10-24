@@ -255,7 +255,7 @@ void ChoiceDay()
 			cout << "동년 동월의 근무표가 존재합니다." << endl;
 			return;
 		}
-		lastday = cal.Lastday(date / 100, date % 100) + 1;
+		lastday = cal.Lastday(date / 100, date % 100);
 
 	}
 	else
@@ -263,13 +263,13 @@ void ChoiceDay()
 		date = stoi(memberList->GetWorkingCalender());
 		ChalenderFileInput(date, ID, STATE);
 		Calendar cal;
-		lastday = cal.Lastday(date / 100, date % 100) + 1;
+		lastday = cal.Lastday(date / 100, date % 100);
 	}
 
 
 	/***** 근무표 출력 *****/
 
-	for (int i = 1; i < lastday; i++)
+	for (int i = 1; i <= lastday; i++)
 	{
 		if (STATE[i])
 			calendar->InsertInfo(i, ID[i]);
@@ -295,7 +295,7 @@ void ChoiceDay()
 	}
 
 	// 파일을 불러온 경우 근무 횟수 변경함
-	for (int i = 1; i < lastday; i++)
+	for (int i = 1; i <= lastday; i++)
 	{
 		if (STATE[i] != vacant)
 		{
@@ -430,7 +430,7 @@ void ChoiceDay()
 	{
 		int vcount = 0;
 		int tcount = 0;
-		for (int i = 1; i < lastday; i++)
+		for (int i = 1; i <= lastday; i++)
 		{
 			if (STATE[i] == vacant)
 			{
@@ -556,7 +556,7 @@ void ChoiceDay()
 	/***** 수정인 경우 이전에 점유 중이던 날짜를 비움 *****/
 	if (rechoice)
 	{
-		for (int i = 0; i < lastday; i++)
+		for (int i = 0; i <= lastday; i++)
 		{
 			if (ID[i] == id && STATE[i] == occupied)
 			{
@@ -578,40 +578,45 @@ void ChoiceDay()
 		ChalenderFileOutput(date, ID, STATE);
 	}
 
-	/***** 근무자들의 선택횟수를 비교하여 확정함 *****/
-	int cmp = validlist[0].second;
-	for (int i = 0; i < validlist.size(); i++)
-	{
-		if (cmp != validlist[i].second)
-		{
-			return;
-		}
-	}
-	for (int i = 0; i < lastday; i++) // 모든 근무자의 근무횟수가 같으면 확정으로 변경
-	{
-		if (STATE[i] == occupied)
-		{
-			STATE[i] = confirmed;
-		}
-	}
-	
-	bool complete = true;
-	for (int i = 1; i < lastday; i++)
+	/***** 완성되면 확정으로 변경 *****/
+	int complete = 1;
+	for (int i = 1; i <= lastday; i++)
 	{
 		if (STATE[i] == vacant)
 		{
-			complete = false;
+			complete = 0;
 		}
 	}
-	if (complete)
+	if (complete == 1)
 	{
-		for (int i = 0; i < lastday; i++) // 근무표가 완성되면 확정으로 변경
+		for (int i = 0; i <= lastday; i++) // 근무표가 완성되면 확정으로 변경
 		{
 			STATE[i] = confirmed;
 		}
 		isWorking = -1;
 	}
 
+	/***** 근무자들의 선택횟수를 비교하여 확정함 *****/
+	int cof = 1;
+	int cmp = validlist[0].second;
+	for (int i = 0; i < validlist.size(); i++)
+	{
+		if (cmp != validlist[i].second)
+		{
+			cof = 0;
+		}
+	}
+	if (cof == 1)
+	{
+		for (int i = 0; i <= lastday; i++) // 모든 근무자의 근무횟수가 같으면 확정으로 변경
+		{
+			if (STATE[i] == occupied)
+			{
+				STATE[i] = confirmed;
+			}
+		}
+	}
+	
 	// 파일 쓰기 ID, STATE 저장
 	ChalenderFileOutput(date, ID, STATE);
 }
@@ -799,7 +804,7 @@ bool ChalenderFileInput(int month, string* _ID, int* _STATE)
 	inputFile.open(inputFileName);
 
 	Calendar cal;
-	int lastday = cal.Lastday(month / 100, month % 100) + 1;
+	int lastday = cal.Lastday(month / 100, month % 100);
 
 	string tempID[DAYMAX] = { "" };
 	int tempState[DAYMAX] = { 0 };
@@ -865,7 +870,7 @@ bool ChalenderFileInput(int month, string* _ID, int* _STATE)
 				}
 			}
 		}
-		for (int i = 1; i < lastday; i++)
+		for (int i = 1; i <= lastday; i++)
 		{
 			_ID[i] = tempID[i];
 			_STATE[i] = tempState[i];
@@ -891,11 +896,11 @@ void ChalenderFileOutput(int month, string* ID, int* STATE)
 	outputFile.open(outPutFileName);
 
 	Calendar cal;
-	int lastday = cal.Lastday(month / 100, month % 100) + 1;
+	int lastday = cal.Lastday(month / 100, month % 100);
 
 	if (outputFile.is_open())
 	{
-		for (int i = 1; i < lastday; i++)
+		for (int i = 1; i <= lastday; i++)
 		{
 			outputFile << i << " " << ID[i] << " " << STATE[i] << endl;
 		}
