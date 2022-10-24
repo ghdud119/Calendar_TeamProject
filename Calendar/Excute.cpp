@@ -444,7 +444,7 @@ void ChoiceDay()
 		}
 		for (int i = 0; i < validlist.size(); i++)
 		{
-			if (target.first.startingMonth < validlist[i].first.startingMonth && target.second > validlist[i].second)
+			if (target.first.startingMonth < validlist[i].first.startingMonth && target.second >= validlist[i].second)
 			{
 				tcount++;
 			}
@@ -478,7 +478,7 @@ void ChoiceDay()
 					}
 					for (int i = 0; i < validlist.size(); i++)
 					{
-						if (target.first.startingMonth < validlist[i].first.startingMonth && target.second > validlist[i].second)
+						if (target.first.startingMonth < validlist[i].first.startingMonth && target.second >= validlist[i].second)
 						{
 							tcount++;
 						}
