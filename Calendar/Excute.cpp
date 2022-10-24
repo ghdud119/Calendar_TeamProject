@@ -372,6 +372,7 @@ void ChoiceDay()
 	{
 		cout << "아직 다른 인원들이 근무일을 선택하지 않았습니다. 근무일을 수정하시겠습니까?"; //6-2-2
 		char ans = _getch();
+		cin.clear();
 
 		if (ans == 'Y') {
 			cout << "아이디를 입력하십시오. 입력 : ";
@@ -464,6 +465,15 @@ void ChoiceDay()
 		/***** 패스 조건을 만족했으며 수정하는 경우 *****/
 		if (rechoice)
 		{
+			for (int i = 0; i <= lastday; i++)
+			{
+				if (ID[i] == id && STATE[i] == occupied)
+				{
+					ID[i] = "";
+					STATE[i] = vacant;
+				}
+			}
+
 			cout << "패스가 완료되었습니다." << endl;
 			int temp = validlist[Search(&validlist, id)].second;
 			validlist[Search(&validlist, id)].second = PASS;
@@ -496,6 +506,8 @@ void ChoiceDay()
 					}
 				}
 			}
+			memberList->FileOutput(isWorking);
+			ChalenderFileOutput(date, ID, STATE);
 			return;
 		}
 		/***** 패스 조건을 만족한 경우 *****/
