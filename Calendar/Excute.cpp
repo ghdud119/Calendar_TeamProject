@@ -152,7 +152,7 @@ void listMenu()
 			if (isWorking != -1) // 작성 중인 근무표 있는지 변수
 			{
 				cout << "작성 중인 근무표가 완성되기 전까지 명단 등록을 할 수 없습니다." << endl;
-				// return;
+				return;
 			}
 			memberList->Insert();
 			break;
