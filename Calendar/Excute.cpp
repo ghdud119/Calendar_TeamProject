@@ -484,26 +484,31 @@ void ChoiceDay()
 				if (validlist[i].second == PASS)
 				{
 					tcount = 0;
-					for (int i = 0; i < validlist.size(); i++)
+					vcount = 0;
+					target = validlist[i];
+				}
+				else
+				{
+					continue;
+				}
+				for (int k = 1; k <= lastday; k++)
+				{
+					if (STATE[k] == vacant)
 					{
-						if (validlist[i].first.ID.compare(id) == 0)
-						{
-							target = validlist[i];
-							break;
-						}
+						vcount++;
 					}
-					for (int i = 0; i < validlist.size(); i++)
+				}
+				for (int j = 0; j < validlist.size(); j++)
+				{
+					if (target.first.startingMonth < validlist[j].first.startingMonth && target.second >= validlist[j].second)
 					{
-						if (target.first.startingMonth < validlist[i].first.startingMonth && target.second >= validlist[i].second)
-						{
-							tcount++;
-						}
+						tcount++;
 					}
-					if (tcount < vcount)
-					{
-						cout << validlist[i].first.ID << "근무자는 근무일을 다시 선택해야 합니다. - 패스 조건 불만족" << endl;
-						validlist[Search(&validlist, id)].second = temp; // 근무투입횟수를 줄인다.
-					}
+				}
+				if (tcount < vcount)
+				{
+					cout << validlist[i].first.ID << "근무자는 근무일을 다시 선택해야 합니다. - 패스 조건 불만족" << endl;
+					validlist[Search(&validlist, id)].second = temp; // 근무투입횟수를 줄인다.
 				}
 			}
 			memberList->FileOutput(isWorking);
@@ -515,8 +520,12 @@ void ChoiceDay()
 		{
 			validlist[Search(&validlist, id)].second = PASS;
 			cout << "패스가 완료되었습니다." << endl;
+			memberList->FileOutput(isWorking);
+			ChalenderFileOutput(date, ID, STATE);
+			return;
 		}
 	}
+	cin.clear();
 
 	/***** 날짜를 입력하는 경우 *****/
 	if (!checkDayint(input)) //숫자가 아닌 애들 거르기
@@ -541,7 +550,7 @@ void ChoiceDay()
 	if (STATE[hopeday] == occupied)
 	{
 		string postID = ID[hopeday];
-		if (validlist[Search(&validlist, postID)].first.startingMonth >= validlist[Search(&validlist, id)].first.startingMonth)
+		if (validlist[Search(&validlist, postID)].first.startingMonth < validlist[Search(&validlist, id)].first.startingMonth)
 		{
 			cout << "우선 순위가 낮아서 강탈할 수 없습니다." << endl;
 			return;
