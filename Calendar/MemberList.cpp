@@ -283,6 +283,8 @@ void MemberList::FileOutput()
 		outputFile << workingMonth << endl;
 		for (auto iter = memberList.begin(); iter != memberList.end(); iter++)
 		{
+			if (iter->startingMonth / 100000 < 1)
+				outputFile << "0";
 			outputFile << iter->startingMonth << " " << iter->ID << endl;
 		}
 	}
