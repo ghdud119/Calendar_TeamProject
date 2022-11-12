@@ -292,7 +292,7 @@ void ChoiceDay()
 	/***** 규칙 - 오류(p.19) 근무 투입이 가능한 사람이 1명 이하인 경우 *****/
 	if (validlist.size() <= 1) // 기획서 수정!!!!!
 	{
-		cout << "해당 연월에 투입될 수 있는 근무자가 1명 이하이므로 근무표 작성이 불가합니다." << endl;
+		cout << "유효근무자가 1명 이하이므로 근무표 작성이 불가합니다." << endl;
 		return;
 	}
 
@@ -584,7 +584,7 @@ void ChoiceDay()
 			}
 		}
 		/***** 선택한 날짜 반영 *****/
-		cout << "수정 완료" << endl;
+		cout << "근무일 수정이 완료되었습니다." << endl;
 		STATE[hopeday] = occupied;
 		ID[hopeday] = id;
 	}
@@ -593,7 +593,7 @@ void ChoiceDay()
 	{
 		STATE[hopeday] = occupied;
 		ID[hopeday] = id;
-		cout << "등록 완료";
+		cout << "근무일 수정이 완료되었습니다.";
 		validlist[Search(&validlist, id)].second += 1; // 사용자 근무횟수 추가
 		ChalenderFileOutput(date, ID, STATE);
 	}
