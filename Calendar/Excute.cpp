@@ -13,6 +13,11 @@ MemberList *memberList = new MemberList();
 int isWorking = -1;
 string deletedID = "-1";
 
+struct Team
+{
+	string TeamName = "ERROR";
+	UserInformation userinfo[3];
+};
 
 
 const int DAYMAX = 32;
@@ -28,6 +33,9 @@ enum state
 };
 
 string ID[DAYMAX];
+string team[DAYMAX];
+vector<Team> teamList;
+
 int STATE[DAYMAX];
 vector<int> fileStatingMonth;
 vector<string> fileID;
@@ -45,8 +53,8 @@ bool checkDayint(string str);
 bool checkDay(int date, int day);
 bool checkDate(string str);
 
-bool ChalenderFileInput(int month, string* ID, int* STATE);
-void ChalenderFileOutput(int month, string* ID, int* STATE);
+bool ChalenderFileInput(int month, string* team, int* STATE);
+void ChalenderFileOutput(int month, Team, int* STATE);
 
 int Search(vector<pair<UserInformation, int>> *validlist, string id);
 
@@ -816,7 +824,7 @@ int Search(vector<pair<UserInformation, int>> *validlist, string id) // Å½»ö ´ë»
 	return -1;
 }
 
-bool ChalenderFileInput(int month, string* _ID, int* _STATE)
+bool ChalenderFileInput(int month, string* team, vector<Team>* teamList int* _STATE)
 {
 	string inputFileName = to_string(month);
 	inputFileName.insert(4, "-");
@@ -827,7 +835,7 @@ bool ChalenderFileInput(int month, string* _ID, int* _STATE)
 	Calendar cal;
 	int lastday = cal.Lastday(month / 100, month % 100);
 
-	string tempID[DAYMAX] = { "" };
+	Team tempTeam[DAYMAX];
 	int tempState[DAYMAX] = { 0 };
 
 
@@ -866,11 +874,29 @@ bool ChalenderFileInput(int month, string* _ID, int* _STATE)
 					}
 					case 1:
 					{
-						tempID[dayCount] = tempStr;
+						tempTeam->TeamName.assign(tempStr);
 						tempStr = "";
 						break;
 					}
 					case 2:
+					{
+						tempTeam->userinfo[0].ID.assign(tempStr);
+						tempStr = "";
+						break;
+					}
+					case 3:
+					{
+						tempTeam->userinfo[1].ID.assign(tempStr);
+						tempStr = "";
+						break;
+					}
+					case 4:
+					{
+						tempTeam->userinfo[2].ID.assign(tempStr);
+						tempStr = "";
+						break;
+					}
+					case 5:
 					{
 						if (stoi(tempStr) > 2 || stoi(tempStr) < 0)
 						{
@@ -891,11 +917,17 @@ bool ChalenderFileInput(int month, string* _ID, int* _STATE)
 				}
 			}
 		}
-		for (int i = 1; i <= lastday; i++)
 		{
-			_ID[i] = tempID[i];
-			_STATE[i] = tempState[i];
+			int i = 0;
+			for (auto iter = teamList->begin(); iter != teamList->end(); iter++)
+			{
+				iter->TeamName.assign(tempTeam->TeamName);
+				iter->userinfo[0].ID.assign(tempTeam->userinfo[0].ID);
+				iter->userinfo[1].ID.assign(tempTeam->userinfo[1].ID);
+				iter->userinfo[2].ID.assign(tempTeam->userinfo[2].ID);
+			}
 		}
+		
 	}
 	else
 	{
@@ -908,7 +940,7 @@ bool ChalenderFileInput(int month, string* _ID, int* _STATE)
 	return month;
 }
 
-void ChalenderFileOutput(int month, string* ID, int* STATE)
+void ChalenderFileOutput(int month, vector<Team>* teamList, string* team, int* STATE)
 {
 	string outPutFileName = to_string(month);
 	outPutFileName.insert(4, "-");
@@ -921,9 +953,14 @@ void ChalenderFileOutput(int month, string* ID, int* STATE)
 
 	if (outputFile.is_open())
 	{
-		for (int i = 1; i <= lastday; i++)
+		for (auto iter = teamList->begin(); iter != teamList->end(); iter++)
 		{
-			outputFile << i << " " << ID[i] << " " << STATE[i] << endl;
+			outputFile << iter->TeamName << " " << iter->userinfo[0].ID << " " << iter->userinfo[1].ID << " " << iter->userinfo[2].ID;
+		}
+		outputFile << "_";
+		for (int i = 1; i < DAYMAX; i++)
+		{
+			outputFile << DAYMAX << " " << team[i] << " " << STATE[i];
 		}
 	}
 	outputFile.close();
