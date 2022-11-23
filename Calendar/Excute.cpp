@@ -37,6 +37,7 @@ string team[DAYMAX];
 vector<Team> teamList;
 
 int STATE[DAYMAX];
+
 vector<int> fileStatingMonth;
 vector<string> fileID;
 vector<string> fileChoiceDate;
@@ -53,8 +54,8 @@ bool checkDayint(string str);
 bool checkDay(int date, int day);
 bool checkDate(string str);
 
-bool ChalenderFileInput(int month, string* team, int* STATE);
-void ChalenderFileOutput(int month, Team, int* STATE);
+bool ChalenderFileInput(int month, string* team, vector<Team>* teamList, int* _STATE);
+void ChalenderFileOutput(int month, vector<Team>* teamList, string* team, int* STATE);
 
 int Search(vector<pair<UserInformation, int>> *validlist, string id);
 
@@ -252,7 +253,7 @@ void ChoiceDay()
 		}
 		date = dateChanger(temp); // 형식 변환 string to int
 		Month = date;
-		ChalenderFileInput(date, ID, STATE);
+		//ChalenderFileInput(date, ID, STATE);
 		// 파일 중에 동년 동월의 근무표가 있는지 확인하기
 		int con_check = 0;
 		Calendar cal;
@@ -271,7 +272,7 @@ void ChoiceDay()
 	{
 		date = stoi(memberList->GetWorkingCalender());
 		isWorking = date;
-		ChalenderFileInput(date, ID, STATE);
+		//ChalenderFileInput(date, ID, STATE);
 		Calendar cal;
 		lastday = cal.Lastday(date / 100, date % 100);
 	}
@@ -517,7 +518,7 @@ void ChoiceDay()
 				}
 			}
 			memberList->FileOutput(isWorking);
-			ChalenderFileOutput(date, ID, STATE);
+			//ChalenderFileOutput(date, ID, STATE);
 			return;
 		}
 		/***** 패스 조건을 만족한 경우 *****/
@@ -526,7 +527,7 @@ void ChoiceDay()
 			validlist[Search(&validlist, id)].second = PASS;
 			cout << "패스가 완료되었습니다." << endl;
 			memberList->FileOutput(isWorking);
-			ChalenderFileOutput(date, ID, STATE);
+			//ChalenderFileOutput(date, ID, STATE);
 			return;
 		}
 	}
@@ -603,7 +604,7 @@ void ChoiceDay()
 		ID[hopeday] = id;
 		cout << "근무일 수정이 완료되었습니다.";
 		validlist[Search(&validlist, id)].second += 1; // 사용자 근무횟수 추가
-		ChalenderFileOutput(date, ID, STATE);
+		//ChalenderFileOutput(date, ID, STATE);
 	}
 
 	/***** 완성되면 확정으로 변경 *****/
@@ -647,7 +648,7 @@ void ChoiceDay()
 	
 	// 파일 쓰기 ID, STATE 저장
 	memberList->FileOutput(isWorking);
-	ChalenderFileOutput(date, ID, STATE);
+	//ChalenderFileOutput(date, ID, STATE);
 }
 
 void showSchedule()
@@ -683,7 +684,7 @@ void showSchedule()
 	// 파일 읽어서 출력하기
 	string IDarr[DAYMAX];
 	int junk[DAYMAX];
-	ChalenderFileInput(date, IDarr, junk);
+	//ChalenderFileInput(date, IDarr, junk);
 
 	for (int i = 1; i < DAYMAX; i++)
 	{
@@ -824,110 +825,98 @@ int Search(vector<pair<UserInformation, int>> *validlist, string id) // 탐색 대�
 	return -1;
 }
 
-bool ChalenderFileInput(int month, string* team, vector<Team>* teamList int* _STATE)
+//input(불러올 달, 달의 근무일정 배열, 팀 리스트 배열, State 배열) *주의 실행시 팀리스트 배열은 초기화되며, 해당 달의 팀으로 재작성됨.
+bool ChalenderFileInput(int month, string* team, vector<Team>* teamList, int* _STATE)
 {
+	//해당 달 이름의 파일 열기
 	string inputFileName = to_string(month);
 	inputFileName.insert(4, "-");
 	inputFileName += ".txt";
 	ifstream inputFile;
 	inputFile.open(inputFileName);
-
+	
 	Calendar cal;
 	int lastday = cal.Lastday(month / 100, month % 100);
 
-	Team tempTeam[DAYMAX];
+	string tempTeam[DAYMAX];
 	int tempState[DAYMAX] = { 0 };
 
 
 	string inputLine = "";
 	string tempStr = "";
-
-	int dayCount = 0;
 	int count = 0;
 
 	if (inputFile.is_open())
 	{
+		teamList->clear();
+		int count = 0;
+		vector<string> tempStr;
+		string strBuffer;
+		Team tempTeam;
+		//TeamList 추출
 		while (getline(inputFile, inputLine))
-		{	
-			count = 0;
-			inputLine += " ";
-
-			for (int i = 0; i < inputLine.length(); i++)
+		{
+			if (inputLine.compare("-"))
 			{
-				if (inputLine[i] != ' ')
+				istringstream iss(inputLine);
+				while (getline(iss, strBuffer, ' '))
 				{
-					tempStr += inputLine[i];
+					tempStr.push_back(strBuffer);
 				}
-				else
+				for (auto iter = tempStr.begin(); iter != tempStr.end(); iter++, count++)
 				{
 					switch (count)
 					{
 					case 0:
-					{
-						dayCount = stoi(tempStr);
-						if (dayCount > 32)
-						{
-							printf("파일 읽기 오류, 저장파일의 문법이 잘못되었습니다.\n");
-							return false;
-						}
-						tempStr = "";
-					}
+						tempTeam.TeamName.assign(*iter);
+						break;
 					case 1:
-					{
-						tempTeam->TeamName.assign(tempStr);
-						tempStr = "";
+						tempTeam.userinfo[0].ID.assign(*iter);
 						break;
-					}
 					case 2:
-					{
-						tempTeam->userinfo[0].ID.assign(tempStr);
-						tempStr = "";
+						tempTeam.userinfo[0].startingMonth = stoi(*iter);
 						break;
-					}
 					case 3:
-					{
-						tempTeam->userinfo[1].ID.assign(tempStr);
-						tempStr = "";
+						tempTeam.userinfo[1].ID.assign(*iter);
 						break;
-					}
 					case 4:
-					{
-						tempTeam->userinfo[2].ID.assign(tempStr);
-						tempStr = "";
+						tempTeam.userinfo[1].startingMonth = stoi(*iter);
 						break;
-					}
 					case 5:
-					{
-						if (stoi(tempStr) > 2 || stoi(tempStr) < 0)
-						{
-							printf("파일 읽기 오류, 저장파일의 문법이 잘못되었습니다.\n");
-							return false;
-						}
-						tempState[dayCount] = stoi(tempStr);
-						tempStr = "";
+						tempTeam.userinfo[2].ID.assign(*iter);
 						break;
-					}
+					case 6:
+						tempTeam.userinfo[2].startingMonth = stoi(*iter);
+						break;
+
 					default:
-						printf("파일 읽기 오류, 저장파일의 문법이 잘못되었습니다.\n");
-						return false;
-					}
-					count++;
-					if (count > 2)
 						break;
+					}
 				}
+				teamList->push_back(tempTeam);
+				count = 0;
+				tempStr.clear();
 			}
-		}
-		{
-			int i = 0;
-			for (auto iter = teamList->begin(); iter != teamList->end(); iter++)
+			else
 			{
-				iter->TeamName.assign(tempTeam->TeamName);
-				iter->userinfo[0].ID.assign(tempTeam->userinfo[0].ID);
-				iter->userinfo[1].ID.assign(tempTeam->userinfo[1].ID);
-				iter->userinfo[2].ID.assign(tempTeam->userinfo[2].ID);
-			}
+				break;
+			}	
 		}
-		
+
+		//근무일정 추출
+		count = 1;
+		while (getline(inputFile, inputLine))
+		{
+			istringstream iss(inputLine);
+			while (getline(iss, strBuffer, ' '))
+			{
+				tempStr.push_back(strBuffer);
+			}
+			team[count] = tempStr[1];
+			_STATE[count] = stoi(tempStr[2]);
+			tempStr.clear();
+			count++;
+		}
 	}
 	else
 	{
@@ -935,7 +924,17 @@ bool ChalenderFileInput(int month, string* team, vector<Team>* teamList int* _ST
 		printf("새 저장 파일을 생성하였습니다.\n");
 		NewSaveFile.close();
 	}
+
 	inputFile.close();
+
+	for (auto iter = teamList->begin(); iter != teamList->end(); iter++)
+	{
+		cout << "팀이름 : " << iter->TeamName << "팀원들" << iter->userinfo[0].ID << " " << iter->userinfo[2].startingMonth << endl;
+	}
+	for (auto iter = team->begin(); iter != team->end(); iter++)
+	{
+		cout << team << endl;
+	}
 
 	return month;
 }
@@ -955,7 +954,7 @@ void ChalenderFileOutput(int month, vector<Team>* teamList, string* team, int* S
 	{
 		for (auto iter = teamList->begin(); iter != teamList->end(); iter++)
 		{
-			outputFile << iter->TeamName << " " << iter->userinfo[0].ID << " " << iter->userinfo[1].ID << " " << iter->userinfo[2].ID;
+			outputFile << iter->TeamName << " " << iter->userinfo[0].ID << " " << iter->userinfo[0].startingMonth << " " << iter->userinfo[1].ID << iter->userinfo[1].startingMonth << " " << iter->userinfo[2].ID <<" "<< iter->userinfo[2].startingMonth;
 		}
 		outputFile << "_";
 		for (int i = 1; i < DAYMAX; i++)
