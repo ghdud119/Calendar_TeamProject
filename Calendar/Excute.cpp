@@ -293,6 +293,7 @@ void ChoiceDay()
 	if (validlist.size() <= 1) // 기획서 수정!!!!!
 	{
 		cout << "유효근무자가 1명 이하이므로 근무표 작성이 불가합니다." << endl;
+		isWorking = -1;
 		return;
 	}
 
