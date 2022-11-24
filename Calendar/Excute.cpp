@@ -826,7 +826,7 @@ int Search(vector<pair<UserInformation, int>> *validlist, string id) // 탐색 �
 	return -1;
 }
 
-//input(불러올 달, 달의 근무일정 배열, 팀 리스트 배열, State 배열) *주의 실행시 팀리스트 배열은 초기화되며, 해당 달의 팀으로 재작성됨.
+//input(불러올 달, 달의 근무일정 배열, 팀 리스트 배열, State 배열) output(파일 존재시 true, 새로 생성시 false 출력) *주의 실행시 팀리스트 배열은 초기화되며, 해당 달의 팀으로 재작성됨.
 bool ChalenderFileInput(int month, string* team, vector<Team>* teamList, int* _STATE)
 {
 	//해당 달 이름의 파일 열기
@@ -838,10 +838,6 @@ bool ChalenderFileInput(int month, string* team, vector<Team>* teamList, int* _S
 	
 	Calendar cal;
 	int lastday = cal.Lastday(month / 100, month % 100);
-
-	string tempTeam[DAYMAX];
-	int tempState[DAYMAX] = { 0 };
-
 
 	string inputLine = "";
 	string tempStr = "";
@@ -924,20 +920,12 @@ bool ChalenderFileInput(int month, string* team, vector<Team>* teamList, int* _S
 		ofstream NewSaveFile(inputFileName);
 		printf("새 저장 파일을 생성하였습니다.\n");
 		NewSaveFile.close();
+		return false;
 	}
 
 	inputFile.close();
 
-	for (auto iter = teamList->begin(); iter != teamList->end(); iter++)
-	{
-		cout << "팀이름 : " << iter->TeamName << "팀원들" << iter->userinfo[0].ID << " " << iter->userinfo[2].startingMonth << endl;
-	}
-	for (auto iter = team->begin(); iter != team->end(); iter++)
-	{
-		cout << team << endl;
-	}
-
-	return month;
+	return true;
 }
 
 void ChalenderFileOutput(int month, vector<Team>* teamList, string* team, int* STATE)
