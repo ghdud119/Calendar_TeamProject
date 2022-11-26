@@ -8,8 +8,8 @@
 
 using namespace std;
 
-Calendar *calendar = new Calendar();
-MemberList *memberList = new MemberList();
+Calendar* calendar = new Calendar();
+MemberList* memberList = new MemberList();
 int isWorking = -1;
 string deletedID = "-1";
 
@@ -57,7 +57,7 @@ bool checkDate(string str);
 bool ChalenderFileInput(int month, string* team, vector<Team>* teamList, int* _STATE);
 void ChalenderFileOutput(int month, vector<Team>* teamList, string* team, int* STATE);
 
-int Search(vector<pair<UserInformation, int>> *validlist, string id);
+int Search(vector<pair<UserInformation, int>>* validlist, string id);
 
 int main()
 {
@@ -76,9 +76,9 @@ void mainMenu()
 	{
 		char selectmenu;
 
-		cout << "1. ê·¼ë¬´í‘œ ê´€ë¦¬\n";
-		cout << "2. ëª…ë‹¨ ê´€ë¦¬\n";
-		cout << "ESC. ì €ì¥ ë° ì¢…ë£Œ\n";
+		cout << "1. ±Ù¹«Ç¥ °ü¸®\n";
+		cout << "2. ¸í´Ü °ü¸®\n";
+		cout << "ESC. ÀúÀå ¹× Á¾·á\n";
 
 		selectmenu = _getch();
 
@@ -90,12 +90,12 @@ void mainMenu()
 		case 50: // 2
 			listMenu();
 			break;
-		case 27: // ESC í‚¤
+		case 27: // ESC Å°
 			status = false;
 			break;
 		default:
-			cout << selectmenu << " ì…ë ¥.\n";
-			cout << "ë©”ë‰´ì— ì¡´ì¬í•˜ëŠ” í•œ ìë¦¬ ìˆ«ìë§Œì„ ì…ë ¥í•˜ì‹­ì‹œì˜¤.\n";
+			cout << selectmenu << " ÀÔ·Â.\n";
+			cout << "¸Ş´º¿¡ Á¸ÀçÇÏ´Â ÇÑ ÀÚ¸® ¼ıÀÚ¸¸À» ÀÔ·ÂÇÏ½Ê½Ã¿À.\n";
 			break;
 		}
 
@@ -111,9 +111,9 @@ void calendarMenu()
 	{
 		char selectmenu;
 
-		cout << "1. ê·¼ë¬´í‘œ í™•ì¸\n";
-		cout << "2. ê·¼ë¬´ì¼ ì„ íƒ\n";
-		cout << "ESC. ì €ì¥ ë° ì¢…ë£Œ\n";
+		cout << "1. ±Ù¹«Ç¥ È®ÀÎ\n";
+		cout << "2. ±Ù¹«ÀÏ ¼±ÅÃ\n";
+		cout << "ESC. ÀúÀå ¹× Á¾·á\n";
 
 		selectmenu = _getch();
 
@@ -125,12 +125,12 @@ void calendarMenu()
 		case 50: // 2
 			ChoiceDay();
 			break;
-		case 27: // ESC í‚¤
+		case 27: // ESC Å°
 			status = false;
 			break;
 		default:
-			cout << selectmenu << " ì…ë ¥.\n";
-			cout << "ë©”ë‰´ì— ì¡´ì¬í•˜ëŠ” í•œ ìë¦¬ ìˆ«ìë§Œì„ ì…ë ¥í•˜ì‹­ì‹œì˜¤.\n";
+			cout << selectmenu << " ÀÔ·Â.\n";
+			cout << "¸Ş´º¿¡ Á¸ÀçÇÏ´Â ÇÑ ÀÚ¸® ¼ıÀÚ¸¸À» ÀÔ·ÂÇÏ½Ê½Ã¿À.\n";
 			break;
 		}
 
@@ -145,11 +145,11 @@ void listMenu()
 	{
 		char selectmenu;
 
-		cout << "ë©”ì¸ë©”ë‰´ ë° ì…ë ¥ í”„ë¡¬í”„íŠ¸\n";
-		cout << "1. ëª…ë‹¨ ë³´ê¸°\n";
-		cout << "2. ëª…ë‹¨ ë“±ë¡\n";
-		cout << "3. ëª…ë‹¨ ì‚­ì œ\n";
-		cout << "ESC. ì €ì¥ ë° ì¢…ë£Œ\n";
+		cout << "¸ŞÀÎ¸Ş´º ¹× ÀÔ·Â ÇÁ·ÒÇÁÆ®\n";
+		cout << "1. ¸í´Ü º¸±â\n";
+		cout << "2. ¸í´Ü µî·Ï\n";
+		cout << "3. ¸í´Ü »èÁ¦\n";
+		cout << "ESC. ÀúÀå ¹× Á¾·á\n";
 
 		selectmenu = _getch();
 
@@ -159,9 +159,9 @@ void listMenu()
 			memberList->PrintList();
 			break;
 		case 50:				 // 2
-			if (isWorking != -1) // ì‘ì„± ì¤‘ì¸ ê·¼ë¬´í‘œ ìˆëŠ”ì§€ ë³€ìˆ˜
+			if (isWorking != -1) // ÀÛ¼º ÁßÀÎ ±Ù¹«Ç¥ ÀÖ´ÂÁö º¯¼ö
 			{
-				cout << "ì‘ì„± ì¤‘ì¸ ê·¼ë¬´í‘œê°€ ì™„ì„±ë˜ê¸° ì „ê¹Œì§€ ëª…ë‹¨ ë“±ë¡ì„ í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤." << endl;
+				cout << "ÀÛ¼º ÁßÀÎ ±Ù¹«Ç¥°¡ ¿Ï¼ºµÇ±â Àü±îÁö ¸í´Ü µî·ÏÀ» ÇÒ ¼ö ¾ø½À´Ï´Ù." << endl;
 				return;
 			}
 			memberList->Insert();
@@ -170,16 +170,16 @@ void listMenu()
 			deletedID = memberList->Delete();
 
 			if (deletedID == "-1")
-				cout << "ì•„ì´ë””ê°€ ìœ íš¨í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.\n"; // ì‚­ì œì‹¤íŒ¨
+				cout << "¾ÆÀÌµğ°¡ À¯È¿ÇÏÁö ¾Ê½À´Ï´Ù.\n"; // »èÁ¦½ÇÆĞ
 			else
 			{
-				cout << "í˜„ì¬ ê·¼ë¬´í‘œì— ë“±ë¡ë˜ì–´ ìˆëŠ” ê·¼ë¬´ìì…ë‹ˆë‹¤. ì‚­ì œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?";
+				cout << "ÇöÀç ±Ù¹«Ç¥¿¡ µî·ÏµÇ¾î ÀÖ´Â ±Ù¹«ÀÚÀÔ´Ï´Ù. »èÁ¦ÇÏ½Ã°Ú½À´Ï±î?";
 				char answer;
 				answer = _getch();
 				switch (answer)
 				{
 				case 'Y':
-					for (int i = 1; i < DAYMAX; i++) // ëª…ë‹¨ì—ì„œ ì‚­ì œëœ ID ê·¼ë¬´í‘œì—ì„œë„ ì‚­ì œ
+					for (int i = 1; i < DAYMAX; i++) // ¸í´Ü¿¡¼­ »èÁ¦µÈ ID ±Ù¹«Ç¥¿¡¼­µµ »èÁ¦
 					{
 						if (ID[i] == deletedID)
 						{
@@ -198,12 +198,12 @@ void listMenu()
 			}
 			break;
 			break;
-		case 27: // ESC í‚¤
+		case 27: // ESC Å°
 			status = false;
 			break;
 		default:
-			cout << selectmenu << " ì…ë ¥.\n";
-			cout << "ë©”ë‰´ì— ì¡´ì¬í•˜ëŠ” í•œ ìë¦¬ ìˆ«ìë§Œì„ ì…ë ¥í•˜ì‹­ì‹œì˜¤.\n";
+			cout << selectmenu << " ÀÔ·Â.\n";
+			cout << "¸Ş´º¿¡ Á¸ÀçÇÏ´Â ÇÑ ÀÚ¸® ¼ıÀÚ¸¸À» ÀÔ·ÂÇÏ½Ê½Ã¿À.\n";
 			break;
 		}
 
@@ -220,7 +220,7 @@ void ChoiceDay()
 	int Month;
 	int lastday;
 
-	/***** ì‘ì„± ì¤‘ì¸ ê·¼ë¬´í‘œê°€ ìˆëŠ”ì§€ í™•ì¸ *****/
+	/***** ÀÛ¼º ÁßÀÎ ±Ù¹«Ç¥°¡ ÀÖ´ÂÁö È®ÀÎ *****/
 	if (date == -1)
 	{
 		for (int i = 0; i < DAYMAX; i++)
@@ -229,7 +229,7 @@ void ChoiceDay()
 			STATE[i] = vacant;
 		}
 
-		cout << "ê·¼ë¬´í‘œ ì‘ì„±ì„ ì‹œì‘í•©ë‹ˆë‹¤. ê·¼ë¬´í‘œë¥¼ ì‘ì„±í•  ì—°ì›”ì„ ì…ë ¥í•˜ì‹­ì‹œì˜¤. ì…ë ¥ : ";
+		cout << "±Ù¹«Ç¥ ÀÛ¼ºÀ» ½ÃÀÛÇÕ´Ï´Ù. ±Ù¹«Ç¥¸¦ ÀÛ¼ºÇÒ ¿¬¿ùÀ» ÀÔ·ÂÇÏ½Ê½Ã¿À. ÀÔ·Â : ";
 
 		char escapeDetect = _getch();
 		if (escapeDetect == 27)
@@ -242,19 +242,19 @@ void ChoiceDay()
 			cout << escapeDetect;
 			getline(cin, temp);
 			temp.insert(0, 1, escapeDetect);
-			
+
 		}
 
-		/***** ê·œì¹™ - ì˜¤ë¥˜(p.19) ê·¼ë¬´ì¼ ì„ íƒì´ ë¶ˆê°€ëŠ¥í•œ ê²½ìš° *****/
+		/***** ±ÔÄ¢ - ¿À·ù(p.19) ±Ù¹«ÀÏ ¼±ÅÃÀÌ ºÒ°¡´ÉÇÑ °æ¿ì *****/
 		if (!checkDate(temp))
 		{
-			cout << "ë‚ ì§œë¥¼ í˜•ì‹ì— ë§ê²Œ ì…ë ¥í•˜ì‹­ì‹œì˜¤." << endl;
+			cout << "³¯Â¥¸¦ Çü½Ä¿¡ ¸Â°Ô ÀÔ·ÂÇÏ½Ê½Ã¿À." << endl;
 			return;
 		}
-		date = dateChanger(temp); // í˜•ì‹ ë³€í™˜ string to int
+		date = dateChanger(temp); // Çü½Ä º¯È¯ string to int
 		Month = date;
 		//ChalenderFileInput(date, ID, STATE);
-		// íŒŒì¼ ì¤‘ì— ë™ë…„ ë™ì›”ì˜ ê·¼ë¬´í‘œê°€ ìˆëŠ”ì§€ í™•ì¸í•˜ê¸°
+		// ÆÄÀÏ Áß¿¡ µ¿³â µ¿¿ùÀÇ ±Ù¹«Ç¥°¡ ÀÖ´ÂÁö È®ÀÎÇÏ±â
 		int con_check = 0;
 		Calendar cal;
 		for (int i = 0; i < cal.Lastday(date / 100, date % 100); i++) {
@@ -262,7 +262,7 @@ void ChoiceDay()
 				con_check++;
 		}
 		if (con_check == cal.Lastday(date / 100, date % 100)) {
-			cout << "ë™ë…„ ë™ì›”ì˜ ê·¼ë¬´í‘œê°€ ì¡´ì¬í•©ë‹ˆë‹¤." << endl;
+			cout << "µ¿³â µ¿¿ùÀÇ ±Ù¹«Ç¥°¡ Á¸ÀçÇÕ´Ï´Ù." << endl;
 			return;
 		}
 		lastday = cal.Lastday(date / 100, date % 100);
@@ -278,7 +278,7 @@ void ChoiceDay()
 	}
 
 
-	/***** ê·¼ë¬´í‘œ ì¶œë ¥ *****/
+	/***** ±Ù¹«Ç¥ Ãâ·Â *****/
 
 	for (int i = 1; i <= lastday; i++)
 	{
@@ -288,7 +288,7 @@ void ChoiceDay()
 
 	calendar->PrintCalendar(date / 100, date % 100);
 
-	/***** ëª…ë‹¨ì—ì„œ ê·¼ë¬´ íˆ¬ì…ì´ ê°€ëŠ¥í•œ ì¸ì›ë§Œ ìƒˆë¡œìš´ ë°°ì—´ì— ì €ì¥ *****/
+	/***** ¸í´Ü¿¡¼­ ±Ù¹« ÅõÀÔÀÌ °¡´ÉÇÑ ÀÎ¿ø¸¸ »õ·Î¿î ¹è¿­¿¡ ÀúÀå *****/
 	vector<pair<UserInformation, int>> validlist;
 	vector<UserInformation>* tmpv = memberList->GetMemberList();
 	int index = 0;
@@ -298,15 +298,15 @@ void ChoiceDay()
 			validlist.push_back(make_pair(*iter, 0));
 	}
 
-	/***** ê·œì¹™ - ì˜¤ë¥˜(p.19) ê·¼ë¬´ íˆ¬ì…ì´ ê°€ëŠ¥í•œ ì‚¬ëŒì´ 1ëª… ì´í•˜ì¸ ê²½ìš° *****/
-	if (validlist.size() <= 1) // ê¸°íšì„œ ìˆ˜ì •!!!!!
+	/***** ±ÔÄ¢ - ¿À·ù(p.19) ±Ù¹« ÅõÀÔÀÌ °¡´ÉÇÑ »ç¶÷ÀÌ 1¸í ÀÌÇÏÀÎ °æ¿ì *****/
+	if (validlist.size() <= 1) // ±âÈ¹¼­ ¼öÁ¤!!!!!
 	{
-		cout << "ìœ íš¨ê·¼ë¬´ìê°€ 1ëª… ì´í•˜ì´ë¯€ë¡œ ê·¼ë¬´í‘œ ì‘ì„±ì´ ë¶ˆê°€í•©ë‹ˆë‹¤." << endl;
+		cout << "À¯È¿±Ù¹«ÀÚ°¡ 1¸í ÀÌÇÏÀÌ¹Ç·Î ±Ù¹«Ç¥ ÀÛ¼ºÀÌ ºÒ°¡ÇÕ´Ï´Ù." << endl;
 		isWorking = -1;
 		return;
 	}
 
-	// íŒŒì¼ì„ ë¶ˆëŸ¬ì˜¨ ê²½ìš° ê·¼ë¬´ íšŸìˆ˜ ë³€ê²½í•¨
+	// ÆÄÀÏÀ» ºÒ·¯¿Â °æ¿ì ±Ù¹« È½¼ö º¯°æÇÔ
 	for (int i = 1; i <= lastday; i++)
 	{
 		if (STATE[i] != vacant)
@@ -315,8 +315,8 @@ void ChoiceDay()
 		}
 	}
 
-	/***** ì•„ì´ë”” ì…ë ¥ ë°›ê¸° *****/
-	cout << "ì•„ì´ë””ë¥¼ ì…ë ¥í•˜ì‹­ì‹œì˜¤. ì…ë ¥ : ";
+	/***** ¾ÆÀÌµğ ÀÔ·Â ¹Ş±â *****/
+	cout << "¾ÆÀÌµğ¸¦ ÀÔ·ÂÇÏ½Ê½Ã¿À. ÀÔ·Â : ";
 	// getline(cin, id);
 	char escapeDetect = _getch();
 	if (escapeDetect == 27)
@@ -331,22 +331,22 @@ void ChoiceDay()
 		id.insert(0, 1, escapeDetect);
 	}
 
-	/***** ê·œì¹™ - ì˜¤ë¥˜(p.19) ê·¼ë¬´ì¼ ì„ íƒì´ ë¶ˆê°€ëŠ¥í•œ ê²½ìš° *****/
+	/***** ±ÔÄ¢ - ¿À·ù(p.19) ±Ù¹«ÀÏ ¼±ÅÃÀÌ ºÒ°¡´ÉÇÑ °æ¿ì *****/
 	if (memberList->Search(id) != -1 && Search(&validlist, id) == -1)
 	{
-		cout << id << "ê·¼ë¬´ìëŠ” ê·¼ë¬´ì ìš”ê±´ì„ ë§Œì¡±í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤." << endl;
+		cout << id << "±Ù¹«ÀÚ´Â ±Ù¹«ÀÚ ¿ä°ÇÀ» ¸¸Á·ÇÏÁö ¾Ê½À´Ï´Ù." << endl;
 		return;
 	}
-	/***** ì…ë ¥ - ì˜¤ë¥˜(p.18) ëª…ë‹¨ì— ì—†ëŠ” ì•„ì´ë””ë¥¼ ì…ë ¥í•œ ê²½ìš° *****/
+	/***** ÀÔ·Â - ¿À·ù(p.18) ¸í´Ü¿¡ ¾ø´Â ¾ÆÀÌµğ¸¦ ÀÔ·ÂÇÑ °æ¿ì *****/
 	else if (Search(&validlist, id) == -1)
 	{
-		cout << "ì•„ì´ë””ê°€ ìœ íš¨í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤." << endl;
+		cout << "¾ÆÀÌµğ°¡ À¯È¿ÇÏÁö ¾Ê½À´Ï´Ù." << endl;
 		return;
 	}
-	// ì´í•˜ SearchëŠ” ë°˜ë“œì‹œ ì„±ê³µí•œë‹¤.
+	// ÀÌÇÏ Search´Â ¹İµå½Ã ¼º°øÇÑ´Ù.
 
 
-	/***** ì…ë ¥ë°›ì€ ê·¼ë¬´ìê°€ ìˆ˜ì •í•˜ëŠ” ê²ƒì¸ì§€ í™•ì¸ *****/
+	/***** ÀÔ·Â¹ŞÀº ±Ù¹«ÀÚ°¡ ¼öÁ¤ÇÏ´Â °ÍÀÎÁö È®ÀÎ *****/
 	bool rechoice;
 	int min = 100;
 	int max = 0;
@@ -377,15 +377,15 @@ void ChoiceDay()
 	{
 		rechoice = true;
 	}
-	/***** ê·œì¹™ - ê²½ê³ (p.20) ìˆ˜ì •ì¸ ê²½ìš° í™•ì¸ ë©”ì‹œì§€ *****/
+	/***** ±ÔÄ¢ - °æ°í(p.20) ¼öÁ¤ÀÎ °æ¿ì È®ÀÎ ¸Ş½ÃÁö *****/
 	if (rechoice)
 	{
-		cout << "ì•„ì§ ë‹¤ë¥¸ ì¸ì›ë“¤ì´ ê·¼ë¬´ì¼ì„ ì„ íƒí•˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤. ê·¼ë¬´ì¼ì„ ìˆ˜ì •í•˜ì‹œê² ìŠµë‹ˆê¹Œ?"; //6-2-2
+		cout << "¾ÆÁ÷ ´Ù¸¥ ÀÎ¿øµéÀÌ ±Ù¹«ÀÏÀ» ¼±ÅÃÇÏÁö ¾Ê¾Ò½À´Ï´Ù. ±Ù¹«ÀÏÀ» ¼öÁ¤ÇÏ½Ã°Ú½À´Ï±î?"; //6-2-2
 		char ans = _getch();
 		cin.clear();
 
 		if (ans == 'Y') {
-			cout << "ì•„ì´ë””ë¥¼ ì…ë ¥í•˜ì‹­ì‹œì˜¤. ì…ë ¥ : ";
+			cout << "¾ÆÀÌµğ¸¦ ÀÔ·ÂÇÏ½Ê½Ã¿À. ÀÔ·Â : ";
 			//getline(cin, id);
 			escapeDetect = _getch();
 			if (escapeDetect == 27)
@@ -399,16 +399,16 @@ void ChoiceDay()
 				getline(cin, id);
 				id.insert(0, 1, escapeDetect);
 			}
-			/***** ê·œì¹™ - ì˜¤ë¥˜(p.19) ê·¼ë¬´ì¼ ì„ íƒì´ ë¶ˆê°€ëŠ¥í•œ ê²½ìš° *****/
+			/***** ±ÔÄ¢ - ¿À·ù(p.19) ±Ù¹«ÀÏ ¼±ÅÃÀÌ ºÒ°¡´ÉÇÑ °æ¿ì *****/
 			if (memberList->Search(id) != -1 && Search(&validlist, id) == -1)
 			{
-				cout << id << "ê·¼ë¬´ìëŠ” ê·¼ë¬´ì ìš”ê±´ì„ ë§Œì¡±í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤." << endl;
+				cout << id << "±Ù¹«ÀÚ´Â ±Ù¹«ÀÚ ¿ä°ÇÀ» ¸¸Á·ÇÏÁö ¾Ê½À´Ï´Ù." << endl;
 				return;
 			}
-			/***** ì…ë ¥ - ì˜¤ë¥˜(p.18) ëª…ë‹¨ì— ì—†ëŠ” ì•„ì´ë””ë¥¼ ì…ë ¥í•œ ê²½ìš° *****/
+			/***** ÀÔ·Â - ¿À·ù(p.18) ¸í´Ü¿¡ ¾ø´Â ¾ÆÀÌµğ¸¦ ÀÔ·ÂÇÑ °æ¿ì *****/
 			else if (Search(&validlist, id) == -1)
 			{
-				cout << "ì•„ì´ë””ê°€ ìœ íš¨í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤." << endl;
+				cout << "¾ÆÀÌµğ°¡ À¯È¿ÇÏÁö ¾Ê½À´Ï´Ù." << endl;
 				return;
 			}
 		}
@@ -416,14 +416,14 @@ void ChoiceDay()
 			return;
 		}
 		else {
-			cout << "Y ë˜ëŠ” Në§Œì„ ì…ë ¥í•˜ì‹­ì‹œì˜¤." << endl;
+			cout << "Y ¶Ç´Â N¸¸À» ÀÔ·ÂÇÏ½Ê½Ã¿À." << endl;
 			return;
 		}
-		// Y or N ì…ë ¥ë°›ê¸°, ìœ íš¨ì„± ê²€ì‚¬í•˜ê¸°, Nì´ë©´ returní•˜ê¸°
+		// Y or N ÀÔ·Â¹Ş±â, À¯È¿¼º °Ë»çÇÏ±â, NÀÌ¸é returnÇÏ±â
 	}
 
-	/***** ë‚ ì§œ ì…ë ¥ë°›ê¸°(PASS ê°€ëŠ¥) *****/
-	cout << "í¬ë§ ê·¼ë¬´ì¼ì„ ì…ë ¥í•˜ì‹­ì‹œì˜¤. ì…ë ¥ : ";
+	/***** ³¯Â¥ ÀÔ·Â¹Ş±â(PASS °¡´É) *****/
+	cout << "Èñ¸Á ±Ù¹«ÀÏÀ» ÀÔ·ÂÇÏ½Ê½Ã¿À. ÀÔ·Â : ";
 	//getline(cin, input);
 
 	escapeDetect = _getch();
@@ -438,7 +438,7 @@ void ChoiceDay()
 		getline(cin, input);
 		input.insert(0, 1, escapeDetect);
 	}
-	/***** PASSë¥¼ ì…ë ¥í•œ ê²½ìš° íŒ¨ìŠ¤ í…ŒìŠ¤íŠ¸ *****/
+	/***** PASS¸¦ ÀÔ·ÂÇÑ °æ¿ì ÆĞ½º Å×½ºÆ® *****/
 	if (input == "PASS")
 	{
 		int vcount = 0;
@@ -466,13 +466,13 @@ void ChoiceDay()
 				tcount++;
 			}
 		}
-		/***** íŒ¨ìŠ¤ ì¡°ê±´ì„ ë¶ˆë§Œì¡±í•œ ê²½ìš° *****/
+		/***** ÆĞ½º Á¶°ÇÀ» ºÒ¸¸Á·ÇÑ °æ¿ì *****/
 		if (tcount < vcount)
 		{
-			cout << "íŒ¨ìŠ¤ ì¡°ê±´ì„ ë§Œì¡±í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤." << endl;
+			cout << "ÆĞ½º Á¶°ÇÀ» ¸¸Á·ÇÏÁö ¾Ê½À´Ï´Ù." << endl;
 			return;
 		}
-		/***** íŒ¨ìŠ¤ ì¡°ê±´ì„ ë§Œì¡±í–ˆìœ¼ë©° ìˆ˜ì •í•˜ëŠ” ê²½ìš° *****/
+		/***** ÆĞ½º Á¶°ÇÀ» ¸¸Á·ÇßÀ¸¸ç ¼öÁ¤ÇÏ´Â °æ¿ì *****/
 		if (rechoice)
 		{
 			for (int i = 0; i <= lastday; i++)
@@ -484,11 +484,11 @@ void ChoiceDay()
 				}
 			}
 
-			cout << "íŒ¨ìŠ¤ê°€ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤." << endl;
+			cout << "ÆĞ½º°¡ ¿Ï·áµÇ¾ú½À´Ï´Ù." << endl;
 			int postnum = validlist[Search(&validlist, id)].second;
 			validlist[Search(&validlist, id)].second = PASS;
 
-			/***** ì´ì „ì— íŒ¨ìŠ¤í•œ ê·¼ë¬´ìë“¤ì˜ ì¡°ê±´ì„ ë‹¤ì‹œ ê²€ì‚¬í•¨ *****/
+			/***** ÀÌÀü¿¡ ÆĞ½ºÇÑ ±Ù¹«ÀÚµéÀÇ Á¶°ÇÀ» ´Ù½Ã °Ë»çÇÔ *****/
 			for (int i = 0; i < validlist.size(); i++)
 			{
 				if (validlist[i].second == PASS)
@@ -513,8 +513,8 @@ void ChoiceDay()
 					}
 					if (tcount < vcount)
 					{
-						cout << validlist[i].first.ID << "ê·¼ë¬´ìëŠ” ê·¼ë¬´ì¼ì„ ë‹¤ì‹œ ì„ íƒí•´ì•¼ í•©ë‹ˆë‹¤. - íŒ¨ìŠ¤ ì¡°ê±´ ë¶ˆë§Œì¡±" << endl;
-						validlist[Search(&validlist, id)].second = postnum; // ê·¼ë¬´íˆ¬ì…íšŸìˆ˜ë¥¼ ì¤„ì¸ë‹¤.
+						cout << validlist[i].first.ID << "±Ù¹«ÀÚ´Â ±Ù¹«ÀÏÀ» ´Ù½Ã ¼±ÅÃÇØ¾ß ÇÕ´Ï´Ù. - ÆĞ½º Á¶°Ç ºÒ¸¸Á·" << endl;
+						validlist[Search(&validlist, id)].second = postnum; // ±Ù¹«ÅõÀÔÈ½¼ö¸¦ ÁÙÀÎ´Ù.
 					}
 				}
 			}
@@ -522,11 +522,11 @@ void ChoiceDay()
 			//ChalenderFileOutput(date, ID, STATE);
 			return;
 		}
-		/***** íŒ¨ìŠ¤ ì¡°ê±´ì„ ë§Œì¡±í•œ ê²½ìš° *****/
+		/***** ÆĞ½º Á¶°ÇÀ» ¸¸Á·ÇÑ °æ¿ì *****/
 		else
 		{
 			validlist[Search(&validlist, id)].second = PASS;
-			cout << "íŒ¨ìŠ¤ê°€ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤." << endl;
+			cout << "ÆĞ½º°¡ ¿Ï·áµÇ¾ú½À´Ï´Ù." << endl;
 			memberList->FileOutput(isWorking);
 			//ChalenderFileOutput(date, ID, STATE);
 			return;
@@ -534,37 +534,37 @@ void ChoiceDay()
 	}
 	cin.clear();
 
-	/***** ë‚ ì§œë¥¼ ì…ë ¥í•˜ëŠ” ê²½ìš° *****/
-	if (!checkDayint(input)) //ìˆ«ìê°€ ì•„ë‹Œ ì• ë“¤ ê±°ë¥´ê¸°
+	/***** ³¯Â¥¸¦ ÀÔ·ÂÇÏ´Â °æ¿ì *****/
+	if (!checkDayint(input)) //¼ıÀÚ°¡ ¾Æ´Ñ ¾Öµé °Å¸£±â
 	{
-		cout << "ë‚ ì§œë¥¼ í˜•ì‹ì— ë§ê²Œ ì…ë ¥í•˜ì‹­ì‹œì˜¤." << endl;
+		cout << "³¯Â¥¸¦ Çü½Ä¿¡ ¸Â°Ô ÀÔ·ÂÇÏ½Ê½Ã¿À." << endl;
 		return;
 	}
 	int hopeday = stoi(input);
 
 	if (!checkDay(date, hopeday))
 	{
-		cout << "ë‚ ì§œë¥¼ í˜•ì‹ì— ë§ê²Œ ì…ë ¥í•˜ì‹­ì‹œì˜¤." << endl;
+		cout << "³¯Â¥¸¦ Çü½Ä¿¡ ¸Â°Ô ÀÔ·ÂÇÏ½Ê½Ã¿À." << endl;
 		return;
 	}
-	/***** ê·œì¹™ - ì˜¤ë¥˜(p.20) í™•ì •ëœ ë‚ ì§œì¸ ê²½ìš° *****/
+	/***** ±ÔÄ¢ - ¿À·ù(p.20) È®Á¤µÈ ³¯Â¥ÀÎ °æ¿ì *****/
 	if (STATE[hopeday] == confirmed)
 	{
-		cout << "í•´ë‹¹ ê·¼ë¬´ì¼ì€ ì´ë¯¸ í™•ì •ë˜ì—ˆìŠµë‹ˆë‹¤." << endl;
+		cout << "ÇØ´ç ±Ù¹«ÀÏÀº ÀÌ¹Ì È®Á¤µÇ¾ú½À´Ï´Ù." << endl;
 		return;
 	}
-	/***** ê°•íƒˆì„ ì‹œë„í•˜ëŠ” ê²½ìš° ìš°ì„ ìˆœìœ„ë¥¼ ë¹„êµ *****/
+	/***** °­Å»À» ½ÃµµÇÏ´Â °æ¿ì ¿ì¼±¼øÀ§¸¦ ºñ±³ *****/
 	if (STATE[hopeday] == occupied)
 	{
 		string postID = ID[hopeday];
 		if (validlist[Search(&validlist, postID)].first.startingMonth < validlist[Search(&validlist, id)].first.startingMonth)
 		{
-			cout << "ìš°ì„  ìˆœìœ„ê°€ ë‚®ì•„ì„œ ê°•íƒˆí•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤." << endl;
+			cout << "¿ì¼± ¼øÀ§°¡ ³·¾Æ¼­ °­Å»ÇÒ ¼ö ¾ø½À´Ï´Ù." << endl;
 			return;
 		}
 		else
 		{
-			cout << "í•´ë‹¹ ê·¼ë¬´ì¼ì€" << postID << "ê·¼ë¬´ìê°€ ì ìœ  ì¤‘ì…ë‹ˆë‹¤.í•´ë‹¹ ê·¼ë¬´ì¼ì„ ì„ íƒí•˜ì‹œê² ìŠµë‹ˆê¹Œ?\n";
+			cout << "ÇØ´ç ±Ù¹«ÀÏÀº" << postID << "±Ù¹«ÀÚ°¡ Á¡À¯ ÁßÀÔ´Ï´Ù.ÇØ´ç ±Ù¹«ÀÏÀ» ¼±ÅÃÇÏ½Ã°Ú½À´Ï±î?\n";
 			char ans = _getch();
 
 			if (ans == 'Y') {
@@ -573,17 +573,17 @@ void ChoiceDay()
 				return;
 			}
 			else {
-				cout << "Y ë˜ëŠ” Në§Œì„ ì…ë ¥í•˜ì‹­ì‹œì˜¤." << endl;
+				cout << "Y ¶Ç´Â N¸¸À» ÀÔ·ÂÇÏ½Ê½Ã¿À." << endl;
 				return;
 			}
-			validlist[Search(&validlist, postID)].second -= 1; // ê°•íƒˆ, ì ìœ ì ê·¼ë¬´íšŸìˆ˜ ê°ì†Œ
-			cout << postID << "ê·¼ë¬´ìëŠ” ê·¼ë¬´ì¼ì„ ë‹¤ì‹œ ì„ íƒí•´ì•¼ í•©ë‹ˆë‹¤. - ê·¼ë¬´ì¼ ê°•íƒˆ";
+			validlist[Search(&validlist, postID)].second -= 1; // °­Å», Á¡À¯ÀÚ ±Ù¹«È½¼ö °¨¼Ò
+			cout << postID << "±Ù¹«ÀÚ´Â ±Ù¹«ÀÏÀ» ´Ù½Ã ¼±ÅÃÇØ¾ß ÇÕ´Ï´Ù. - ±Ù¹«ÀÏ °­Å»";
 		}
 	}
 
-	/***** ì´í•˜ ëª¨ë“  ì¡°ê±´ì„ í†µê³¼í–ˆìœ¼ë©° ì„ íƒí•œ ê·¼ë¬´ì¼ì´ ë°˜ì˜ë¨ *****/
+	/***** ÀÌÇÏ ¸ğµç Á¶°ÇÀ» Åë°úÇßÀ¸¸ç ¼±ÅÃÇÑ ±Ù¹«ÀÏÀÌ ¹İ¿µµÊ *****/
 
-	/***** ìˆ˜ì •ì¸ ê²½ìš° ì´ì „ì— ì ìœ  ì¤‘ì´ë˜ ë‚ ì§œë¥¼ ë¹„ì›€ *****/
+	/***** ¼öÁ¤ÀÎ °æ¿ì ÀÌÀü¿¡ Á¡À¯ ÁßÀÌ´ø ³¯Â¥¸¦ ºñ¿ò *****/
 	if (rechoice)
 	{
 		for (int i = 0; i <= lastday; i++)
@@ -593,22 +593,22 @@ void ChoiceDay()
 				STATE[i] = vacant;
 			}
 		}
-		/***** ì„ íƒí•œ ë‚ ì§œ ë°˜ì˜ *****/
-		cout << "ê·¼ë¬´ì¼ ìˆ˜ì •ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤." << endl;
+		/***** ¼±ÅÃÇÑ ³¯Â¥ ¹İ¿µ *****/
+		cout << "±Ù¹«ÀÏ ¼öÁ¤ÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù." << endl;
 		STATE[hopeday] = occupied;
 		ID[hopeday] = id;
 	}
-	/***** ìˆ˜ì •ì´ ì•„ë‹Œ ê²½ìš° ì„ íƒí•œ ë‚ ì§œë¥¼ ë°”ë¡œ ë°˜ì˜í•¨ *****/
+	/***** ¼öÁ¤ÀÌ ¾Æ´Ñ °æ¿ì ¼±ÅÃÇÑ ³¯Â¥¸¦ ¹Ù·Î ¹İ¿µÇÔ *****/
 	else
 	{
 		STATE[hopeday] = occupied;
 		ID[hopeday] = id;
-		cout << "ê·¼ë¬´ì¼ ìˆ˜ì •ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.";
-		validlist[Search(&validlist, id)].second += 1; // ì‚¬ìš©ì ê·¼ë¬´íšŸìˆ˜ ì¶”ê°€
+		cout << "±Ù¹«ÀÏ ¼öÁ¤ÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù.";
+		validlist[Search(&validlist, id)].second += 1; // »ç¿ëÀÚ ±Ù¹«È½¼ö Ãß°¡
 		//ChalenderFileOutput(date, ID, STATE);
 	}
 
-	/***** ì™„ì„±ë˜ë©´ í™•ì •ìœ¼ë¡œ ë³€ê²½ *****/
+	/***** ¿Ï¼ºµÇ¸é È®Á¤À¸·Î º¯°æ *****/
 	int complete = 1;
 	for (int i = 1; i <= lastday; i++)
 	{
@@ -619,14 +619,14 @@ void ChoiceDay()
 	}
 	if (complete == 1)
 	{
-		for (int i = 0; i <= lastday; i++) // ê·¼ë¬´í‘œê°€ ì™„ì„±ë˜ë©´ í™•ì •ìœ¼ë¡œ ë³€ê²½
+		for (int i = 0; i <= lastday; i++) // ±Ù¹«Ç¥°¡ ¿Ï¼ºµÇ¸é È®Á¤À¸·Î º¯°æ
 		{
 			STATE[i] = confirmed;
 		}
 		isWorking = -1;
 	}
 
-	/***** ê·¼ë¬´ìë“¤ì˜ ì„ íƒíšŸìˆ˜ë¥¼ ë¹„êµí•˜ì—¬ í™•ì •í•¨ *****/
+	/***** ±Ù¹«ÀÚµéÀÇ ¼±ÅÃÈ½¼ö¸¦ ºñ±³ÇÏ¿© È®Á¤ÇÔ *****/
 	int cof = 1;
 	int cmp = validlist[0].second;
 	for (int i = 0; i < validlist.size(); i++)
@@ -638,7 +638,7 @@ void ChoiceDay()
 	}
 	if (cof == 1)
 	{
-		for (int i = 0; i <= lastday; i++) // ëª¨ë“  ê·¼ë¬´ìì˜ ê·¼ë¬´íšŸìˆ˜ê°€ ê°™ìœ¼ë©´ í™•ì •ìœ¼ë¡œ ë³€ê²½
+		for (int i = 0; i <= lastday; i++) // ¸ğµç ±Ù¹«ÀÚÀÇ ±Ù¹«È½¼ö°¡ °°À¸¸é È®Á¤À¸·Î º¯°æ
 		{
 			if (STATE[i] == occupied)
 			{
@@ -646,8 +646,8 @@ void ChoiceDay()
 			}
 		}
 	}
-	
-	// íŒŒì¼ ì“°ê¸° ID, STATE ì €ì¥
+
+	// ÆÄÀÏ ¾²±â ID, STATE ÀúÀå
 	memberList->FileOutput(isWorking);
 	//ChalenderFileOutput(date, ID, STATE);
 }
@@ -656,7 +656,7 @@ void showSchedule()
 {
 	string temp;
 	int date;
-	cout << "ì—´ëŒí•  ê·¼ë¬´í‘œì˜ ì—°ì›”ì„ ì…ë ¥í•˜ì‹­ì‹œì˜¤ : " << endl;
+	cout << "¿­¶÷ÇÒ ±Ù¹«Ç¥ÀÇ ¿¬¿ùÀ» ÀÔ·ÂÇÏ½Ê½Ã¿À : " << endl;
 
 	//getline(cin, temp);
 
@@ -676,20 +676,20 @@ void showSchedule()
 
 	if (!checkDate(temp))
 	{
-		cout << "ë‚ ì§œë¥¼ í˜•ì‹ì— ë§ê²Œ ì…ë ¥í•˜ì‹­ì‹œì˜¤." << endl;
+		cout << "³¯Â¥¸¦ Çü½Ä¿¡ ¸Â°Ô ÀÔ·ÂÇÏ½Ê½Ã¿À." << endl;
 		return;
 	}
-	date = dateChanger(temp); // í˜•ì‹ ë³€í™˜ string to int
+	date = dateChanger(temp); // Çü½Ä º¯È¯ string to int
 
 
-	// íŒŒì¼ ì½ì–´ì„œ ì¶œë ¥í•˜ê¸°
+	// ÆÄÀÏ ÀĞ¾î¼­ Ãâ·ÂÇÏ±â
 	string IDarr[DAYMAX];
 	int junk[DAYMAX];
 	//ChalenderFileInput(date, IDarr, junk);
 
 	for (int i = 1; i < DAYMAX; i++)
 	{
-		if(junk[i])
+		if (junk[i])
 			calendar->InsertInfo(i, IDarr[i]);
 	}
 
@@ -720,16 +720,16 @@ int dateChanger(string str)
 }
 
 bool checkDayint(string str) {
-	//ì´ê²Œ ë¶ˆë ¸ë‹¤ëŠ” ê±´ PASSê°€ ì•„ë‹Œ ìˆ«ìì—¬ì•¼ë§Œ í•¨.
+	//ÀÌ°Ô ºÒ·È´Ù´Â °Ç PASS°¡ ¾Æ´Ñ ¼ıÀÚ¿©¾ß¸¸ ÇÔ.
 	if (str.length() != 1 && str.length() != 2)
-	{ //ì „ì²´ ë¬¸ìì—´ ê¸¸ì´ ì²´í¬
+	{ //ÀüÃ¼ ¹®ÀÚ¿­ ±æÀÌ Ã¼Å©
 		return false;
 	}
 
 	for (int i = 0; i < str.length(); i++)
 	{
 		if (isdigit(str[i]) == 0)
-		{ //ìˆ«ìê°€ ì•„ë‹˜
+		{ //¼ıÀÚ°¡ ¾Æ´Ô
 			return false;
 		}
 	}
@@ -761,29 +761,29 @@ bool checkDay(int date, int day)
 bool checkDate(string str)
 {
 	if (str.length() != 7)
-	{ //ì „ì²´ ë¬¸ìì—´ ê¸¸ì´ ì²´í¬
+	{ //ÀüÃ¼ ¹®ÀÚ¿­ ±æÀÌ Ã¼Å©
 		return false;
 	}
 
 	for (int i = 0; i < str.length(); i++)
-	{ //ìˆ«ì(0~9)ì™€ êµ¬ë¶„ì ì²´í¬
+	{ //¼ıÀÚ(0~9)¿Í ±¸ºĞÀÚ Ã¼Å©
 		if (isdigit(str[i]) == 0)
-		{ //ìˆ«ìê°€ ì•„ë‹˜
+		{ //¼ıÀÚ°¡ ¾Æ´Ô
 			if (i != 4)
-			{ //êµ¬ë¶„ì ìë¦¬ê°€ ì•„ë‹Œ ê³³ì— ìˆ«ìê°€ ì•„ë‹Œ ê²Œ ìˆì„ ê²½ìš°
+			{ //±¸ºĞÀÚ ÀÚ¸®°¡ ¾Æ´Ñ °÷¿¡ ¼ıÀÚ°¡ ¾Æ´Ñ °Ô ÀÖÀ» °æ¿ì
 				return false;
 			}
 		}
 		else
 		{
 			if (i == 4)
-			{ //êµ¬ë¶„ì ìë¦¬ì— ìˆ«ìê°€ ìˆëŠ” ê²½ìš°
+			{ //±¸ºĞÀÚ ÀÚ¸®¿¡ ¼ıÀÚ°¡ ÀÖ´Â °æ¿ì
 				return false;
 			}
 		}
 	}
 
-	//ì˜ë¯¸ ê·œì¹™ - ë‹¬ë§Œ ì²´í¬í•˜ë©´ ë¨. 5 -> 0ì´ë©´ ë’¤ì— 0ë§Œ ì•„ë‹ˆë©´ ë¨ / 5->1ì´ë©´ ë’¤ì—ê°€ 1ì•„ë‹ˆë©´ 2ì—¬ì•¼ë§Œ.
+	//ÀÇ¹Ì ±ÔÄ¢ - ´Ş¸¸ Ã¼Å©ÇÏ¸é µÊ. 5 -> 0ÀÌ¸é µÚ¿¡ 0¸¸ ¾Æ´Ï¸é µÊ / 5->1ÀÌ¸é µÚ¿¡°¡ 1¾Æ´Ï¸é 2¿©¾ß¸¸.
 	int returndate = stoi(str);
 	if (str[5] == '0')
 	{
@@ -815,7 +815,7 @@ bool checkDate(string str)
 	// return false;
 }
 
-int Search(vector<pair<UserInformation, int>> *validlist, string id) // íƒìƒ‰ ëŒ€ìƒ ì•„ì´ë””ì˜ ì¸ë±ìŠ¤ë¥¼ ë°˜í™˜í•¨.
+int Search(vector<pair<UserInformation, int>>* validlist, string id) // Å½»ö ´ë»ó ¾ÆÀÌµğÀÇ ÀÎµ¦½º¸¦ ¹İÈ¯ÇÔ.
 {
 	int index = 0;
 	for (auto iter = validlist->begin(); iter != validlist->end(); iter++, index++)
@@ -826,16 +826,16 @@ int Search(vector<pair<UserInformation, int>> *validlist, string id) // íƒìƒ‰ ë
 	return -1;
 }
 
-//input(ë¶ˆëŸ¬ì˜¬ ë‹¬, ë‹¬ì˜ ê·¼ë¬´ì¼ì • ë°°ì—´, íŒ€ ë¦¬ìŠ¤íŠ¸ ë°°ì—´, State ë°°ì—´) output(íŒŒì¼ ì¡´ì¬ì‹œ true, ìƒˆë¡œ ìƒì„±ì‹œ false ì¶œë ¥) *ì£¼ì˜ ì‹¤í–‰ì‹œ íŒ€ë¦¬ìŠ¤íŠ¸ ë°°ì—´ì€ ì´ˆê¸°í™”ë˜ë©°, í•´ë‹¹ ë‹¬ì˜ íŒ€ìœ¼ë¡œ ì¬ì‘ì„±ë¨.
+//input(ºÒ·¯¿Ã ´Ş, ´ŞÀÇ ±Ù¹«ÀÏÁ¤ ¹è¿­, ÆÀ ¸®½ºÆ® ¹è¿­, State ¹è¿­) output(ÆÄÀÏ Á¸Àç½Ã true, »õ·Î »ı¼º½Ã false Ãâ·Â) *ÁÖÀÇ ½ÇÇà½Ã ÆÀ¸®½ºÆ® ¹è¿­Àº ÃÊ±âÈ­µÇ¸ç, ÇØ´ç ´ŞÀÇ ÆÀÀ¸·Î ÀçÀÛ¼ºµÊ.
 bool CalenderFileInput(int month, string* team, vector<Team>* teamList, int* _STATE)
 {
-	//í•´ë‹¹ ë‹¬ ì´ë¦„ì˜ íŒŒì¼ ì—´ê¸°
+	//ÇØ´ç ´Ş ÀÌ¸§ÀÇ ÆÄÀÏ ¿­±â
 	string inputFileName = to_string(month);
 	inputFileName.insert(4, "-");
 	inputFileName += ".txt";
 	ifstream inputFile;
 	inputFile.open(inputFileName);
-	
+
 	Calendar cal;
 	int lastday = cal.Lastday(month / 100, month % 100);
 
@@ -850,7 +850,7 @@ bool CalenderFileInput(int month, string* team, vector<Team>* teamList, int* _ST
 		vector<string> tempStr;
 		string strBuffer;
 		Team tempTeam;
-		//TeamList ì¶”ì¶œ
+		//TeamList ÃßÃâ
 		while (getline(inputFile, inputLine))
 		{
 			if (inputLine.compare("-"))
@@ -897,10 +897,10 @@ bool CalenderFileInput(int month, string* team, vector<Team>* teamList, int* _ST
 			else
 			{
 				break;
-			}	
+			}
 		}
 
-		//ê·¼ë¬´ì¼ì • ì¶”ì¶œ
+		//±Ù¹«ÀÏÁ¤ ÃßÃâ
 		count = 1;
 		while (getline(inputFile, inputLine))
 		{
@@ -918,7 +918,7 @@ bool CalenderFileInput(int month, string* team, vector<Team>* teamList, int* _ST
 	else
 	{
 		ofstream NewSaveFile(inputFileName);
-		printf("ìƒˆ ì €ì¥ íŒŒì¼ì„ ìƒì„±í•˜ì˜€ìŠµë‹ˆë‹¤.\n");
+		printf("»õ ÀúÀå ÆÄÀÏÀ» »ı¼ºÇÏ¿´½À´Ï´Ù.\n");
 		NewSaveFile.close();
 		return false;
 	}
@@ -943,7 +943,7 @@ void CalenderFileOutput(int month, vector<Team>* teamList, string* team, int* ST
 	{
 		for (auto iter = teamList->begin(); iter != teamList->end(); iter++)
 		{
-			outputFile << iter->TeamName << " " << iter->userinfo[0].ID << " " << iter->userinfo[0].startingMonth << " " << iter->userinfo[1].ID << iter->userinfo[1].startingMonth << " " << iter->userinfo[2].ID <<" "<< iter->userinfo[2].startingMonth;
+			outputFile << iter->TeamName << " " << iter->userinfo[0].ID << " " << iter->userinfo[0].startingMonth << " " << iter->userinfo[1].ID << iter->userinfo[1].startingMonth << " " << iter->userinfo[2].ID << " " << iter->userinfo[2].startingMonth;
 		}
 		outputFile << "-";
 		for (int i = 1; i < DAYMAX; i++)
