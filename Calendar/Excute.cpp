@@ -827,7 +827,7 @@ int Search(vector<pair<UserInformation, int>> *validlist, string id) // 탐색 �
 }
 
 //input(불러올 달, 달의 근무일정 배열, 팀 리스트 배열, State 배열) output(파일 존재시 true, 새로 생성시 false 출력) *주의 실행시 팀리스트 배열은 초기화되며, 해당 달의 팀으로 재작성됨.
-bool ChalenderFileInput(int month, string* team, vector<Team>* teamList, int* _STATE)
+bool CalenderFileInput(int month, string* team, vector<Team>* teamList, int* _STATE)
 {
 	//해당 달 이름의 파일 열기
 	string inputFileName = to_string(month);
@@ -928,7 +928,7 @@ bool ChalenderFileInput(int month, string* team, vector<Team>* teamList, int* _S
 	return true;
 }
 
-void ChalenderFileOutput(int month, vector<Team>* teamList, string* team, int* STATE)
+void CalenderFileOutput(int month, vector<Team>* teamList, string* team, int* STATE)
 {
 	string outPutFileName = to_string(month);
 	outPutFileName.insert(4, "-");
