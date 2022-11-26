@@ -948,7 +948,7 @@ void CalenderFileOutput(int month, vector<Team>* teamList, string* team, int* ST
 		outputFile << "-";
 		for (int i = 1; i < DAYMAX; i++)
 		{
-			outputFile << DAYMAX << " " << team[i] << " " << STATE[i];
+			outputFile << i << " " << team[i] << " " << STATE[i];
 		}
 	}
 	outputFile.close();
