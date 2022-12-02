@@ -126,6 +126,7 @@ string MemberList::Delete()
 	char escapeDetect = 0;
 	std::string ID;
 	cout << "삭제할 근무자의 아이디를 입력하십시오. 입력 : ";
+	escapeDetect = _getch();
 	if (escapeDetect == 27)
 	{
 		return "-1";
@@ -138,11 +139,11 @@ string MemberList::Delete()
 	}
 	int index = Search(ID);
 	if (index == -1)
-		cout << "아이디가 유효하지 않습니다.\n";
+		return "-1";	//cout << "아이디가 유효하지 않습니다.\n"; 에서 변경
 	else
 	{
 		memberList.erase(memberList.begin() + index);
-		cout << "해당 아이디 및 정보가 삭제되었습니다.\n";
+		//cout << "해당 아이디 및 정보가 삭제되었습니다.\n";
 	}
 	return ID;
 }
