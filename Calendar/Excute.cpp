@@ -38,9 +38,9 @@ vector<Team> teamList;
 
 int STATE[DAYMAX];
 
-/// ì¶”ê°€ ë³€ìˆ˜
+/// Ãß°¡º¯¼ö
 int teamindex;
-// ì¶”ê°€ ë³€ìˆ˜
+// Ãß°¡º¯¼ö
 
 vector<int> fileStatingMonth;
 vector<string> fileID;
@@ -281,31 +281,24 @@ void ChoiceDay()
 		lastday = cal.Lastday(date / 100, date % 100);
 	}
 
-	// ì¶”ê°€ë³€ìˆ˜
+	// Ãß°¡º¯¼ö
 	int dayworker;
 	int totalworkers;
 
-<<<<<<< Updated upstream
-	/***** ±Ù¹«Ç¥ Ãâ·Â *****/
-=======
-	// 1. ëª‡ ëª…ì´ ì¡°ë¥¼ ë§ºì„ì§€ ìž…ë ¥ ë°›ëŠ” ë¶€ë¶„
-	cout << "ì¼ì¼ê·¼ë¬´ì¸ì›ì„ ìž…ë ¥í•˜ì‹­ì‹œì˜¤. ìž…ë ¥ : " << endl;
+	// 1. ¸î ¸íÀÌ Á¶¸¦ ¸ÎÀ»Áö ÀÔ·Â ¹Þ´Â ºÎºÐ
+	cout << "ÀÏÀÏ±Ù¹«ÀÎ¿ùÀ» ÀÔ·ÂÇÏ½Ê½Ã¿À. ÀÔ·Â : " << endl;
 	cin >> dayworker;
->>>>>>> Stashed changes
+
 
 	if (dayworker > 3 || dayworker < 1)
 	{
-		cout << "1ë¶€í„° 3 ì‚¬ì´ì˜ ì •ìˆ˜ ê°’ì„ ìž…ë ¥í•´ì£¼ì‹­ì‹œì˜¤." << endl;
+		cout << "1 ~ 3 »çÀÌÀÇ Á¤¼ö°ªÀ» ÀÔ·ÂÇØÁÖ½Ê½Ã¿À." << endl;
 		return;
 	}
 
-<<<<<<< Updated upstream
 	calendar->PrintCalendar(date / 100, date % 100);
 
 	/***** ¸í´Ü¿¡¼­ ±Ù¹« ÅõÀÔÀÌ °¡´ÉÇÑ ÀÎ¿ø¸¸ »õ·Î¿î ¹è¿­¿¡ ÀúÀå *****/
-=======
-	/***** ëª…ë‹¨ì—ì„œ ê·¼ë¬´ íˆ¬ìž…ì´ ê°€ëŠ¥í•œ ì¸ì›ë§Œ ìƒˆë¡œìš´ ë°°ì—´ì— ì €ìž¥ *****/
->>>>>>> Stashed changes
 	vector<pair<UserInformation, int>> validlist;
 	vector<UserInformation>* tmpv = memberList->GetMemberList();
 	int index = 0;
@@ -332,11 +325,7 @@ void ChoiceDay()
 		}
 	}
 
-<<<<<<< Updated upstream
-	/***** ¾ÆÀÌµð ÀÔ·Â ¹Þ±â *****/
-	cout << "¾ÆÀÌµð¸¦ ÀÔ·ÂÇÏ½Ê½Ã¿À. ÀÔ·Â : ";
-=======
-	// 2. ìž…ë ¥ ë°›ì€ ê°’ìœ¼ë¡œ ì¡°ë¥¼ ì§œëŠ” ë¶€ë¶„
+	// 2. ÀÔ·Â ¹Þ´Â °ªÀ¸·Î Á¶¸¦ Â¥´Â ºÎºÐ
 	totalworkers = validlist.size();
 	int remainder = totalworkers % dayworker;
 	
@@ -344,7 +333,7 @@ void ChoiceDay()
 	{
 		for (int i = 0; i < totalworkers / dayworker; i++)
 		{
-			teamList[i].TeamName = "1ì¡°"; // ê³ ì³ì•¼í•¨
+			teamList[i].TeamName = "1Á¶"; // °íÃÄ¾ßÇÔ
 			
 			for (remainder; remainder < (dayworker + remainder); remainder++)
 				teamList[i].userinfo[0] = validlist[remainder].first;
@@ -354,14 +343,14 @@ void ChoiceDay()
 	{ 
 		for (int i = 0; i < totalworkers / dayworker; i++)
 		{
-			teamList[i].TeamName = "1ì¡°"; // ê³ ì³ì•¼í•¨
+			teamList[i].TeamName = "1Á¶"; // °íÃÄ¾ßÇÔ
 
 			for (remainder; remainder < (dayworker + remainder); remainder++)
 				teamList[i].userinfo[0] = validlist[remainder].first;
 		}
 	}
 
-	// 3. ì¡° ì¶œë ¥í•˜ëŠ” ë¶€ë¶„
+	// 3. Á¶ Ãâ·ÂÇÏ´Â ºÎºÐ
 	switch (dayworker)
 	{
 	case 1:
@@ -382,7 +371,7 @@ void ChoiceDay()
 	}
 	
 
-	/***** ê·¼ë¬´í‘œ ì¶œë ¥ *****/
+	/***** ±Ù¹«Ç¥ Ãâ·Â *****/
 	for (int i = 1; i <= lastday; i++)
 	{
 		if (STATE[i])
@@ -393,9 +382,8 @@ void ChoiceDay()
 
 
 
-	/***** ì•„ì´ë”” ìž…ë ¥ ë°›ê¸° *****/
-	cout << "ì•„ì´ë””ë¥¼ ìž…ë ¥í•˜ì‹­ì‹œì˜¤. ìž…ë ¥ : ";
->>>>>>> Stashed changes
+	/***** ¾ÆÀÌµð ÀÔ·Â ¹Þ±â *****/
+	cout << "¾ÆÀÌµð¸¦ ÀÔ·ÂÇÏ½Ê½Ã¿À. ÀÔ·Â : ";
 	// getline(cin, id);
 	char escapeDetect = _getch();
 	if (escapeDetect == 27)
@@ -672,14 +660,10 @@ void ChoiceDay()
 				STATE[i] = vacant;
 			}
 		}
-<<<<<<< Updated upstream
 		/***** ¼±ÅÃÇÑ ³¯Â¥ ¹Ý¿µ *****/
 		cout << "±Ù¹«ÀÏ ¼öÁ¤ÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù." << endl;
-=======
-		/***** ì„ íƒí•œ ë‚ ì§œ ë°˜ì˜ *****/
-		cout << "ê·¼ë¬´ì¼ ìˆ˜ì •ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤." << endl;
 
-		// 4. ê·¼ë¬´ì¼ì„ ì„ íƒí–ˆì„ ë•Œ, ê°™ì€ ì¡°ë¼ë¦¬ëŠ” ê³µìœ í•˜ëŠ” ë¶€ë¶„
+		// 4. ±Ù¹«ÀÏÀ» ¼±ÅÃÇßÀ» ¶§, °°Àº Á¶³¢¸®´Â °øÀ¯ÇÏ´Â ºÎºÐ
 		teamindex = -1;
 
 		for (int i = 0; i < teamList.size(); i++)
@@ -693,14 +677,13 @@ void ChoiceDay()
 
 		if (teamindex == -1)
 		{
-			cout << "ì—†ëŠ” ê·¼ë¬´ìžìž…ë‹ˆë‹¤\n" << endl;
+			cout << "¾ø´Â ±Ù¹«ÀÚÀÔ´Ï´Ù.\n" << endl;
 			return;
 		}
 		for (int i = 0; i < dayworker; i++)
 			validlist[Search(&validlist, teamList[teamindex].userinfo[i].ID)].second += 1;
 		
 		ID[hopeday] = teamList[teamindex].userinfo[0].ID;
->>>>>>> Stashed changes
 		STATE[hopeday] = occupied;
 	}
 	/***** ¼öÁ¤ÀÌ ¾Æ´Ñ °æ¿ì ¼±ÅÃÇÑ ³¯Â¥¸¦ ¹Ù·Î ¹Ý¿µÇÔ *****/
@@ -719,7 +702,7 @@ void ChoiceDay()
 
 		if (teamindex == -1)
 		{
-			cout << "ì—†ëŠ” ê·¼ë¬´ìžìž…ë‹ˆë‹¤\n" << endl;
+			cout << "¾ø´Â ±Ù¹«ÀÚÀÔ´Ï´Ù.\n" << endl;
 			return;
 		}
 		for (int i = 0; i < dayworker; i++)
@@ -727,14 +710,8 @@ void ChoiceDay()
 
 		ID[hopeday] = teamList[teamindex].userinfo[0].ID;
 		STATE[hopeday] = occupied;
-<<<<<<< Updated upstream
-		ID[hopeday] = id;
-		cout << "±Ù¹«ÀÏ ¼öÁ¤ÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù.";
-		validlist[Search(&validlist, id)].second += 1; // »ç¿ëÀÚ ±Ù¹«È½¼ö Ãß°¡
-=======
 
-		cout << "ê·¼ë¬´ì¼ ìˆ˜ì •ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤."; // ì‚¬ìš©ìž ê·¼ë¬´íšŸìˆ˜ ì¶”ê°€
->>>>>>> Stashed changes
+		cout << "±Ù¹«ÀÏ ¼öÁ¤ÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù.";
 		//ChalenderFileOutput(date, ID, STATE);
 	}
 
