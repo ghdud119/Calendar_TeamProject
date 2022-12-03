@@ -296,8 +296,6 @@ void ChoiceDay()
 		return;
 	}
 
-	calendar->PrintCalendar(date / 100, date % 100);
-
 	/***** 명단에서 근무 투입이 가능한 인원만 새로운 배열에 저장 *****/
 	vector<pair<UserInformation, int>> validlist;
 	vector<UserInformation>* tmpv = memberList->GetMemberList();
@@ -331,22 +329,40 @@ void ChoiceDay()
 	
 	if (remainder == 0)
 	{
+		int remtemp = remainder;
 		for (int i = 0; i < totalworkers / dayworker; i++)
 		{
-			teamList[i].TeamName = "1조"; // 고쳐야함
+			int tempidx = 0;
+			Team ttemp;
+			ttemp.TeamName = "1조";
+			teamList.push_back(ttemp); // 고쳐야함
 			
-			for (remainder; remainder < (dayworker + remainder); remainder++)
-				teamList[i].userinfo[0] = validlist[remainder].first;
+			for (remtemp; remtemp < dayworker + remainder; remtemp++)
+			{
+				teamList[i].userinfo[tempidx].ID = validlist[remtemp].first.ID;
+				teamList[i].userinfo[tempidx].startingMonth = validlist[remtemp].first.startingMonth;
+				tempidx++;
+			}
+			remainder += remtemp;
 		}
 	}
 	else
 	{ 
+		int remtemp = remainder;
 		for (int i = 0; i < totalworkers / dayworker; i++)
 		{
-			teamList[i].TeamName = "1조"; // 고쳐야함
+			int tempidx = 0;
+			Team ttemp;
+			ttemp.TeamName = "1조";
+			teamList.push_back(ttemp); // 고쳐야함
 
-			for (remainder; remainder < (dayworker + remainder); remainder++)
-				teamList[i].userinfo[0] = validlist[remainder].first;
+			for (remtemp; remtemp < dayworker + remainder; remtemp++)
+			{
+				teamList[i].userinfo[tempidx].ID = validlist[remtemp].first.ID;
+				teamList[i].userinfo[tempidx].startingMonth = validlist[remtemp].first.startingMonth;
+				tempidx++;
+			}
+			remainder += remtemp;
 		}
 	}
 
@@ -379,7 +395,6 @@ void ChoiceDay()
 	}
 
 	calendar->PrintCalendar(date / 100, date % 100);
-
 
 
 	/***** 아이디 입력 받기 *****/
