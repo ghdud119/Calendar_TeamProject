@@ -1,5 +1,17 @@
+<<<<<<< Updated upstream
 ﻿  Calendar.cpp
   Excute.cpp
   MemberList.cpp
   코드를 생성하고 있습니다...
   Calendar.vcxproj -> C:\Users\sec\source\repos\Calendar_TeamProject\x64\Debug\Calendar.exe
+=======
+﻿  Excute.cpp
+C:\Users\Jerry\Desktop\Calendar_TeamProject\Calendar\Excute.cpp(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Users\Jerry\Desktop\Calendar_TeamProject\Calendar\Excute.cpp(326,33): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\Jerry\Desktop\Calendar_TeamProject\Calendar\Excute.cpp(333,27): error C2001: 상수에 줄 바꿈 문자가 있습니다.
+C:\Users\Jerry\Desktop\Calendar_TeamProject\Calendar\Excute.cpp(335,4): error C2143: 구문 오류: ';'이(가) 'for' 앞에 없습니다.
+C:\Users\Jerry\Desktop\Calendar_TeamProject\Calendar\Excute.cpp(343,27): error C2001: 상수에 줄 바꿈 문자가 있습니다.
+C:\Users\Jerry\Desktop\Calendar_TeamProject\Calendar\Excute.cpp(345,4): error C2143: 구문 오류: ';'이(가) 'for' 앞에 없습니다.
+C:\Users\Jerry\Desktop\Calendar_TeamProject\Calendar\Excute.cpp(580,40): error C2001: 상수에 줄 바꿈 문자가 있습니다.
+C:\Users\Jerry\Desktop\Calendar_TeamProject\Calendar\Excute.cpp(581,7): error C2146: 구문 오류: ';'이(가) 'validlist' 식별자 앞에 없습니다.
+>>>>>>> Stashed changes
