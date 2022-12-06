@@ -42,6 +42,8 @@ int STATE[DAYMAX];
 
 /// 추가변수
 int teamindex;
+int dayworker = 0;
+bool teambuild = true;
 // 추가변수
 
 vector<int> fileStatingMonth;
@@ -252,7 +254,6 @@ void ChoiceDay()
 			cout << escapeDetect;
 			getline(cin, temp);
 			temp.insert(0, 1, escapeDetect);
-
 		}
 
 		/***** 규칙 - 오류(p.19) 근무일 선택이 불가능한 경우 *****/
@@ -288,19 +289,34 @@ void ChoiceDay()
 	}
 
 	// 추가변수
-	int dayworker;
 	int totalworkers;
 
 	// 1. 몇 명이 조를 맺을지 입력 받는 부분
-	cout << "일일근무인월을 입력하십시오. 입력 : " << endl;
-	cin >> dayworker;
-
-
-	if (dayworker > 3 || dayworker < 1)
+	if (dayworker == 0)
 	{
-		cout << "1 ~ 3 사이의 정수값을 입력해주십시오." << endl;
-		return;
+		cout << "일일근무인월을 입력하십시오. 입력 : " << endl;
+		char escapeDetect = _getch();
+		if (escapeDetect == 27)
+		{
+			cout << endl;
+			return;
+		}
+		else
+		{
+			cout << escapeDetect;
+			getline(cin, temp);
+			temp.insert(0, 1, escapeDetect);
+		}
+
+		dayworker = stoi(temp);
+
+		if (dayworker > 3 || dayworker < 1)
+		{
+			cout << "1 ~ 3 사이의 정수값을 입력해주십시오." << endl;
+			return;
+		}
 	}
+
 
 	/***** 명단에서 근무 투입이 가능한 인원만 새로운 배열에 저장 *****/
 	vector<pair<UserInformation, int>> validlist;
@@ -328,51 +344,62 @@ void ChoiceDay()
 	{
 		if (STATE[i] != vacant)
 		{
+			// 조장 근무 횟수 변경
 			validlist[Search(&validlist, ID[i])].second += 1;
+
+			// 같은 조인 근무자들 근무 횟수 변경
+			for (int j = 0; j < teamList.size(); j++)
+				if (ID[i] == teamList[j].userinfo[0].ID)
+					for (int k = 1; k < dayworker; k++)
+						validlist[Search(&validlist, teamList[j].userinfo[k].ID)].second += 1;
 		}
 	}
 
 	// 2. 입력 받는 값으로 조를 짜는 부분
-	totalworkers = validlist.size();
-	int remainder = totalworkers % dayworker;
-	
-	if (remainder == 0)
+	if (teambuild)
 	{
-		int remtemp = remainder;
-		for (int i = 0; i < totalworkers / dayworker; i++)
-		{
-			int tempidx = 0;
-			Team ttemp;
-			ttemp.TeamName = "1조";
-			teamList.push_back(ttemp); // 고쳐야함
-			
-			for (remtemp; remtemp < dayworker + remainder; remtemp++)
-			{
-				teamList[i].userinfo[tempidx].ID = validlist[remtemp].first.ID;
-				teamList[i].userinfo[tempidx].startingMonth = validlist[remtemp].first.startingMonth;
-				tempidx++;
-			}
-			remainder += remtemp;
-		}
-	}
-	else
-	{ 
-		int remtemp = remainder;
-		for (int i = 0; i < totalworkers / dayworker; i++)
-		{
-			int tempidx = 0;
-			Team ttemp;
-			ttemp.TeamName = "1조";
-			teamList.push_back(ttemp); // 고쳐야함
+		totalworkers = validlist.size();
+		int remainder = totalworkers % dayworker;
 
-			for (remtemp; remtemp < dayworker + remainder; remtemp++)
+		if (remainder == 0)
+		{
+			int remtemp = remainder;
+			for (int i = 0; i < totalworkers / dayworker; i++)
 			{
-				teamList[i].userinfo[tempidx].ID = validlist[remtemp].first.ID;
-				teamList[i].userinfo[tempidx].startingMonth = validlist[remtemp].first.startingMonth;
-				tempidx++;
+				int tempidx = 0;
+				Team ttemp;
+				ttemp.TeamName = to_string(i+1) + "조";
+				teamList.push_back(ttemp); // 고쳐야함
+
+				for (remtemp; remtemp < dayworker + remainder; remtemp++)
+				{
+					teamList[i].userinfo[tempidx].ID = validlist[remtemp].first.ID;
+					teamList[i].userinfo[tempidx].startingMonth = validlist[remtemp].first.startingMonth;
+					tempidx++;
+				}
+				remainder += remtemp;
 			}
-			remainder += remtemp;
 		}
+		else
+		{
+			int remtemp = remainder;
+			for (int i = 0; i < totalworkers / dayworker; i++)
+			{
+				int tempidx = 0;
+				Team ttemp;
+				ttemp.TeamName = "1조";
+				teamList.push_back(ttemp); // 고쳐야함
+
+				for (remtemp; remtemp < dayworker + remainder; remtemp++)
+				{
+					teamList[i].userinfo[tempidx].ID = validlist[remtemp].first.ID;
+					teamList[i].userinfo[tempidx].startingMonth = validlist[remtemp].first.startingMonth;
+					tempidx++;
+				}
+				remainder += remtemp;
+			}
+		}
+		teambuild = false;
 	}
 
 	// 3. 조 출력하는 부분
