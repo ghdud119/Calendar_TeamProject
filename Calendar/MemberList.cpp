@@ -63,6 +63,11 @@ void MemberList::Insert()
 					printf("날짜를 형식에 맞게 입력해주십시오.\n");
 					temp = "";
 				}
+				else if (tempInt < 190000 || tempInt > 210000)
+				{
+					printf("1900년 이상, 2100년 이하의 날짜를 입력해주십시오.\n");
+					temp = "";
+				}
 				else
 				{
 					input.startingMonth = stoi(temp);

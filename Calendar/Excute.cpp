@@ -62,8 +62,8 @@ bool checkDayint(string str);
 bool checkDay(int date, int day);
 bool checkDate(string str);
 
-bool ChalenderFileInput(int month, string* team, vector<Team>* teamList, int* _STATE);
-void ChalenderFileOutput(int month, vector<Team>* teamList, string* team, int* STATE);
+bool CalenderFileInput(int month, string* team, vector<Team>* teamList, int* _STATE);
+void CalenderFileOutput(int month, string* team, vector<Team>* teamList, int* STATE);
 
 int Search(vector<pair<UserInformation, int>>* validlist, string id);
 
@@ -264,7 +264,7 @@ void ChoiceDay()
 		}
 		date = dateChanger(temp); // 형식 변환 string to int
 		Month = date;
-		//ChalenderFileInput(date, ID, STATE);
+		CalenderFileInput(date, ID, &teamList, STATE);
 		// 파일 중에 동년 동월의 근무표가 있는지 확인하기
 		int con_check = 0;
 		Calendar cal;
@@ -283,7 +283,7 @@ void ChoiceDay()
 	{
 		date = stoi(memberList->GetWorkingCalender());
 		isWorking = date;
-		//ChalenderFileInput(date, ID, STATE);
+		CalenderFileInput(date, ID, &teamList, STATE);
 		Calendar cal;
 		lastday = cal.Lastday(date / 100, date % 100);
 	}
@@ -294,7 +294,7 @@ void ChoiceDay()
 	// 1. 몇 명이 조를 맺을지 입력 받는 부분
 	if (dayworker == 0)
 	{
-		cout << "일일근무인월을 입력하십시오. 입력 : " << endl;
+		cout << "일일근무인원을 입력하십시오. 입력 : " << endl;
 		char escapeDetect = _getch();
 		if (escapeDetect == 27)
 		{
@@ -640,7 +640,7 @@ void ChoiceDay()
 			}
 			memberList->FileOutput(isWorking);
 			wfileout(validlist, workingcheck, 1);
-			//ChalenderFileOutput(date, ID, STATE);
+			CalenderFileOutput(date, ID, &teamList, STATE);
 			return;
 		}
 		/***** 패스 조건을 만족한 경우 *****/
@@ -650,7 +650,7 @@ void ChoiceDay()
 			cout << "패스가 완료되었습니다." << endl;
 			memberList->FileOutput(isWorking);
 			wfileout(validlist, workingcheck, 1);
-			//ChalenderFileOutput(date, ID, STATE);
+			CalenderFileOutput(date, ID, &teamList, STATE);
 			return;
 		}
 	}
@@ -768,7 +768,7 @@ void ChoiceDay()
 
 		cout << "근무일 수정이 완료되었습니다.";
 		wfileout(validlist, workingcheck, 1);
-		//ChalenderFileOutput(date, ID, STATE);
+		CalenderFileOutput(date, ID, &teamList, STATE);
 	}
 
 	/***** 완성되면 확정으로 변경 *****/
@@ -813,7 +813,7 @@ void ChoiceDay()
 	// 파일 쓰기 ID, STATE 저장
 	memberList->FileOutput(isWorking);
 	wfileout(validlist, workingcheck, 0);
-	//ChalenderFileOutput(date, ID, STATE);
+	CalenderFileOutput(date, ID, &teamList, STATE);
 }
 vector<pair<string, int>> wfileinput()
 {
@@ -937,7 +937,7 @@ void showSchedule()
 	// 파일 읽어서 출력하기
 	string IDarr[DAYMAX];
 	int junk[DAYMAX];
-	//ChalenderFileInput(date, IDarr, junk);
+	CalenderFileInput(date, ID, &teamList, STATE);
 
 	for (int i = 1; i < DAYMAX; i++)
 	{
@@ -1189,7 +1189,7 @@ bool CalenderFileInput(int month, string* team, vector<Team>* teamList, int* _ST
 	return true;
 }
 
-void CalenderFileOutput(int month, vector<Team>* teamList, string* team, int* STATE)
+void CalenderFileOutput(int month, string* team, vector<Team>* teamList, int* STATE)
 {
 	string outPutFileName = to_string(month);
 	outPutFileName.insert(4, "-");
