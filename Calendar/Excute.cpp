@@ -284,7 +284,7 @@ void ChoiceDay()
 		}
 		date = dateChanger(temp); // 형식 변환 string to int
 		Month = date;
-		CalenderFileInput(date, ID, &teamList, STATE);
+		CalenderFileInput(date, team, &teamList, STATE);
 		// 파일 중에 동년 동월의 근무표가 있는지 확인하기
 		temp[4] = '-';
 		string t = temp + ".txt";
@@ -313,7 +313,7 @@ void ChoiceDay()
 	{
 		date = stoi(memberList->GetWorkingCalender());
 		isWorking = date;
-		CalenderFileInput(date, ID, &teamList, STATE);
+		CalenderFileInput(date, team, &teamList, STATE);
 		Calendar cal;
 		lastday = cal.Lastday(date / 100, date % 100);
 	}
@@ -368,6 +368,13 @@ void ChoiceDay()
 		return;
 	}
 
+	// team 배열에서 읽어온 값으로 ID 배열에 최선임 넣기
+	for (int i = 1; i < DAYMAX; i++)
+		if (team[i].size() != 0)
+			for (int j = 0; j < teamList.size(); j++)
+				if (teamList[j].TeamName == team[i])
+					ID[i] = teamList[j].userinfo[0].ID;
+
 	// 파일을 불러온 경우 근무 횟수 변경함
 	for (int i = 1; i <= lastday; i++)
 	{
@@ -397,7 +404,7 @@ void ChoiceDay()
 			{
 				int tempidx = 0;
 				Team ttemp;
-				ttemp.TeamName = to_string(i+1) + "조";
+				ttemp.TeamName = to_string(i + 1) + "조";
 				teamList.push_back(ttemp); // 고쳐야함
 
 				for (remtemp; remtemp < dayworker + remainder; remtemp++)
@@ -416,8 +423,8 @@ void ChoiceDay()
 			{
 				int tempidx = 0;
 				Team ttemp;
-				ttemp.TeamName = "1조";
-				teamList.push_back(ttemp); // 고쳐야함
+				ttemp.TeamName = to_string(i + 1) + "조";
+				teamList.push_back(ttemp); 
 
 				for (remtemp; remtemp < dayworker + remainder; remtemp++)
 				{
@@ -456,7 +463,7 @@ void ChoiceDay()
 	for (int i = 1; i <= lastday; i++)
 	{
 		if (STATE[i])
-			calendar->InsertInfo(i, ID[i]);
+			calendar->InsertInfo(i, team[i]);
 	}
 
 	calendar->PrintCalendar(date / 100, date % 100);
@@ -667,9 +674,17 @@ void ChoiceDay()
 					}
 				}
 			}
+
+			// team 배열에 ID 배열에 있는 근무자에 해당하는 조 이름 넣기
+			for (int i = 0; i < DAYMAX; i++)
+				if (ID[i].size() != 0)
+					for (int j = 0; j < teamList.size(); j++)
+						if (teamList[j].userinfo[0].ID == ID[i])
+							team[i] = teamList[j].TeamName;
+
 			memberList->FileOutput(isWorking);
 			wfileout(validlist, workingcheck, 1);
-			CalenderFileOutput(date, ID, &teamList, STATE);
+			CalenderFileOutput(date, team, &teamList, STATE);
 			return;
 		}
 		/***** 패스 조건을 만족한 경우 *****/
@@ -677,9 +692,17 @@ void ChoiceDay()
 		{
 			validlist[Search(&validlist, id)].second = PASS;
 			cout << "패스가 완료되었습니다." << endl;
+
+			// team 배열에 ID 배열에 있는 근무자에 해당하는 조 이름 넣기
+			for (int i = 0; i < DAYMAX; i++)
+				if (ID[i].size() != 0)
+					for (int j = 0; j < teamList.size(); j++)
+						if (teamList[j].userinfo[0].ID == ID[i])
+							team[i] = teamList[j].TeamName;
+
 			memberList->FileOutput(isWorking);
 			wfileout(validlist, workingcheck, 1);
-			CalenderFileOutput(date, ID, &teamList, STATE);
+			CalenderFileOutput(date, team, &teamList, STATE);
 			return;
 		}
 	}
@@ -796,8 +819,16 @@ void ChoiceDay()
 		STATE[hopeday] = occupied;
 
 		cout << "근무일 수정이 완료되었습니다.";
+
+		// team 배열에 ID 배열에 있는 근무자에 해당하는 조 이름 넣기
+		for (int i = 0; i < DAYMAX; i++)
+			if (ID[i].size() != 0)
+				for (int j = 0; j < teamList.size(); j++)
+					if (teamList[j].userinfo[0].ID == ID[i])
+						team[i] = teamList[j].TeamName;
+
 		wfileout(validlist, workingcheck, 1);
-		CalenderFileOutput(date, ID, &teamList, STATE);
+		CalenderFileOutput(date, team, &teamList, STATE);
 	}
 
 	/***** 완성되면 확정으로 변경 *****/
@@ -839,10 +870,17 @@ void ChoiceDay()
 		}
 	}
 
+	// team 배열에 ID 배열에 있는 근무자에 해당하는 조 이름 넣기
+	for (int i = 0; i < DAYMAX; i++)
+		if (ID[i].size() != 0)
+			for (int j = 0; j < teamList.size(); j++)
+				if (teamList[j].userinfo[0].ID == ID[i])
+					team[i] = teamList[j].TeamName;
+
 	// 파일 쓰기 ID, STATE 저장
 	memberList->FileOutput(isWorking);
 	wfileout(validlist, workingcheck, 0);
-	CalenderFileOutput(date, ID, &teamList, STATE);
+	CalenderFileOutput(date, team, &teamList, STATE);
 }
 vector<pair<string, int>> wfileinput()
 {
