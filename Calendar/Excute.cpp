@@ -1204,7 +1204,7 @@ void CalenderFileOutput(int month, string* team, vector<Team>* teamList, int* ST
 	{
 		for (auto iter = teamList->begin(); iter != teamList->end(); iter++)
 		{
-			outputFile << iter->TeamName << " " << iter->userinfo[0].ID << " " << iter->userinfo[0].startingMonth << " " << iter->userinfo[1].ID << iter->userinfo[1].startingMonth << " " << iter->userinfo[2].ID << " " << iter->userinfo[2].startingMonth << endl;
+			outputFile << iter->TeamName << " " << iter->userinfo[0].ID << " " << iter->userinfo[0].startingMonth << " " << iter->userinfo[1].ID << " " << iter->userinfo[1].startingMonth << " " << iter->userinfo[2].ID << " " << iter->userinfo[2].startingMonth << endl;
 		}
 		outputFile << "-" << endl;
 		for (int i = 1; i < DAYMAX; i++)
