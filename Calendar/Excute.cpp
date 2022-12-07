@@ -37,6 +37,7 @@ enum state
 string ID[DAYMAX];
 string team[DAYMAX];
 vector<Team> teamList;
+vector<pair<UserInformation, int>> validlist;
 
 int STATE[DAYMAX];
 
@@ -165,6 +166,8 @@ void listMenu()
 
 		selectmenu = _getch();
 
+		char escapeDetect = 0;
+		string temp;
 		switch (selectmenu)
 		{
 		case 49: // 1
@@ -179,11 +182,21 @@ void listMenu()
 			memberList->Insert();
 			break;
 		case 51: // 3
-			deletedID = memberList->Delete();
-
-			if (deletedID == "-1")
-				cout << "아이디가 유효하지 않습니다.\n"; // 삭제실패
+			cout << "삭제할 근무자의 아이디를 입력하십시오. 입력 : ";
+			escapeDetect = _getch();
+			if (escapeDetect == 27)
+				break;
 			else
+			{
+				getline(cin, temp);
+				temp.insert(temp.length(), 0, escapeDetect);
+				escapeDetect = 0;
+			}
+			if (memberList->Search(temp) == -1)
+			{
+				cout << "아이디가 유효하지 않습니다.";
+			}
+			else if (Search(&validlist, temp) == -1)
 			{
 				cout << "현재 근무표에 등록되어 있는 근무자입니다. 삭제하시겠습니까?";
 				char answer;
@@ -191,6 +204,7 @@ void listMenu()
 				switch (answer)
 				{
 				case 'Y':
+					deletedID = memberList->Delete();
 					for (int i = 1; i < DAYMAX; i++) // 명단에서 삭제된 ID 근무표에서도 삭제
 					{
 						if (ID[i] == deletedID)
@@ -206,8 +220,13 @@ void listMenu()
 				default:
 					break;
 				}
-
+				
 			}
+			else
+			{
+				deletedID = memberList->Delete();
+			}
+
 			break;
 			break;
 		case 27: // ESC 키
@@ -319,7 +338,6 @@ void ChoiceDay()
 
 
 	/***** 명단에서 근무 투입이 가능한 인원만 새로운 배열에 저장 *****/
-	vector<pair<UserInformation, int>> validlist;
 	vector<UserInformation>* tmpv = memberList->GetMemberList();
 	
 	vector<pair<string, int>> workingcheck = wfileinput();
