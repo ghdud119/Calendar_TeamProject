@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <conio.h>
 #include <string>
@@ -285,6 +286,16 @@ void ChoiceDay()
 		Month = date;
 		CalenderFileInput(date, ID, &teamList, STATE);
 		// 파일 중에 동년 동월의 근무표가 있는지 확인하기
+		temp[4] = '-';
+		string t = temp + ".txt";
+		const char* filename = t.c_str();
+		FILE* f;
+		if (f = fopen(filename, "r"))
+		{
+			fclose(f);
+			cout << "동년 동월의 근무표가 존재합니다." << endl;
+			return;
+		}
 		int con_check = 0;
 		Calendar cal;
 		for (int i = 0; i < cal.Lastday(date / 100, date % 100); i++) {
