@@ -1059,7 +1059,7 @@ bool checkDate(string str)
 	}
 	else if (str[5] == '1')
 	{
-		if (str[6] == '1' || str[6] == '2')
+		if (str[6] == '0' || str[6] == '1' || str[6] == '2')
 		{
 			return true;
 		}
