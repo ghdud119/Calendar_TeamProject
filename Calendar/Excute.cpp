@@ -284,7 +284,6 @@ void ChoiceDay()
 		}
 		date = dateChanger(temp); // 형식 변환 string to int
 		Month = date;
-		CalenderFileInput(date, team, &teamList, STATE);
 		// 파일 중에 동년 동월의 근무표가 있는지 확인하기
 		temp[4] = '-';
 		string t = temp + ".txt";
@@ -308,6 +307,7 @@ void ChoiceDay()
 		}
 		lastday = cal.Lastday(date / 100, date % 100);
 		isWorking = date;
+		CalenderFileInput(date, team, &teamList, STATE);
 	}
 	else
 	{
