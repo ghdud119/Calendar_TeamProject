@@ -314,6 +314,24 @@ void ChoiceDay()
 		lastday = cal.Lastday(date / 100, date % 100);
 		isWorking = date;
 		CalenderFileInput(date, team, &teamList, STATE);
+
+		//주말근무여부 초기화
+		for (auto i = validlist.begin(); i < validlist.end(); i++)
+			pre_Shift.push_back(make_pair(i->first.ID, false));
+
+		/***** 주말 근무 여부 체크해서 true로 바꿔주기 *****/
+		for (int i = 1; i < DAYMAX; i++) {
+			Calendar cal;
+			if (STATE[i] == occupied) {	//만약, 점유중인 날짜가 있다면
+				for (auto j = pre_Shift.begin(); j < pre_Shift.end(); j++) {	//cur_Shift에서 ID와 날짜 체크해서 true만들기
+					if (j->first.compare(ID[i]) == 0 && cal.weekDay(date / 100, date % 100, i) > 5) {
+						//해당 날짜 근무자의 ID와 cur_Shift의 ID가 같고, 날짜가 주말이면
+						j->second = true;
+					}
+				}
+			}
+		}
+		cur_Shift = pre_Shift;
 	}
 	else
 	{
@@ -366,10 +384,6 @@ void ChoiceDay()
 			validlist.push_back(make_pair(*iter, 0));
 	}
 
-	//주말근무여부 초기화
-	for (auto i = validlist.begin(); i < validlist.end(); i++)
-		pre_Shift.push_back(make_pair(i->first.ID, false));
-
 	/***** 규칙 - 오류(p.19) 근무 투입이 가능한 사람이 1명 이하인 경우 *****/
 	if (validlist.size() <= 1) // 기획서 수정!!!!!
 	{
@@ -378,10 +392,6 @@ void ChoiceDay()
 		return;
 	}
 
-	/***** 근무표에 있는 인원들로 주말근무 최신화 *****/
-	for (auto i = validlist.begin(); i < validlist.end(); i++) {
-		pre_Shift.push_back(make_pair(i->first.ID, false));
-	}
 
 	// team 배열에서 읽어온 값으로 ID 배열에 최선임 넣기
 	for (int i = 1; i < DAYMAX; i++)

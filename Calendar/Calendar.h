@@ -15,11 +15,11 @@ public:
     void PrintCalendar(int year, int month);
     void InsertInfo(int date, string name);
     int Lastday(int year, int month);
+    int weekDay(int year, int month, int day);
 
 private:
     bool IsLeapYear(int year) { return year % 4 == 0 && year % 100 != year % 400 == 0; }
     int totalDay(int year, int month, int day);
-    int weekDay(int year, int month, int day);
 
 private:
     vector <pair<int, string>> ChoicedInfo;
