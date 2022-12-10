@@ -46,6 +46,8 @@ int STATE[DAYMAX];
 int teamindex;
 int dayworker = 0;
 bool teambuild = true;
+vector<pair<string, bool>> pre_Shift;
+vector<pair<string, bool>> cur_Shift;
 // 추가변수
 
 vector<int> fileStatingMonth;
@@ -284,7 +286,6 @@ void ChoiceDay()
 		}
 		date = dateChanger(temp); // 형식 변환 string to int
 		Month = date;
-		CalenderFileInput(date, team, &teamList, STATE);
 		// 파일 중에 동년 동월의 근무표가 있는지 확인하기
 		temp[4] = '-';
 		string t = temp + ".txt";
@@ -366,6 +367,11 @@ void ChoiceDay()
 		cout << "유효근무자가 1명 이하이므로 근무표 작성이 불가합니다." << endl;
 		isWorking = -1;
 		return;
+	}
+
+	/***** 근무표에 있는 인원들로 주말근무 최신화 *****/
+	for (auto i = validlist.begin(); i < validlist.end(); i++) {
+		pre_Shift.push_back(make_pair(i->first.ID, false));
 	}
 
 	// team 배열에서 읽어온 값으로 ID 배열에 최선임 넣기
