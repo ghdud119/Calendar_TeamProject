@@ -317,7 +317,7 @@ void ChoiceDay()
 
 		//주말근무여부 초기화
 		for (auto i = validlist.begin(); i < validlist.end(); i++)
-			pre_Shift.push_back(make_pair(i->first.ID, false));
+			cur_Shift.push_back(make_pair(i->first.ID, false));
 
 		/***** 주말 근무 여부 체크해서 true로 바꿔주기 *****/
 		for (int i = 1; i < DAYMAX; i++) {
@@ -331,7 +331,6 @@ void ChoiceDay()
 				}
 			}
 		}
-		cur_Shift = pre_Shift;
 	}
 	else
 	{
@@ -524,6 +523,17 @@ void ChoiceDay()
 	}
 	// 이하 Search는 반드시 성공한다.
 
+
+	/***** 해당 인원의 주말 근무 여부를 체크 후 주말 근무라면 return *****/
+	int weekendCheck = 0;
+	for (auto i = pre_Shift.begin(); i < pre_Shift.end(); i++) {
+		if (id == i->first && i->second)
+			weekendCheck = 1;
+	}
+	if (weekendCheck) {
+		cout << "주말 근무로 인해 이번 근무 선택에서 제외됩니다." << endl;
+		return;
+	}
 
 	/***** 입력받은 근무자가 수정하는 것인지 확인 *****/
 	bool rechoice;
@@ -922,6 +932,14 @@ void ChoiceDay()
 			{
 				STATE[i] = confirmed;
 			}
+		}
+		/***** 주말근무횟수 정보 최신화 해주고, 근무횟수 +1 해준다 *****/
+		pre_Shift = cur_Shift;
+		string temp;
+		for (auto i = cur_Shift.begin(); i < cur_Shift.end(); i++) {
+			if (i->second)
+				temp = i->first;
+			validlist[Search(&validlist, temp)].second += 1;
 		}
 	}
 
