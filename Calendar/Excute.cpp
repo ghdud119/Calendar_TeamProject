@@ -817,6 +817,21 @@ void ChoiceDay()
 		
 		ID[hopeday] = teamList[teamindex].userinfo[0].ID;
 		STATE[hopeday] = occupied;
+
+		/***** 점유할 날짜 주말근무여부 체크해서 수정 *****/
+		Calendar weekCal;
+		if (weekCal.weekDay(Month / 100, Month % 100, hopeday) > 5) {	//만약, hopeday가 주말이면
+			for (int j = 0; j < dayworker; j++)	//하루 근무자 수 만큼 반복
+				for (auto i = cur_Shift.begin(); i < cur_Shift.end(); i++)	//cur_Shift의 처음부터 끝까지
+					if (i->first == teamList[teamindex].userinfo[j].ID)	//ID를 search해서 맞으면
+						i->second = true;
+		}
+		else {
+			for (int j = 0; j < dayworker; j++)	//하루 근무자 수 만큼 반복
+				for (auto i = cur_Shift.begin(); i < cur_Shift.end(); i++)	//cur_Shift의 처음부터 끝까지
+					if (i->first == teamList[teamindex].userinfo[j].ID)	//ID를 search해서 맞으면
+						i->second = false;
+		}
 	}
 	/***** 수정이 아닌 경우 선택한 날짜를 바로 반영함 *****/
 	else
@@ -842,6 +857,21 @@ void ChoiceDay()
 
 		ID[hopeday] = teamList[teamindex].userinfo[0].ID;
 		STATE[hopeday] = occupied;
+
+		/***** 점유할 날짜 주말근무여부 확인해서 수정 *****/
+		Calendar weekCal;
+		if (weekCal.weekDay(Month / 100, Month % 100, hopeday) > 5) {	//만약, hopeday가 주말이면
+			for (int j = 0; j < dayworker; j++)	//하루 근무자 수 만큼 반복
+				for (auto i = cur_Shift.begin(); i < cur_Shift.end(); i++)	//cur_Shift의 처음부터 끝까지
+					if (i->first == teamList[teamindex].userinfo[j].ID)	//ID를 search해서 맞으면
+						i->second = true;
+		}
+		else {
+			for (int j = 0; j < dayworker; j++)	//하루 근무자 수 만큼 반복
+				for (auto i = cur_Shift.begin(); i < cur_Shift.end(); i++)	//cur_Shift의 처음부터 끝까지
+					if (i->first == teamList[teamindex].userinfo[j].ID)	//ID를 search해서 맞으면
+						i->second = false;
+		}
 
 		cout << "근무일 수정이 완료되었습니다.";
 
