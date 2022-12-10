@@ -362,6 +362,10 @@ void ChoiceDay()
 			validlist.push_back(make_pair(*iter, 0));
 	}
 
+	//주말근무여부 초기화
+	for (auto i = validlist.begin(); i < validlist.end(); i++)
+		pre_Shift.push_back(make_pair(i->first.ID, false));
+
 	/***** 규칙 - 오류(p.19) 근무 투입이 가능한 사람이 1명 이하인 경우 *****/
 	if (validlist.size() <= 1) // 기획서 수정!!!!!
 	{
