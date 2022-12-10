@@ -309,6 +309,7 @@ void ChoiceDay()
 		}
 		lastday = cal.Lastday(date / 100, date % 100);
 		isWorking = date;
+		CalenderFileInput(date, team, &teamList, STATE);
 	}
 	else
 	{
