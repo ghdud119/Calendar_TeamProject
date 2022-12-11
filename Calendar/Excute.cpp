@@ -46,7 +46,8 @@ int STATE[DAYMAX];
 /// 추가변수
 int teamindex;
 int dayworker;
-bool teambuild = true;
+int firstcheck = 0;
+bool checkfor = true;
 vector<pair<string, bool>> pre_Shift;
 vector<pair<string, bool>> cur_Shift;
 // 추가변수
@@ -306,9 +307,9 @@ void ChoiceDay()
 						//j->second = true;
 						for (int k = 0; k < teamList.size(); k++) {	//teamList search	teamList에서
 							if(teamList[k].userinfo[0].ID == ID[i])	//조장을 찾아서
-							for (int t = 0; t < 3; t++) {	//조장 팀원들을 전부 abc에 넣어준다.
-								abc.push_back(teamList[k].userinfo[t].ID);
-							}
+								for (int t = 0; t < 3; t++) {	//조장 팀원들을 전부 abc에 넣어준다.
+									abc.push_back(teamList[k].userinfo[t].ID);
+								}
 						}
 					}
 				}
@@ -321,7 +322,6 @@ void ChoiceDay()
 					i->second = true;
 			}
 		}
-
 	}
 	else
 	{
@@ -352,6 +352,12 @@ void ChoiceDay()
 			temp.insert(0, 1, escapeDetect);
 		}
 
+		if (temp.length() > 1)
+		{
+			cout << "1 ~ 3 사이의 정수값을 입력해주십시오." << endl;
+			return;
+		}
+
 		dayworker = stoi(temp);
 
 		if (dayworker > 3 || dayworker < 1)
@@ -377,10 +383,15 @@ void ChoiceDay()
 	vector<pair<string, int>> workingcheck = wfileinput();
 	
 	int index = 0;
-	for (auto iter = tmpv->begin(); iter != tmpv->end(); iter++, index++)
+
+	if (firstcheck == 0)
 	{
-		if (iter->startingMonth < date)
-			validlist.push_back(make_pair(*iter, 0));
+		for (auto iter = tmpv->begin(); iter != tmpv->end(); iter++, index++)
+		{
+			if (iter->startingMonth < date)
+				validlist.push_back(make_pair(*iter, 0));
+		}
+		firstcheck = 1;
 	}
 
 	/***** 규칙 - 오류(p.19) 근무 투입이 가능한 사람이 1명 이하인 경우 *****/
@@ -399,21 +410,24 @@ void ChoiceDay()
 				if (teamList[j].TeamName == team[i])
 					ID[i] = teamList[j].userinfo[0].ID;
 
-	// 파일을 불러온 경우 근무 횟수 변경함
-	for (int i = 1; i <= lastday; i++)
+	//파일을 불러온 경우 근무 횟수 변경함
+	if (checkfor)
 	{
-		if (STATE[i] == occupied || STATE[i] == confirmed)
+		for (int i = 1; i <= lastday; i++)
 		{
-			// 조장 근무 횟수 변경
-			
-			validlist[Search(&validlist, ID[i])].second += 1;
+			if (STATE[i] == occupied || STATE[i] == confirmed)
+			{
+				// 조장 근무 횟수 변경
+				validlist[Search(&validlist, ID[i])].second += 1;
 
-			// 같은 조인 근무자들 근무 횟수 변경
-			for (int j = 0; j < teamList.size(); j++)
-				if (ID[i] == teamList[j].userinfo[0].ID)
-					for (int k = 1; k < dayworker; k++)
-						validlist[Search(&validlist, teamList[j].userinfo[k].ID)].second += 1; ///
+				// 같은 조인 근무자들 근무 횟수 변경
+				for (int j = 0; j < teamList.size(); j++)
+					if (ID[i] == teamList[j].userinfo[0].ID)
+						for (int k = 1; k < dayworker; k++)
+							validlist[Search(&validlist, teamList[j].userinfo[k].ID)].second += 1;
+			}
 		}
+		checkfor = false;
 	}
 
 	// 2. 입력 받는 값으로 조를 짜는 부분
@@ -460,7 +474,6 @@ void ChoiceDay()
 				remainder += remtemp;
 			}
 		}
-		teambuild = false;
 	}
 
 	// 3. 조 출력하는 부분
