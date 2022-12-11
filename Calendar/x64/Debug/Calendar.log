@@ -1,3 +1,3 @@
 ﻿  Excute.cpp
-C:\Users\user\source\repos\Calendar_TeamProject\Calendar\Excute.cpp(421,34): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  Calendar.vcxproj -> C:\Users\user\source\repos\Calendar_TeamProject\x64\Debug\Calendar.exe
+C:\Users\propo\OneDrive\바탕 화면\새 폴더 (3)\Calendar_TeamProject\Calendar\Excute.cpp(400,34): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Calendar.vcxproj -> C:\Users\propo\OneDrive\바탕 화면\새 폴더 (3)\Calendar_TeamProject\x64\Debug\Calendar.exe

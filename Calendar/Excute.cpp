@@ -203,31 +203,10 @@ void listMenu()
 			{
 				cout << "아이디가 유효하지 않습니다.";
 			}
-			else if (Search(&validlist, temp) == -1)
+			else if (Search(&validlist, temp) != -1)
 			{
-				cout << "현재 근무표에 등록되어 있는 근무자입니다. 삭제하시겠습니까?";
-				char answer;
-				answer = _getch();
-				switch (answer)
-				{
-				case 'Y':
-					deletedID = memberList->Delete();
-					for (int i = 1; i < DAYMAX; i++) // 명단에서 삭제된 ID 근무표에서도 삭제
-					{
-						if (ID[i] == deletedID)
-						{
-							ID[i] = "";
-							STATE[i] = vacant;
-						}
-					}
-					break;
-				case 'N':
-					return;
-
-				default:
-					break;
-				}
-				
+				cout << "현재 근무표에 등록되어 있는 근무자입니다.";
+				return;
 			}
 			else
 			{
