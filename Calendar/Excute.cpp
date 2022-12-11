@@ -955,6 +955,7 @@ void ChoiceDay()
 	wfileout(validlist, workingcheck, 0);
 	CalenderFileOutput(date, team, &teamList, STATE);
 }
+
 vector<pair<string, int>> wfileinput()
 {
 	ifstream inFile;
@@ -1077,7 +1078,7 @@ void showSchedule()
 	// 파일 읽어서 출력하기
 	string IDarr[DAYMAX];
 	int junk[DAYMAX];
-	CalenderFileInput(date, ID, &teamList, STATE);
+	CalenderFileInput(date, IDarr, &teamList, STATE);
 
 	for (int i = 1; i < DAYMAX; i++)
 	{
