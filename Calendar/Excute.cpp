@@ -45,7 +45,7 @@ int STATE[DAYMAX];
 
 /// 추가변수
 int teamindex;
-int dayworker = 0;
+int dayworker;
 bool teambuild = true;
 vector<pair<string, bool>> pre_Shift;
 vector<pair<string, bool>> cur_Shift;
@@ -75,9 +75,6 @@ int Search(vector<pair<UserInformation, int>>* validlist, string id);
 int Search(vector<pair<UserInformation, int>> *validlist, string id);
 vector<pair<string, int>> wfileinput();
 void wfileout(vector<pair<UserInformation, int>> validlist, vector<pair<string, int>> workingcheck, int info);
-
-vector<pair<string, bool>> weekendInput();
-void weekendOutput(vector<pair<string, bool>> shift);
 
 int main()
 {
@@ -339,7 +336,7 @@ void ChoiceDay()
 	int totalworkers;
 
 	// 1. 몇 명이 조를 맺을지 입력 받는 부분
-	if (dayworker == 0)
+	if (teamList.size() == 0)
 	{
 		cout << "일일근무인원을 입력하십시오. 입력 : " << endl;
 		char escapeDetect = _getch();
@@ -362,6 +359,15 @@ void ChoiceDay()
 			cout << "1 ~ 3 사이의 정수값을 입력해주십시오." << endl;
 			return;
 		}
+	}
+	else
+	{
+		if (teamList[1].userinfo[1].ID == "ERROR")
+			dayworker = 1;
+		else if (teamList[1].userinfo[2].ID == "ERROR")
+			dayworker = 2;
+		else
+			dayworker = 3;
 	}
 
 
@@ -400,13 +406,13 @@ void ChoiceDay()
 		{
 			// 조장 근무 횟수 변경
 			
-			validlist[Search(&validlist, ID[i])].second += 1; //////////// 벡터 범위
+			validlist[Search(&validlist, ID[i])].second += 1;
 
 			// 같은 조인 근무자들 근무 횟수 변경
 			for (int j = 0; j < teamList.size(); j++)
 				if (ID[i] == teamList[j].userinfo[0].ID)
 					for (int k = 1; k < dayworker; k++)
-						validlist[Search(&validlist, teamList[j].userinfo[k].ID)].second += 1;
+						validlist[Search(&validlist, teamList[j].userinfo[k].ID)].second += 1; ///
 		}
 	}
 
@@ -1349,72 +1355,4 @@ void CalenderFileOutput(int month, string* team, vector<Team>* teamList, int* ST
 		}
 	}
 	outputFile.close();
-}
-
-vector<pair<string, bool>> weekendInput() {
-	ifstream file;
-	file.open(WEEKFILE);
-
-	string inLine = "";
-	string temp = "";
-	string id = "";
-
-	vector<pair<string, bool>> Shift;
-
-	int num = 0;
-	int lineNum = 0;
-
-	if (file.is_open()) {	//case : File exist and successfully open
-		while (getline(file, inLine)) {
-			num = 0;
-			inLine += " ";	//파일 데이터를 받아옴. 맨 뒤에 num > 1 경우 만들기! 그래야 break 가능
-			for (int i = 0; i < inLine.length(); i++) {
-				if (inLine[i] != ' ') {
-					temp += inLine[i];
-				}
-				else {
-					switch (num) {
-					case 0: {	//id string의 끝
-						id = temp;
-						temp = "";
-						break;	//switch문 종료
-					}
-					case 1: {	//shift value
-						bool shift = stoi(temp);
-						temp = "";
-						Shift.push_back(make_pair(id, shift));
-						break;
-					}
-					default:
-						printf("파일 읽기 오류, 저장 파일의 문법이 잘못되었습니다.\n");
-						_exit(1);
-					}
-					num++;
-					if (num > 1) break;	//한 줄 다 읽음
-				}
-			}
-		}
-	}
-	else {	//case : File is not exist
-		ofstream newF;
-		newF.open(WEEKFILE);
-		printf("weekendCheck.txt 저장 파일을 생성하였습니다.\n");
-		newF.close();
-	}
-
-	file.close();
-	return Shift;
-}
-
-void weekendOutput(vector<pair<string, bool>> shift) {
-	ofstream file;
-	file.open(WEEKFILE);
-
-	if (file.is_open()) {
-		for (auto i = shift.begin(); i < shift.end(); i++) {
-			file << i->first << " " << i->second << endl;
-		}
-	}
-
-	file.close();
 }
