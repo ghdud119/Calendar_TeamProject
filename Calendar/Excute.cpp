@@ -49,6 +49,7 @@ int dayworker;
 bool checkfor = true;
 vector<pair<string, bool>> pre_Shift;
 vector<pair<string, bool>> cur_Shift;
+int first = 0;
 // 추가변수
 
 vector<int> fileStatingMonth;
@@ -477,8 +478,11 @@ void ChoiceDay()
 
 
 	//주말근무여부 초기화
-	for (auto i = validlist.begin(); i < validlist.end(); i++)
-		pre_Shift.push_back(make_pair(i->first.ID, false));
+	if (first == 0) {
+		for (auto i = validlist.begin(); i < validlist.end(); i++)
+			pre_Shift.push_back(make_pair(i->first.ID, false));
+	}
+	first = 1;
 
 	/***** 주말 근무 여부 체크해서 true로 바꿔주기 *****/
 	//주말 근무 한 인원들 전부 받아오기
@@ -487,7 +491,8 @@ void ChoiceDay()
 	for (int i = 1; i < DAYMAX; i++) {	//i는 날짜, 모든 날짜를 돌면서
 		if (STATE[i] == occupied || STATE[i] == confirmed) {	//만약, 점유중인 날짜가 있다면, ID[i]에는 조장만 들어있음
 			for (auto j = pre_Shift.begin(); j < pre_Shift.end(); j++) {	//cur_Shift에서 ID와 날짜 체크해서 true만들기
-				if (j->first.compare(ID[i]) == 0 && cal.weekDay(date / 100, date % 100, i) > 5) { //해당 날짜 근무자의 ID와 pre_Shift의 ID가 같고, 날짜가 주말이면
+				int isWeek = cal.weekDay(date / 100, date % 100, i);
+				if (j->first.compare(ID[i]) == 0 && (isWeek == 0 || isWeek == 6)) { //해당 날짜 근무자의 ID와 pre_Shift의 ID가 같고, 날짜가 주말이면
 					j->second = true;
 					for (int k = 0; k < teamList.size(); k++) {	//teamList search	teamList에서
 						if (teamList[k].userinfo[0].ID == ID[i])	//조장을 찾아서
