@@ -360,12 +360,6 @@ void ChoiceDay()
 			return;
 		}
 
-		//if(((int)temp.c_str() > 48) || ((int)temp.c_str() < 57))
-		//{
-		//	cout << "1 ~ 3 사이의 정수값을 입력해주십시오." << endl;
-		//	return;
-		//}
-
 		dayworker = stoi(temp);
 
 		if (dayworker > 3 || dayworker < 1)
