@@ -292,36 +292,36 @@ void ChoiceDay()
 		isWorking = date;
 		CalenderFileInput(date, team, &teamList, STATE);
 
-		//주말근무여부 초기화
-		for (auto i = validlist.begin(); i < validlist.end(); i++)
-			cur_Shift.push_back(make_pair(i->first.ID, false));
+		////주말근무여부 초기화
+		//for (auto i = validlist.begin(); i < validlist.end(); i++)
+		//	cur_Shift.push_back(make_pair(i->first.ID, false));
 
-		/***** 주말 근무 여부 체크해서 true로 바꿔주기 *****/
-		//주말 근무 한 인원들 전부 받아오기
-		vector<string> abc;
-		for (int i = 1; i < DAYMAX; i++) {
-			Calendar cal;
-			if (STATE[i] == occupied) {	//만약, 점유중인 날짜가 있다면, ID[i]에는 조장만 들어있음
-				for (auto j = pre_Shift.begin(); j < pre_Shift.end(); j++) {	//cur_Shift에서 ID와 날짜 체크해서 true만들기
-					if (j->first.compare(ID[i]) == 0 && cal.weekDay(date / 100, date % 100, i) > 5) { //해당 날짜 근무자의 ID와 pre_Shift의 ID가 같고, 날짜가 주말이면
-						//j->second = true;
-						for (int k = 0; k < teamList.size(); k++) {	//teamList search	teamList에서
-							if(teamList[k].userinfo[0].ID == ID[i])	//조장을 찾아서
-								for (int t = 0; t < 3; t++) {	//조장 팀원들을 전부 abc에 넣어준다.
-									abc.push_back(teamList[k].userinfo[t].ID);
-								}
-						}
-					}
-				}
-			}
-		}
-		//주말근무여부 바꾸기
-		for (auto i = pre_Shift.begin(); i < pre_Shift.end(); i++) {
-			for (auto j = abc.begin(); j < abc.end(); j++) {
-				if (i->first == *j)
-					i->second = true;
-			}
-		}
+		///***** 주말 근무 여부 체크해서 true로 바꿔주기 *****/
+		////주말 근무 한 인원들 전부 받아오기
+		//vector<string> abc;
+		//for (int i = 1; i < DAYMAX; i++) {
+		//	Calendar cal;
+		//	if (STATE[i] == occupied) {	//만약, 점유중인 날짜가 있다면, ID[i]에는 조장만 들어있음
+		//		for (auto j = pre_Shift.begin(); j < pre_Shift.end(); j++) {	//cur_Shift에서 ID와 날짜 체크해서 true만들기
+		//			if (j->first.compare(ID[i]) == 0 && cal.weekDay(date / 100, date % 100, i) > 5) { //해당 날짜 근무자의 ID와 pre_Shift의 ID가 같고, 날짜가 주말이면
+		//				//j->second = true;
+		//				for (int k = 0; k < teamList.size(); k++) {	//teamList search	teamList에서
+		//					if(teamList[k].userinfo[0].ID == ID[i])	//조장을 찾아서
+		//						for (int t = 0; t < 3; t++) {	//조장 팀원들을 전부 abc에 넣어준다.
+		//							abc.push_back(teamList[k].userinfo[t].ID);
+		//						}
+		//				}
+		//			}
+		//		}
+		//	}
+		//}
+		////주말근무여부 바꾸기
+		//for (auto i = pre_Shift.begin(); i < pre_Shift.end(); i++) {
+		//	for (auto j = abc.begin(); j < abc.end(); j++) {
+		//		if (i->first == *j)
+		//			i->second = true;
+		//	}
+		//}
 	}
 	else
 	{
@@ -330,6 +330,8 @@ void ChoiceDay()
 		CalenderFileInput(date, team, &teamList, STATE);
 		Calendar cal;
 		lastday = cal.Lastday(date / 100, date % 100);
+
+
 	}
 
 	// 추가변수
@@ -497,6 +499,39 @@ void ChoiceDay()
 			}
 		}
 	}
+
+
+	//주말근무여부 초기화
+	for (auto i = validlist.begin(); i < validlist.end(); i++)
+		pre_Shift.push_back(make_pair(i->first.ID, false));
+
+	/***** 주말 근무 여부 체크해서 true로 바꿔주기 *****/
+	//주말 근무 한 인원들 전부 받아오기
+	vector<string> abc;
+	Calendar cal;
+	for (int i = 1; i < DAYMAX; i++) {	//i는 날짜, 모든 날짜를 돌면서
+		if (STATE[i] == occupied || STATE[i] == confirmed) {	//만약, 점유중인 날짜가 있다면, ID[i]에는 조장만 들어있음
+			for (auto j = pre_Shift.begin(); j < pre_Shift.end(); j++) {	//cur_Shift에서 ID와 날짜 체크해서 true만들기
+				if (j->first.compare(ID[i]) == 0 && cal.weekDay(date / 100, date % 100, i) > 5) { //해당 날짜 근무자의 ID와 pre_Shift의 ID가 같고, 날짜가 주말이면
+					j->second = true;
+					for (int k = 0; k < teamList.size(); k++) {	//teamList search	teamList에서
+						if (teamList[k].userinfo[0].ID == ID[i])	//조장을 찾아서
+							for (int t = 0; t < dayworker; t++) {	//조장 팀원들을 전부 abc에 넣어준다.
+								abc.push_back(teamList[k].userinfo[t].ID);
+							}
+					}
+				}
+			}
+		}
+	}
+	//주말근무여부 바꾸기
+	for (auto i = pre_Shift.begin(); i < pre_Shift.end(); i++) {
+		for (auto j = abc.begin(); j < abc.end(); j++) {
+			if (i->first == *j)
+				i->second = true;
+		}
+	}
+
 
 	// 3. 조 출력하는 부분
 	switch (dayworker)
