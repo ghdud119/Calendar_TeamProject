@@ -431,7 +431,23 @@ void ChoiceDay()
 	}
 
 	// 2. 입력 받는 값으로 조를 짜는 부분
-	if (teamList.size() == 0)
+	if (teamList.size() == 0 && dayworker == 1)
+	{
+		totalworkers = validlist.size();
+		int j = 0;
+
+		for (int i = 0; i < totalworkers / dayworker; i++)
+		{
+			Team ttemp;
+			ttemp.TeamName = to_string(i + 1) + "조";
+			teamList.push_back(ttemp);
+			teamList[i].userinfo[0].ID = validlist[j].first.ID;
+			teamList[i].userinfo[0].startingMonth = validlist[j].first.startingMonth;
+			j++;
+		}
+	}
+
+	if (teamList.size() == 0 && dayworker > 1)
 	{
 		totalworkers = validlist.size();
 		int remainder = totalworkers % dayworker;
