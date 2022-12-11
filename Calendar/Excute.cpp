@@ -381,10 +381,11 @@ void ChoiceDay()
 	// 파일을 불러온 경우 근무 횟수 변경함
 	for (int i = 1; i <= lastday; i++)
 	{
-		if (STATE[i] != vacant)
+		if (STATE[i] == occupied || STATE[i] == confirmed)
 		{
 			// 조장 근무 횟수 변경
-			validlist[Search(&validlist, ID[i])].second += 1;
+			
+			validlist[Search(&validlist, ID[i])].second += 1; //////////// 벡터 범위
 
 			// 같은 조인 근무자들 근무 횟수 변경
 			for (int j = 0; j < teamList.size(); j++)
@@ -395,7 +396,7 @@ void ChoiceDay()
 	}
 
 	// 2. 입력 받는 값으로 조를 짜는 부분
-	if (teambuild)
+	if (teamList.size() == 0)
 	{
 		totalworkers = validlist.size();
 		int remainder = totalworkers % dayworker;
@@ -408,7 +409,7 @@ void ChoiceDay()
 				int tempidx = 0;
 				Team ttemp;
 				ttemp.TeamName = to_string(i + 1) + "조";
-				teamList.push_back(ttemp); // 고쳐야함
+				teamList.push_back(ttemp);
 
 				for (remtemp; remtemp < dayworker + remainder; remtemp++)
 				{
