@@ -46,7 +46,6 @@ int STATE[DAYMAX];
 /// 추가변수
 int teamindex;
 int dayworker;
-int firstcheck = 0;
 bool checkfor = true;
 vector<pair<string, bool>> pre_Shift;
 vector<pair<string, bool>> cur_Shift;
@@ -330,8 +329,6 @@ void ChoiceDay()
 		CalenderFileInput(date, team, &teamList, STATE);
 		Calendar cal;
 		lastday = cal.Lastday(date / 100, date % 100);
-
-
 	}
 
 	// 추가변수
@@ -341,28 +338,16 @@ void ChoiceDay()
 	if (teamList.size() == 0)
 	{
 		cout << "일일근무인원을 입력하십시오. 입력 : " << endl;
-		char escapeDetect = _getch();
-		if (escapeDetect == 27)
-		{
-			cout << endl;
-			return;
-		}
+		char ans = _getch();
+		cin.clear();
+
+		if (ans == '1')
+			dayworker = 1;
+		else if(ans == '2')
+			dayworker = 2;
+		else if(ans == '3')
+			dayworker = 3;
 		else
-		{
-			cout << escapeDetect;
-			getline(cin, temp);
-			temp.insert(0, 1, escapeDetect);
-		}
-
-		if (temp.length() > 1)
-		{
-			cout << "1 ~ 3 사이의 정수값을 입력해주십시오." << endl;
-			return;
-		}
-
-		dayworker = stoi(temp);
-
-		if (dayworker > 3 || dayworker < 1)
 		{
 			cout << "1 ~ 3 사이의 정수값을 입력해주십시오." << endl;
 			return;
@@ -370,9 +355,9 @@ void ChoiceDay()
 	}
 	else
 	{
-		if (teamList[1].userinfo[1].ID == "ERROR")
+		if (teamList[0].userinfo[1].ID == "ERROR")
 			dayworker = 1;
-		else if (teamList[1].userinfo[2].ID == "ERROR")
+		else if (teamList[0].userinfo[2].ID == "ERROR")
 			dayworker = 2;
 		else
 			dayworker = 3;
@@ -386,14 +371,10 @@ void ChoiceDay()
 	
 	int index = 0;
 
-	if (firstcheck == 0)
+	for (auto iter = tmpv->begin(); iter != tmpv->end(); iter++, index++)
 	{
-		for (auto iter = tmpv->begin(); iter != tmpv->end(); iter++, index++)
-		{
-			if (iter->startingMonth < date)
-				validlist.push_back(make_pair(*iter, 0));
-		}
-		firstcheck = 1;
+		if (iter->startingMonth < date)
+			validlist.push_back(make_pair(*iter, 0));
 	}
 
 	/***** 규칙 - 오류(p.19) 근무 투입이 가능한 사람이 1명 이하인 경우 *****/
